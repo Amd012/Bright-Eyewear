@@ -213,7 +213,8 @@ export default function ProductDetail() {
         </div>
       </section>
 
-      {/* ===== PRESCRIPTION GUIDE & CUSTOMER NOTES ===== */}
+      {/* ===== PRESCRIPTION GUIDE & CUSTOMER NOTES (not for sunglasses) ===== */}
+      {product.category !== 'sunglasses' && (
       <section className="prescription-section">
         <div className="container">
           <div className="section-header">
@@ -361,6 +362,7 @@ export default function ProductDetail() {
           </div>
         </div>
       </section>
+      )}
 
       {relatedProducts.length > 0 && (
         <section className="categories" style={{ background: 'var(--bg)' }}>
