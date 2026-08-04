@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "Sarah Mitchell",
+    "initials": "SM",
+    "rating": 5,
+    "text": "The most comfortable glasses I've ever worn. I forget I'm even wearing them. The blue-light coating has made a huge difference for my screen-heavy workdays.",
+    "verified": true
+  },
+  {
+    "id": 2,
+    "name": "James Delaney",
+    "initials": "JD",
+    "rating": 5,
+    "text": "Incredible quality and style. The titanium frames are unbelievably light yet feel premium. I've already recommended Bright Eyewear to all my friends.",
+    "verified": true
+  },
+  {
+    "id": 3,
+    "name": "Emma Liu",
+    "initials": "EL",
+    "rating": 5,
+    "text": "I was hesitant about buying glasses online, but the virtual try-on and detailed measurements made it easy. Perfect fit right out of the box!",
+    "verified": true
+  },
+  {
+    "id": 4,
+    "name": "Marcus Johnson",
+    "initials": "MJ",
+    "rating": 4,
+    "text": "Great quality frames. The prescription lenses were perfectly crafted and the anti-reflective coating works wonderfully.",
+    "verified": true
+  },
+  {
+    "id": 5,
+    "name": "Priya Sharma",
+    "initials": "PS",
+    "rating": 5,
+    "text": "Finally found glasses that suit my face shape perfectly! The virtual try-on was a game changer. Fast shipping too!",
+    "verified": true
+  },
+  {
+    "id": 6,
+    "name": "Alex Thompson",
+    "initials": "AT",
+    "rating": 5,
+    "text": "The customer service is outstanding. They helped me find the perfect frame and the prescription was spot on. Will definitely be a returning customer.",
+    "verified": true
+  }
+]
