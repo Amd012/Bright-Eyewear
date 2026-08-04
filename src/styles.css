@@ -465,6 +465,8 @@ svg { max-width: 100%; height: auto; }
 .contact-detail .icon { width: clamp(44px, 4.5vw, 48px); height: clamp(44px, 4.5vw, 48px); border-radius: 12px; background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
 .contact-detail strong { display: block; font-size: clamp(0.85rem, 1vw, 0.9rem); margin-bottom: 2px; }
 .contact-detail span { font-size: clamp(0.8rem, 0.9vw, 0.85rem); color: var(--text-light); }
+.contact-link { font-size: clamp(0.8rem, 0.9vw, 0.85rem); color: var(--accent); font-weight: 500; transition: color var(--transition); }
+.contact-link:hover { color: var(--accent-dark); text-decoration: underline; }
 .contact-form { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(24px, 4vw, 40px); }
 .contact-form .form-group { margin-bottom: clamp(16px, 2vw, 20px); }
 .contact-form label { display: block; font-size: clamp(0.82rem, 1vw, 0.88rem); font-weight: 500; margin-bottom: 6px; }

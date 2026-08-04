@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getProductById, formatPrice, getDiscountPercent, products } from '../data/products.jsx';
 
-const WHATSAPP_NUMBER = '7676044306';
+const WHATSAPP_NUMBER = '917676044306';
 
 function buildWhatsAppShareUrl(product) {
   const discount = getDiscountPercent(product.price, product.oldPrice);

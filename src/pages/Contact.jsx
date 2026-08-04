@@ -41,14 +41,14 @@ export default function Contact() {
                   <div className="icon">📞</div>
                   <div>
                     <strong>Phone</strong>
-                    <span>+91 76760 44306</span>
+                    <a href="tel:+917676044306" className="contact-link">+91 76760 44306</a>
                   </div>
                 </div>
                 <div className="contact-detail">
                   <div className="icon">📧</div>
                   <div>
                     <strong>Email</strong>
-                    <span>brighteyewear25@gmail.com</span>
+                    <a href="mailto:brighteyewear25@gmail.com" className="contact-link">brighteyewear25@gmail.com</a>
                   </div>
                 </div>
                 <div className="contact-detail">
