@@ -565,7 +565,7 @@ export async function generatePrescriptionPDF({
   doc.setLineWidth(0.2);
   doc.line(MARGIN, y + 0.8, MARGIN + linkWidth, y + 0.8);
 
-  y += 9;
+  y += 10;
 
   // ===== QR CODE =====
   // Generate QR code pointing to the product URL
@@ -574,8 +574,12 @@ export async function generatePrescriptionPDF({
   if (qrDataUrl) {
     // QR code size
     const qrSize = 35;
-    const qrX = PAGE_WIDTH - MARGIN - qrSize;
-    const qrY = y - 2;
+    
+    // Position QR code in the center-right area, properly spaced from the product link
+    const qrX = PAGE_WIDTH - MARGIN - qrSize - 5;
+    
+    // Add proper spacing below the product link
+    const qrY = y + 2;
 
     // Add QR code image
     doc.addImage(qrDataUrl, 'PNG', qrX, qrY, qrSize, qrSize);
@@ -584,7 +588,8 @@ export async function generatePrescriptionPDF({
     doc.setFont(FONTS.body, 'normal');
     doc.setFontSize(7.5);
     doc.setTextColor(...COLORS.gray);
-    doc.text('Scan to view product', qrX + (qrSize / 2), qrY + qrSize + 4, { align: 'center' });
+    doc.text('Scan to view', qrX + (qrSize / 2), qrY + qrSize + 5, { align: 'center' });
+    doc.text('the product', qrX + (qrSize / 2), qrY + qrSize + 9, { align: 'center' });
 
     // Draw a border around the QR code
     doc.setDrawColor(...COLORS.lightGray);

@@ -47,11 +47,7 @@ export function buildPrescriptionWhatsAppMessage({ productUrl, product }) {
   const priceText = product?.price ? `RS. ${product.price}` : '';
 
   const lines = [
-    'Hello!',
-    '',
-    'Your prescription has been generated successfully.',
-    '',
-    '📄 Please find your prescription PDF attached.',
+    `*NEW PRESCRIPTION ORDER*`,
     '',
     `👓 *PRODUCT DETAILS* 👓`,
     ...(product?.name ? [`Model Name : ${product.name}`] : []),

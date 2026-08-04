@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { getProductById, formatPrice, getDiscountPercent, products } from '../data/products.jsx';
 import { sharePrescriptionOnWhatsAppWithPDF, sharePrescriptionOnWhatsAppWithoutPDF } from '../utils/whatsappShare';
 
@@ -166,6 +166,7 @@ function Tooltip({ text, label }) {
 
 export default function ProductDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [prescription, setPrescription] = useState({
     reSph: '', reCyl: '', reAxis: '', reAdd: '',
     leSph: '', leCyl: '', leAxis: '', leAdd: '',
@@ -262,6 +263,12 @@ export default function ProductDetail() {
   };
 
   const sendPrescriptionOnWhatsApp = async (withPDF) => {
+    // Validate customer name is required
+    if (!customerName || !customerName.trim()) {
+      alert('Please enter your name before sending your prescription.');
+      return;
+    }
+
     if (!confirmed) {
       alert('Please tick the confirmation checkbox before sending your prescription.');
       return;
@@ -299,6 +306,11 @@ export default function ProductDetail() {
           type: 'success',
           text: result.message
         });
+        
+        // Redirect back to the product page after a short delay
+        setTimeout(() => {
+          navigate(`/product/${product.id}`, { replace: true });
+        }, 800);
       } else {
         setShareStatus({
           type: 'error',
@@ -516,13 +528,14 @@ export default function ProductDetail() {
 
             {/* Customer name - for PDF filename */}
             <div className="prescription-input-group prescription-ipd">
-              <label>Your Name (for PDF) <Tooltip text="Used to name your prescription PDF file." label="Name" /></label>
+              <label>Your Name (required) <Tooltip text="Used to name your prescription PDF file. This is required before sending." label="Name" /></label>
               <input
                 type="text"
                 placeholder="e.g. John Doe"
                 value={customerName}
                 onChange={e => setCustomerName(e.target.value)}
                 maxLength={50}
+                required
               />
             </div>
 
