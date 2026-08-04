@@ -21,44 +21,19 @@ function buildWhatsAppShareUrl(product) {
   const productUrl = `${origin}${basePath}/product/${product.id}`;
 
   const category = product.category.charAt(0).toUpperCase() + product.category.slice(1);
-  const divider = '─'.repeat(30);
 
   const message = [
-    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
-    `        👓 *${product.name}* 👓`,
-    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+    `👓 *${product.name}* 👓`,
+    `${category} · ${priceText}`,
     ``,
-    `*📦 PRODUCT DETAILS*`,
-    `${divider}`,
-    `🕶️  Model    : ${product.name}`,
-    `🏷️  Category : ${category}`,
-    `💰  Price    : ${priceText}`,
-    `⭐  Rating   : ${product.rating} ★ (${product.reviews} reviews)`,
-    `📦  In Stock : ${product.inStock ? '✅ Yes' : '❌ No'}`,
-    `${divider}`,
+    `✨ Bright Eyewear — Crafted for Your Vision`,
     ``,
-    `*📝 DESCRIPTION*`,
-    `${divider}`,
-    product.description,
-    `${divider}`,
-    ``,
-    `*🖼️ IMAGE*`,
-    `${divider}`,
-    product.image,
-    `${divider}`,
-    ``,
-    `*🔗 VIEW THIS PRODUCT*`,
-    `${divider}`,
-    productUrl,
-    `${divider}`,
-    ``,
-    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
-    `✨ *Bright Eyewear* — Crafted for Your Vision`,
-    `Precision Lenses • Premium Frames • Clear Vision`,
-    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`
+    productUrl
   ].join('\n');
 
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  // Pass the raw message string directly - the browser handles URL encoding
+  // naturally when navigating, and WhatsApp decodes newlines correctly.
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
 }
 
 // Field tooltips for prescription guide
@@ -281,10 +256,9 @@ export default function ProductDetail() {
       return;
     }
     const message = buildPrescriptionMessage();
-    // Standard encodeURIComponent produces %0A for newlines,
-    // which WhatsApp correctly renders as line breaks in the message.
-    const encoded = encodeURIComponent(message);
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`, '_blank');
+    // Pass the raw message string directly - the browser handles URL encoding
+    // naturally when navigating, and WhatsApp decodes newlines correctly.
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
   };
 
   return (
