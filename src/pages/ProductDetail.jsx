@@ -53,32 +53,49 @@ function Tooltip({ text, label }) {
   const [position, setPosition] = useState('top');
   const wrapperRef = React.useRef(null);
 
+  // Calculate the best position for the tooltip based on available viewport space
+  const calculatePosition = React.useCallback(() => {
+    if (!wrapperRef.current) return;
+    const rect = wrapperRef.current.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const tooltipWidth = 260;
+    const spaceRight = viewportWidth - rect.right;
+    const spaceLeft = rect.left;
+    const spaceTop = rect.top;
+    const spaceBottom = window.innerHeight - rect.bottom;
+
+    // Smart positioning based on available space
+    if (spaceRight >= tooltipWidth + 10) {
+      setPosition('right');
+    } else if (spaceLeft >= tooltipWidth + 10) {
+      setPosition('left');
+    } else if (spaceTop >= 120) {
+      setPosition('top');
+    } else if (spaceBottom >= 120) {
+      setPosition('bottom');
+    } else {
+      setPosition('top');
+    }
+  }, []);
+
+  // Position the tooltip before the browser paints to avoid jitter
+  React.useLayoutEffect(() => {
+    if (show) {
+      calculatePosition();
+    }
+  }, [show, calculatePosition]);
+
+  const handleShow = () => {
+    setShow(true);
+  };
+
+  const handleHide = () => {
+    setShow(false);
+  };
+
   const handleToggle = (e) => {
     e.stopPropagation();
-    const nextShow = !show;
-    setShow(nextShow);
-    if (nextShow && wrapperRef.current) {
-      const rect = wrapperRef.current.getBoundingClientRect();
-      const viewportWidth = window.innerWidth;
-      const tooltipWidth = 260;
-      const spaceRight = viewportWidth - rect.right;
-      const spaceLeft = rect.left;
-      const spaceTop = rect.top;
-      const spaceBottom = window.innerHeight - rect.bottom;
-
-      // Smart positioning based on available space
-      if (spaceRight >= tooltipWidth + 10) {
-        setPosition('right');
-      } else if (spaceLeft >= tooltipWidth + 10) {
-        setPosition('left');
-      } else if (spaceTop >= 120) {
-        setPosition('top');
-      } else if (spaceBottom >= 120) {
-        setPosition('bottom');
-      } else {
-        setPosition('top');
-      }
-    }
+    setShow(prev => !prev);
   };
 
   // Close tooltip when clicking outside
@@ -97,8 +114,8 @@ function Tooltip({ text, label }) {
     <span className="tooltip-wrapper" ref={wrapperRef}>
       <span
         className="tooltip-icon"
-        onMouseEnter={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}
+        onMouseEnter={handleShow}
+        onMouseLeave={handleHide}
         onClick={handleToggle}
         role="button"
         tabIndex={0}
@@ -166,51 +183,50 @@ export default function ProductDetail() {
 
     const divider = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
     const subDivider = '────────────────────────────────────────────────────────────────────────';
-    const reSph = prescription.reSph || '—';
-    const reCyl = prescription.reCyl || '—';
-    const reAxis = prescription.reAxis || '—';
-    const reAdd = prescription.reAdd || '—';
-    const leSph = prescription.leSph || '—';
-    const leCyl = prescription.leCyl || '—';
-    const leAxis = prescription.leAxis || '—';
-    const leAdd = prescription.leAdd || '—';
-    const ipd = prescription.ipd || '—';
+    const reSph = prescription.reSph || 'N/A';
+    const reCyl = prescription.reCyl || 'N/A';
+    const reAxis = prescription.reAxis || 'N/A';
+    const reAdd = prescription.reAdd || 'N/A';
+    const leSph = prescription.leSph || 'N/A';
+    const leCyl = prescription.leCyl || 'N/A';
+    const leAxis = prescription.leAxis || 'N/A';
+    const leAdd = prescription.leAdd || 'N/A';
+    const ipd = prescription.ipd || 'N/A';
 
     const lines = [
+      `👓 NEW PRESCRIPTION ORDER`,
       divider,
-      `  👓  NEW PRESCRIPTION ORDER`,
-      divider,
       ``,
-      `📦  PRODUCT DETAILS`,
+      `📦 PRODUCT DETAILS`,
       subDivider,
-      `  🕶️  Model      : ${product.name}`,
-      `  🏷️  Category   : ${product.category.charAt(0).toUpperCase() + product.category.slice(1)}`,
-      `  💰  Price      : ${formatPrice(product.price)}${product.oldPrice ? `  (Save ${discount}%)` : ''}`,
-      `  ⭐  Rating     : ${product.rating} ★ (${product.reviews} reviews)`,
+      `Model    : ${product.name}`,
+      `Category : ${product.category.charAt(0).toUpperCase() + product.category.slice(1)}`,
+      `Price    : ₹${product.price}`,
+      `Rating   : ${product.rating} ★ (${product.reviews} reviews)`,
       ``,
-      `👁️  PRESCRIPTION`,
+      `📝 PRESCRIPTION`,
+      `┌────────┬──────────────┬──────────────┐`,
+      `│ Field  │ Right Eye    │ Left Eye     │`,
+      `├────────┼──────────────┼──────────────┤`,
+      `│ SPH    │ ${reSph.padEnd(12)}│ ${leSph.padEnd(12)}│`,
+      `│ CYL    │ ${reCyl.padEnd(12)}│ ${leCyl.padEnd(12)}│`,
+      `│ AXIS   │ ${reAxis.padEnd(12)}│ ${leAxis.padEnd(12)}│`,
+      `│ ADD    │ ${reAdd.padEnd(12)}│ ${leAdd.padEnd(12)}│`,
+      `└────────┴──────────────┴──────────────┘`,
+      ``,
+      `IPD : ${ipd} mm`,
+      ``,
+      `✅ CUSTOMER CONFIRMATION`,
       subDivider,
+      `I confirm that the prescription information above is accurate and matches my latest eye prescription.`,
+      fileName ? `📄 Prescription file attached: ${fileName}` : ``,
       ``,
-      `            RE (Right)    LE (Left)`,
-      `  SPH        ${reSph.padEnd(10)}   ${leSph}`,
-      `  CYL        ${reCyl.padEnd(10)}   ${leCyl}`,
-      `  AXIS       ${reAxis.padEnd(10)}   ${leAxis}`,
-      `  ADD        ${reAdd.padEnd(10)}   ${leAdd}`,
-      ``,
-      `  📏  IPD (Interpupillary Distance):  ${ipd} mm`,
-      ``,
-      `✅  CONFIRMATION`,
+      `🔗 PRODUCT LINK`,
       subDivider,
-      `  I confirm that the prescription information above is`,
-      `  accurate and matches my latest eye prescription.`,
-      fileName ? `  📄  Prescription file attached: ${fileName}` : ``,
-      ``,
-      `🔗  PRODUCT LINK`,
-      subDivider,
-      `  ${productUrl}`,
+      productUrl,
       ``,
       divider,
-      `  ✨  Bright Eyewear — Crafted for Your Vision`,
+      `✨ Bright Eyewear — Crafted for Your Vision`,
       divider
     ].filter(line => line !== '');
 
@@ -273,7 +289,7 @@ export default function ProductDetail() {
                 WhatsApp Share
               </a>
               {product.category !== 'sunglasses' && (
-                <a href="#prescription" className="btn btn-primary btn-sm product-prescription-btn">
+                <a href="#prescription-form" className="btn btn-primary btn-sm product-prescription-btn">
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
                   </svg>
@@ -373,7 +389,7 @@ export default function ProductDetail() {
           </div>
 
           {/* Prescription form */}
-          <div className="prescription-form-box">
+          <div className="prescription-form-box" id="prescription-form">
             <h3>Enter Your Prescription</h3>
 
             <div className="prescription-form-grid">
