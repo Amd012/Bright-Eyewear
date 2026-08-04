@@ -3,16 +3,19 @@
  * 
  * Generates a professional, print-ready A4 prescription PDF using jsPDF.
  * Features:
- * - Company logo beside company name (logo on the left)
+ * - Company logo beside company name (logo on the left, wider aspect)
  * - Monochrome professional layout
  * - Clickable product URL hyperlink
  * - Auto-generated QR code pointing to the product page
  * - Handles missing values with "N/A"
+ * - Price shown as "RS." with price in words
+ * - Mobile-friendly download using file-saver (Blob-based)
  * - Automatic filename: Prescription-{CustomerName}-{Date}.pdf
  */
 
 import { jsPDF } from 'jspdf';
 import QRCode from 'qrcode';
+import { saveAs } from 'file-saver';
 
 // ===== Constants =====
 const PAGE_WIDTH = 210; // A4 width in mm
@@ -39,13 +42,14 @@ const FONTS = {
 
 // Logo data URL - loaded from public/eyewear.png
 let logoDataUrl = null;
+let logoDimensions = null;
 
 /**
  * Load the company logo as a data URL for embedding in the PDF
- * @returns {Promise<string|null>} Logo data URL or null if failed
+ * @returns {Promise<{dataUrl: string, width: number, height: number}|null>} Logo data or null if failed
  */
 async function loadLogo() {
-  if (logoDataUrl) return logoDataUrl;
+  if (logoDataUrl && logoDimensions) return { dataUrl: logoDataUrl, ...logoDimensions };
   
   try {
     // Try multiple paths to find the logo
@@ -66,7 +70,16 @@ async function loadLogo() {
             reader.onerror = reject;
             reader.readAsDataURL(blob);
           });
-          return logoDataUrl;
+
+          // Get image dimensions to preserve aspect ratio
+          logoDimensions = await new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
+            img.onerror = () => resolve({ width: 1, height: 1 });
+            img.src = logoDataUrl;
+          });
+
+          return { dataUrl: logoDataUrl, ...logoDimensions };
         }
       } catch (e) {
         // Try next path
@@ -115,6 +128,79 @@ function sanitizeFilename(name) {
 }
 
 /**
+ * Convert a number to words (Indian numbering system)
+ * @param {number|string} num - The number to convert
+ * @returns {string} Number in words
+ */
+function numberToWords(num) {
+  if (num === undefined || num === null || num === '') return 'N/A';
+  
+  const value = parseFloat(num);
+  if (isNaN(value)) return String(num);
+  
+  // Handle decimal part
+  const whole = Math.floor(Math.abs(value));
+  const decimal = Math.round((Math.abs(value) - whole) * 100);
+  
+  const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
+    'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+  const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+  
+  function twoDigits(n) {
+    if (n < 20) return ones[n];
+    return tens[Math.floor(n / 10)] + (n % 10 ? ' ' + ones[n % 10] : '');
+  }
+  
+  function threeDigits(n) {
+    const hundred = Math.floor(n / 100);
+    const rest = n % 100;
+    let result = '';
+    if (hundred) result += ones[hundred] + ' Hundred';
+    if (rest) {
+      if (hundred) result += ' ';
+      result += twoDigits(rest);
+    }
+    return result;
+  }
+  
+  function toWords(n) {
+    if (n === 0) return 'Zero';
+    
+    const crore = Math.floor(n / 10000000);
+    const lakh = Math.floor((n % 10000000) / 100000);
+    const thousand = Math.floor((n % 100000) / 1000);
+    const rest = n % 1000;
+    
+    let result = '';
+    if (crore) result += twoDigits(crore) + ' Crore';
+    if (lakh) {
+      if (result) result += ' ';
+      result += twoDigits(lakh) + ' Lakh';
+    }
+    if (thousand) {
+      if (result) result += ' ';
+      result += twoDigits(thousand) + ' Thousand';
+    }
+    if (rest) {
+      if (result) result += ' ';
+      result += threeDigits(rest);
+    }
+    return result;
+  }
+  
+  let words = toWords(whole);
+  
+  // Add decimal part with proper grammar
+  if (decimal > 0) {
+    words += ' Rupees and ' + twoDigits(decimal) + ' Paise';
+  } else {
+    words += ' Rupees';
+  }
+  
+  return words;
+}
+
+/**
  * Draw a horizontal divider line
  * @param {jsPDF} doc - jsPDF instance
  * @param {number} y - Y position
@@ -148,7 +234,7 @@ function drawSectionHeader(doc, title, y) {
   doc.setLineWidth(0.6);
   doc.line(MARGIN, y + 1.5, MARGIN + 30, y + 1.5);
 
-  return y + 7;
+  return y + 8;
 }
 
 /**
@@ -173,7 +259,7 @@ function drawFieldRow(doc, label, value, y, labelWidth = 30, valueX = MARGIN + 3
   doc.setTextColor(...COLORS.black);
   doc.text(value, valueX, y);
 
-  return y + 6;
+  return y + 7;
 }
 
 /**
@@ -191,10 +277,10 @@ function drawEyeSection(doc, eyeLabel, values, y) {
   doc.setTextColor(...COLORS.black);
   doc.text(eyeLabel, MARGIN, y);
 
-  y += 5;
+  y += 6;
 
   // Draw a subtle box for the eye values
-  const boxHeight = 30;
+  const boxHeight = 32;
   doc.setFillColor(...COLORS.veryLightGray);
   doc.roundedRect(MARGIN, y - 4, CONTENT_WIDTH, boxHeight, 1.5, 1.5, 'F');
 
@@ -208,13 +294,13 @@ function drawEyeSection(doc, eyeLabel, values, y) {
 
   // Two-column layout for eye fields
   const colWidth = CONTENT_WIDTH / 2;
-  const col1X = MARGIN + 5;
-  const col2X = MARGIN + colWidth + 5;
+  const col1X = MARGIN + 8;
+  const col2X = MARGIN + colWidth + 8;
 
   fields.forEach((field, index) => {
     const colX = index < 2 ? col1X : col2X;
     const rowIndex = index % 2;
-    const rowY = y + (rowIndex * 6);
+    const rowY = y + 2 + (rowIndex * 7);
 
     // Label
     doc.setFont(FONTS.body, 'bold');
@@ -226,10 +312,10 @@ function drawEyeSection(doc, eyeLabel, values, y) {
     doc.setFont(FONTS.body, 'normal');
     doc.setFontSize(10);
     doc.setTextColor(...COLORS.black);
-    doc.text(field.value, colX + 15, rowY);
+    doc.text(field.value, colX + 18, rowY);
   });
 
-  return y + boxHeight + 2;
+  return y + boxHeight + 3;
 }
 
 /**
@@ -304,15 +390,24 @@ export async function generatePrescriptionPDF({
 
   // Logo on the left side, company name beside it
   if (logo) {
-    const logoSize = 18; // mm
+    // Calculate logo dimensions preserving aspect ratio
+    // Make the logo wider (not square) - target width 30mm, height proportional
+    const targetWidth = 30; // mm - wider logo
+    const aspectRatio = logo.height / logo.width;
+    const logoHeight = targetWidth * aspectRatio;
+    // Cap the height to keep it reasonable
+    const maxHeight = 20;
+    const finalHeight = Math.min(logoHeight, maxHeight);
+    const finalWidth = finalHeight / aspectRatio;
+    
     const logoX = MARGIN;
-    const logoY = y - logoSize + 2;
+    const logoY = y - finalHeight + 2;
     
     // Add logo image
-    doc.addImage(logo, 'PNG', logoX, logoY, logoSize, logoSize);
+    doc.addImage(logo.dataUrl, 'PNG', logoX, logoY, finalWidth, finalHeight);
     
     // Company name to the right of the logo
-    const nameX = logoX + logoSize + 5;
+    const nameX = logoX + finalWidth + 6;
     doc.setFont(FONTS.heading, 'bold');
     doc.setFontSize(16);
     doc.setTextColor(...COLORS.black);
@@ -322,7 +417,7 @@ export async function generatePrescriptionPDF({
     doc.setFont(FONTS.body, 'normal');
     doc.setFontSize(8);
     doc.setTextColor(...COLORS.gray);
-    doc.text('Crafted for Your Vision', nameX, y + 4);
+    doc.text('Crafted for Your Vision', nameX, y + 4.5);
   } else {
     // Fallback: text-only header if logo fails to load
     doc.setFont(FONTS.heading, 'bold');
@@ -334,7 +429,7 @@ export async function generatePrescriptionPDF({
     doc.setFont(FONTS.body, 'normal');
     doc.setFontSize(8);
     doc.setTextColor(...COLORS.gray);
-    doc.text('Crafted for Your Vision', MARGIN, y + 4);
+    doc.text('Crafted for Your Vision', MARGIN, y + 4.5);
   }
 
   // Document title on the right
@@ -347,13 +442,13 @@ export async function generatePrescriptionPDF({
   doc.setFont(FONTS.body, 'normal');
   doc.setFontSize(9);
   doc.setTextColor(...COLORS.gray);
-  doc.text(`Date: ${formatDate()}`, PAGE_WIDTH - MARGIN, y + 5, { align: 'right' });
+  doc.text(`Date: ${formatDate()}`, PAGE_WIDTH - MARGIN, y + 5.5, { align: 'right' });
 
-  y += 12;
+  y += 14;
 
   // Header divider
   drawDivider(doc, y, MARGIN, CONTENT_WIDTH, COLORS.accent, 0.8);
-  y += 8;
+  y += 9;
 
   // ===== PRODUCT DETAILS =====
   y = drawSectionHeader(doc, 'Product Details', y);
@@ -362,9 +457,22 @@ export async function generatePrescriptionPDF({
     ? product.category.charAt(0).toUpperCase() + product.category.slice(1)
     : 'N/A';
 
+  // Price with RS. and price in words
+  const priceValue = formatValue(product.price);
+  const priceInWords = numberToWords(product.price);
+  const priceDisplay = `RS. ${priceValue}`;
+  const priceWordsDisplay = `(Price in words: ${priceInWords} Only)`;
+
   y = drawFieldRow(doc, 'Model Name:', formatValue(product.name), y);
   y = drawFieldRow(doc, 'Category:', formatValue(category), y);
-  y = drawFieldRow(doc, 'Price:', `₹${formatValue(product.price)}`, y);
+  y = drawFieldRow(doc, 'Price:', priceDisplay, y);
+  
+  // Price in words on the next line, indented
+  doc.setFont(FONTS.body, 'italic');
+  doc.setFontSize(9);
+  doc.setTextColor(...COLORS.gray);
+  doc.text(priceWordsDisplay, MARGIN + 35, y);
+  y += 7;
 
   y += 4;
 
@@ -379,7 +487,7 @@ export async function generatePrescriptionPDF({
     add: prescription.reAdd
   }, y);
 
-  y += 3;
+  y += 4;
 
   // Left Eye
   y = drawEyeSection(doc, 'Left Eye (LE)', {
@@ -389,27 +497,27 @@ export async function generatePrescriptionPDF({
     add: prescription.leAdd
   }, y);
 
-  y += 4;
+  y += 5;
 
   // ===== PUPILLARY DISTANCE =====
   y = drawSectionHeader(doc, 'Pupillary Distance', y);
 
   // IPD box
   doc.setFillColor(...COLORS.veryLightGray);
-  doc.roundedRect(MARGIN, y - 4, CONTENT_WIDTH, 10, 1.5, 1.5, 'F');
+  doc.roundedRect(MARGIN, y - 4, CONTENT_WIDTH, 12, 1.5, 1.5, 'F');
 
   doc.setFont(FONTS.body, 'bold');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.darkGray);
-  doc.text('IPD', MARGIN + 5, y + 1);
+  doc.text('IPD', MARGIN + 8, y + 1.5);
 
   doc.setFont(FONTS.body, 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.black);
   const pdValue = formatValue(prescription.pd);
-  doc.text(`${pdValue}${pdValue !== 'N/A' ? ' mm' : ''}`, MARGIN + 20, y + 1);
+  doc.text(`${pdValue}${pdValue !== 'N/A' ? ' mm' : ''}`, MARGIN + 25, y + 1.5);
 
-  y += 12;
+  y += 14;
 
   // ===== CUSTOMER CONFIRMATION =====
   y = drawSectionHeader(doc, 'Customer Confirmation', y);
@@ -422,18 +530,18 @@ export async function generatePrescriptionPDF({
   doc.setFontSize(9.5);
   doc.setTextColor(...COLORS.darkGray);
 
-  const lines = doc.splitTextToSize(confirmation, CONTENT_WIDTH - 10);
-  const textHeight = lines.length * 4.5;
+  const lines = doc.splitTextToSize(confirmation, CONTENT_WIDTH - 12);
+  const textHeight = lines.length * 5;
 
   // Draw box
   doc.setDrawColor(...COLORS.lightGray);
   doc.setLineWidth(0.3);
-  doc.roundedRect(MARGIN, y - 4, CONTENT_WIDTH, textHeight + 8, 1.5, 1.5, 'S');
+  doc.roundedRect(MARGIN, y - 4, CONTENT_WIDTH, textHeight + 10, 1.5, 1.5, 'S');
 
   // Draw text
-  doc.text(lines, MARGIN + 5, y + 1);
+  doc.text(lines, MARGIN + 6, y + 1.5);
 
-  y += textHeight + 10;
+  y += textHeight + 12;
 
   // ===== PRODUCT LINK =====
   y = drawSectionHeader(doc, 'Product Link', y);
@@ -443,7 +551,7 @@ export async function generatePrescriptionPDF({
   doc.setTextColor(...COLORS.black);
   doc.text(`Product: Bright Eyewear – ${formatValue(product.name)}`, MARGIN, y);
 
-  y += 5;
+  y += 6;
 
   // Clickable hyperlink
   doc.setFont(FONTS.body, 'normal');
@@ -457,7 +565,7 @@ export async function generatePrescriptionPDF({
   doc.setLineWidth(0.2);
   doc.line(MARGIN, y + 0.8, MARGIN + linkWidth, y + 0.8);
 
-  y += 8;
+  y += 9;
 
   // ===== QR CODE =====
   // Generate QR code pointing to the product URL
@@ -511,13 +619,23 @@ export async function generatePrescriptionPDF({
 
 /**
  * Generate and download the prescription PDF
+ * Uses file-saver's saveAs with a Blob for reliable downloads on all devices
+ * including smartphones (mobile browsers often block direct doc.save() calls)
+ * 
  * @param {Object} options - Same options as generatePrescriptionPDF
  * @returns {Promise<{doc: jsPDF, filename: string}>} The generated PDF and filename
  */
 export async function generateAndDownloadPrescriptionPDF(options) {
   try {
     const { doc, filename } = await generatePrescriptionPDF(options);
-    doc.save(filename);
+    
+    // Generate the PDF as a Blob
+    const pdfBlob = doc.output('blob');
+    
+    // Use file-saver's saveAs which handles mobile browsers correctly
+    // It creates a proper download with a blob URL and anchor click
+    saveAs(pdfBlob, filename);
+    
     return { doc, filename };
   } catch (error) {
     console.error('Failed to generate prescription PDF:', error);

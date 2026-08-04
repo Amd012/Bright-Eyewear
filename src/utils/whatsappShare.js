@@ -44,7 +44,7 @@ export function buildPrescriptionWhatsAppMessage({ productUrl, product }) {
     ? product.category.charAt(0).toUpperCase() + product.category.slice(1)
     : '';
 
-  const priceText = product?.price ? `₹${product.price}` : '';
+  const priceText = product?.price ? `RS. ${product.price}` : '';
 
   const lines = [
     'Hello!',
@@ -102,7 +102,7 @@ export function buildFullPrescriptionMessage({ productUrl, product, prescription
     `*📦 PRODUCT DETAILS*`,
     `Model Name : ${product?.name || 'N/A'}`,
     `Category    : ${category}`,
-    `Price       : ₹${product?.price || 'N/A'}`,
+    `Price       : RS. ${product?.price || 'N/A'}`,
     ``,
     `*👓 PRESCRIPTION DETAILS*`,
     ``,

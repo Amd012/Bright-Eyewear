@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { BrowserRouter, useNavigate } from 'react-router-dom';
 import App from './App';
 import './styles.css';
 
@@ -31,26 +31,31 @@ function getSavedPath() {
 
 const savedPath = getSavedPath();
 
-// When a deep link was redirected via 404.html, use MemoryRouter with the saved path
-// so React Router can render the correct page. Otherwise use BrowserRouter normally.
-function Router({ children }) {
-  if (savedPath) {
+// When a deep link was redirected via 404.html, this component navigates to the
+// saved path once on mount. We always use BrowserRouter so the browser URL stays
+// in sync with the router - this ensures links keep working on every click.
+function RedirectToSavedPath() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!savedPath) return;
+
     // Clean up the URL by removing the ?path= parameter
     const cleanUrl = window.location.pathname + window.location.search.replace(/[?&]path=[^&]*/, '').replace(/^\?$/, '');
     window.history.replaceState({}, '', cleanUrl);
-    return (
-      <MemoryRouter initialEntries={[savedPath]}>
-        {children}
-      </MemoryRouter>
-    );
-  }
-  return <BrowserRouter basename={basename}>{children}</BrowserRouter>;
+
+    // Navigate to the saved path, replacing the current entry
+    navigate(savedPath, { replace: true });
+  }, [navigate]);
+
+  return null;
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Router>
+    <BrowserRouter basename={basename}>
+      <RedirectToSavedPath />
       <App />
-    </Router>
+    </BrowserRouter>
   </React.StrictMode>
 );

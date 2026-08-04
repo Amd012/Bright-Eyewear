@@ -17,8 +17,8 @@ function buildWhatsAppShareUrl(product) {
 
   // Price display with discount info
   const priceText = product.oldPrice
-    ? `₹${product.price} (was ₹${product.oldPrice}${discount ? `, SAVE ${discount}%` : ''})`
-    : `₹${product.price}`;
+    ? `RS. ${product.price} (was RS. ${product.oldPrice}${discount ? `, SAVE ${discount}%` : ''})`
+    : `RS. ${product.price}`;
 
   // Message format following the prescription style:
   // - Bold section headers
@@ -226,7 +226,7 @@ export default function ProductDetail() {
       `*📦 PRODUCT DETAILS*`,
       `Model Name : ${product.name}`,
       `Category    : ${category}`,
-      `Price       : ₹${product.price}`,
+      `Price       : RS. ${product.price}`,
       ``,
       `*👓 PRESCRIPTION DETAILS*`,
       ``,
