@@ -52,6 +52,12 @@ function Tooltip({ text, label }) {
   const [show, setShow] = useState(false);
   const wrapperRef = useRef(null);
   const hideTimerRef = useRef(null);
+  const isTouchRef = useRef(false);
+
+  // Detect touch devices once on mount
+  useEffect(() => {
+    isTouchRef.current = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  }, []);
 
   // Clear any pending hide timer
   const clearHideTimer = useCallback(() => {
@@ -73,6 +79,17 @@ function Tooltip({ text, label }) {
       setShow(false);
     }, 100);
   }, []);
+
+  // For touch devices: ignore hover events to prevent double-fire with click
+  const handlePointerEnter = useCallback((e) => {
+    if (isTouchRef.current) return;
+    handleShow(e);
+  }, [handleShow]);
+
+  const handlePointerLeave = useCallback(() => {
+    if (isTouchRef.current) return;
+    handleHide();
+  }, [handleHide]);
 
   const handleToggle = useCallback((e) => {
     e.stopPropagation();
@@ -111,8 +128,10 @@ function Tooltip({ text, label }) {
     <span className="tooltip-wrapper" ref={wrapperRef}>
       <span
         className="tooltip-icon"
-        onMouseEnter={handleShow}
-        onMouseLeave={handleHide}
+        onMouseEnter={handlePointerEnter}
+        onMouseLeave={handlePointerLeave}
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
         onFocus={handleShow}
@@ -128,8 +147,10 @@ function Tooltip({ text, label }) {
         <span
           className="tooltip-bubble tooltip-top"
           role="tooltip"
-          onMouseEnter={handleShow}
-          onMouseLeave={handleHide}
+          onMouseEnter={handlePointerEnter}
+          onMouseLeave={handlePointerLeave}
+          onPointerEnter={handlePointerEnter}
+          onPointerLeave={handlePointerLeave}
         >
           {text}
         </span>
@@ -192,38 +213,43 @@ export default function ProductDetail() {
     const category = product.category.charAt(0).toUpperCase() + product.category.slice(1);
 
     const lines = [
-      `👓 *NEW PRESCRIPTION ORDER*`,
+      `*NEW PRESCRIPTION ORDER*`,
       ``,
-      `*PRODUCT DETAILS*`,
-      `▪️ Model: ${product.name}`,
-      `▪️ Category: ${category}`,
-      `▪️ Price: ₹${product.price}`,
+      `*📦 PRODUCT DETAILS*`,
+      `Model Name : ${product.name}`,
+      `Category    : ${category}`,
+      `Price       : ₹${product.price}`,
       ``,
-      `*RIGHT EYE (RE)*`,
-      `▪️ SPH: ${reSph}`,
-      `▪️ CYL: ${reCyl}`,
-      `▪️ AXIS: ${reAxis}°`,
-      `▪️ ADD: ${reAdd}`,
+      `*👓 PRESCRIPTION DETAILS*`,
       ``,
-      `*LEFT EYE (LE)*`,
-      `▪️ SPH: ${leSph}`,
-      `▪️ CYL: ${leCyl}`,
-      `▪️ AXIS: ${leAxis}°`,
-      `▪️ ADD: ${leAdd}`,
+      `🔹 Right Eye (RE)`,
+      `• SPH  : ${reSph}`,
+      `• CYL  : ${reCyl}`,
+      `• AXIS : ${reAxis}°`,
+      `• ADD  : ${reAdd}`,
       ``,
-      `*PUPILLARY DISTANCE*`,
-      `▪️ IPD: ${pd} mm`,
+      `🔹 Left Eye (LE)`,
+      `• SPH  : ${leSph}`,
+      `• CYL  : ${leCyl}`,
+      `• AXIS : ${leAxis}°`,
+      `• ADD  : ${leAdd}`,
       ``,
-      `*CUSTOMER CONFIRMATION*`,
-      `I confirm that the prescription details above are accurate and match my latest eye prescription. These values will be used to manufacture my lenses.`,
+      `*📏 PUPILLARY DISTANCE*`,
+      `IPD (Interpupillary Distance): ${pd} mm`,
       ``,
-      `*PRODUCT LINK*`,
-      product.name,
+      `✅ CUSTOMER CONFIRMATION`,
+      `I confirm that the prescription details provided above are accurate and match my latest eye prescription. I understand that these values will be used to manufacture my lenses, and I have reviewed all information before submitting this order.`,
+      ``,
+      `*🔗 PRODUCT LINK*`,
+      `Product: Bright Eyewear – ${product.name}`,
+      ``,
       productUrl,
       ``,
-      `✨ Bright Eyewear — Crafted for Your Vision`
+      `✨ Bright Eyewear — Crafted for Your Vision`,
+      `Precision Lenses • Premium Frames • Clear Vision`
     ];
 
+    // Join with simple \n (line feed). WhatsApp's URL parser strips \r\n but keeps %0A.
     return lines.join('\n');
   };
 
@@ -233,7 +259,10 @@ export default function ProductDetail() {
       return;
     }
     const message = buildPrescriptionMessage();
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+    // WhatsApp strips %0A from wa.me URLs. Double-encode newlines as %250A
+    // so WhatsApp decodes them back to %0A → newline in the message.
+    const encoded = encodeURIComponent(message).replace(/%0A/g, '%250A');
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`, '_blank');
   };
 
   return (
