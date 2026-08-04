@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="footer-grid">
           <div className="footer-brand">
             <Link to="/" className="logo">
-              <img src="/eyewear.png" alt="Bright Eyewear logo" className="logo-img" />
+              <img src={`${import.meta.env.BASE_URL}eyewear.png`} alt="Bright Eyewear logo" className="logo-img" />
               <span className="logo-text">Bright<span> Eyewear</span></span>
             </Link>
             <p>Premium eyewear crafted for clarity, comfort, and style. See brighter, live better.</p>

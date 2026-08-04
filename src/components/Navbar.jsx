@@ -22,7 +22,7 @@ export default function Navbar() {
     <nav className={`navbar${scrolled ? ' scrolled' : ''}`}>
       <div className="container">
         <Link to="/" className="logo" onClick={closeMenu}>
-          <img src="/eyewear.png" alt="Bright Eyewear logo" className="logo-img" />
+          <img src={`${import.meta.env.BASE_URL}eyewear.png`} alt="Bright Eyewear logo" className="logo-img" />
           <span className="logo-text">Bright<span> Eyewear</span></span>
         </Link>
         <ul className={`nav-links${menuOpen ? ' open' : ''}`}>
