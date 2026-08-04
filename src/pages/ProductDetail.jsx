@@ -28,12 +28,15 @@ function buildWhatsAppShareUrl(product) {
     ``,
     `✨ Bright Eyewear — Crafted for Your Vision`,
     ``,
-    productUrl
+    product.image,
+    ``,
+    `*🔗 View Product:* ${productUrl}`
   ].join('\n');
 
-  // Pass the raw message string directly - the browser handles URL encoding
-  // naturally when navigating, and WhatsApp decodes newlines correctly.
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+  // encodeURIComponent produces %0A for newlines, which WhatsApp
+  // correctly decodes as line breaks. This also properly encodes
+  // all special characters (emojis, *, •, °, etc.).
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
 // Field tooltips for prescription guide
@@ -256,9 +259,11 @@ export default function ProductDetail() {
       return;
     }
     const message = buildPrescriptionMessage();
-    // Pass the raw message string directly - the browser handles URL encoding
-    // naturally when navigating, and WhatsApp decodes newlines correctly.
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+    // encodeURIComponent produces %0A for newlines, which WhatsApp
+    // correctly decodes as line breaks. This also properly encodes
+    // all special characters (emojis, *, •, °, etc.).
+    const encoded = encodeURIComponent(message);
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`, '_blank');
   };
 
   return (
