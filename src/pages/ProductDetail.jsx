@@ -248,7 +248,7 @@ export default function ProductDetail() {
 
       {/* ===== PRESCRIPTION GUIDE & CUSTOMER NOTES (not for sunglasses) ===== */}
       {product.category !== 'sunglasses' && (
-      <section className="prescription-section">
+      <section className="prescription-section" id="prescription">
         <div className="container">
           <div className="section-header">
             <h2>Prescription Guide & Customer Notes</h2>
