@@ -2,11 +2,9 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  // Use relative base path so it works on:
-  // - Netlify/Vercel (served from root /)
-  // - GitHub Pages (served from /Bright-Eyewear/)
-  // - Local development
-  base: './',
+  // Use absolute base '/', which works for Netlify/Vercel (served from root).
+  // GitHub Actions overrides base to '/Bright-Eyewear/' for GitHub Pages.
+  base: process.env.GITHUB_ACTIONS === 'true' ? '/Bright-Eyewear/' : '/',
   plugins: [react()],
   server: {
     port: 5173,

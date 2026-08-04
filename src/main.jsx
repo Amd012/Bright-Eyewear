@@ -23,7 +23,10 @@ const basename = detectBasename();
 // extract the original path from the '?path=' query parameter
 function getSavedPath() {
   const params = new URLSearchParams(window.location.search);
-  return params.get('path');
+  const saved = params.get('path');
+  if (!saved) return null;
+  // Ensure the path starts with a leading slash
+  return saved.startsWith('/') ? saved : '/' + saved;
 }
 
 const savedPath = getSavedPath();

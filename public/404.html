@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Redirecting...</title>
     <script>
-      // GitHub Pages SPA fallback: redirect to index.html while preserving the path
+      // SPA fallback: redirect to index.html while preserving the path
       (function () {
         var path = window.location.pathname;
         // Detect which base path we're on
         var isGhPages = path.indexOf('/Bright-Eyewear/') === 0;
         var base = isGhPages ? '/Bright-Eyewear/' : '/';
-        // Preserve the route after the base
+        // Preserve the route after the base (with leading slash)
         var rest = path.substring(base.length);
+        if (rest.charAt(0) !== '/') {
+          rest = '/' + rest;
+        }
         window.location.replace(base + 'index.html?path=' + encodeURIComponent(rest));
       })();
     </script>
