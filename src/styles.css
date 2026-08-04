@@ -328,6 +328,13 @@ svg { max-width: 100%; height: auto; }
 .price-old { font-size: clamp(1rem, 1.5vw, 1.2rem); color: #bbb; text-decoration: line-through; }
 .price-discount { font-size: clamp(0.8rem, 1vw, 0.9rem); color: #16a34a; font-weight: 600; }
 .product-desc { color: var(--text-light); font-size: clamp(0.88rem, 1.1vw, 0.95rem); line-height: 1.8; margin-bottom: clamp(18px, 3vw, 24px); }
+.product-action-buttons { display: flex; gap: clamp(10px, 1.5vw, 14px); flex-wrap: wrap; margin-top: clamp(20px, 3vw, 28px); }
+.product-action-buttons .btn { flex: 1; min-width: 160px; }
+.product-share-btn { background: #25D366; }
+.product-share-btn:hover { background: #1da851; box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3); }
+.product-share-btn svg, .product-prescription-btn svg { display: block; flex-shrink: 0; }
+.product-prescription-btn { background: var(--accent); }
+.product-prescription-btn:hover { background: var(--accent-dark); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); }
 .specs { margin-bottom: clamp(18px, 3vw, 24px); }
 .specs h3 { font-size: clamp(0.95rem, 1.2vw, 1.05rem); font-weight: 600; margin-bottom: clamp(10px, 1.5vw, 14px); }
 .specs ul { list-style: none; }
