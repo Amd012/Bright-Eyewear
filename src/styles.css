@@ -109,7 +109,12 @@ svg { max-width: 100%; height: auto; }
 .nav-links .btn { padding: clamp(8px, 1.2vw, 10px) clamp(16px, 2.5vw, 22px); font-size: clamp(0.78rem, 0.9vw, 0.85rem); min-height: 40px; }
 .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 8px; z-index: 1001; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
 .hamburger span { width: clamp(22px, 3vw, 26px); height: 2.5px; background: #fff; border-radius: 2px; transition: all 0.3s; display: block; }
-.navbar.scrolled .hamburger span { background: var(--text); }
+/* Hamburger icon stays white always - on all devices and states */
+.navbar .hamburger span,
+.navbar.scrolled .hamburger span,
+.hamburger.open span,
+.navbar.scrolled .hamburger.open span,
+.navbar.scrolled .hamburger span { background: #fff !important; }
 .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
 .hamburger.open span:nth-child(2) { opacity: 0; }
 .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
@@ -444,6 +449,31 @@ svg { max-width: 100%; height: auto; }
 .prescription-confirm input[type="checkbox"] { width: clamp(16px, 1.5vw, 18px); height: clamp(16px, 1.5vw, 18px); accent-color: var(--accent); margin-top: 2px; flex-shrink: 0; cursor: pointer; }
 .prescription-send-btn { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
 .prescription-send-btn svg { display: block; flex-shrink: 0; }
+.prescription-send-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.prescription-share-status { padding: clamp(10px, 1.5vw, 12px) clamp(14px, 2vw, 16px); border-radius: var(--radius-sm); margin-bottom: clamp(14px, 2vw, 18px); font-size: clamp(0.8rem, 0.95vw, 0.85rem); line-height: 1.6; }
+.prescription-share-status.success { background: #f0fdf4; border: 1px solid #86efac; color: #166534; }
+.prescription-share-status.error { background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
+
+/* ===== TOOLTIP UNIVERSAL FIXES (applies on all devices) ===== */
+/* Larger touch target for tooltip icons */
+.tooltip-icon { padding: 6px; margin-left: 0; }
+/* Viewport-constrained tooltip bubble */
+.tooltip-bubble { width: auto; max-width: min(240px, calc(100vw - 32px)); min-width: 0; left: 50%; right: auto; transform: translateX(-50%); }
+/* Tooltip appears below the icon on all devices */
+.tooltip-top { left: 50%; bottom: auto; top: calc(100% + 8px); transform: translateX(-50%); }
+.tooltip-top::after { content: ''; position: absolute; left: 50%; top: auto; bottom: 100%; transform: translateX(-50%); border: 6px solid transparent; border-bottom-color: var(--primary); border-top-color: transparent; }
+.prescription-input-group .tooltip-wrapper,
+.prescription-field-item .tooltip-wrapper { display: inline-flex; }
+.prescription-input-group .tooltip-bubble,
+.prescription-field-item .tooltip-bubble { left: 50%; right: auto; transform: translateX(-50%); }
+.prescription-input-group .tooltip-wrapper:first-child .tooltip-bubble,
+.prescription-field-item .tooltip-wrapper:first-child .tooltip-bubble { left: 50%; transform: translateX(-50%); }
+.prescription-input-group .tooltip-wrapper:first-child .tooltip-top::after,
+.prescription-field-item .tooltip-wrapper:first-child .tooltip-top::after { left: 50%; transform: translateX(-50%); }
+.prescription-input-group .tooltip-wrapper:first-child,
+.prescription-field-item .tooltip-wrapper:first-child { position: relative; }
+.prescription-input-group .tooltip-wrapper .tooltip-bubble,
+.prescription-field-item .tooltip-wrapper .tooltip-bubble { position: absolute; top: calc(100% + 8px); }
 
 /* ===== CONTACT ===== */
 .contact-section { padding: var(--section-pad) 0; }
@@ -562,23 +592,6 @@ svg { max-width: 100%; height: auto; }
   .prescription-notes-box li { display: block; padding: 8px 0 8px 28px; position: relative; line-height: 1.6; border-bottom: 1px solid rgba(252, 165, 165, 0.3); }
   .prescription-notes-box li:last-child { border-bottom: none; }
   .prescription-notes-box li::before { position: absolute; left: 0; top: 8px; }
-  /* Mobile tooltip fixes: wider touch target, viewport-constrained bubble, below icon */
-  .tooltip-icon { padding: 6px; margin-left: 0; }
-  .tooltip-bubble { width: auto; max-width: min(240px, calc(100vw - 32px)); min-width: 0; left: 50%; right: auto; transform: translateX(-50%); }
-  .tooltip-top { left: 50%; bottom: auto; top: calc(100% + 8px); transform: translateX(-50%); }
-  .tooltip-top::after { content: ''; position: absolute; left: 50%; top: auto; bottom: 100%; transform: translateX(-50%); border: 6px solid transparent; border-bottom-color: var(--primary); border-top-color: transparent; }
-  .prescription-input-group .tooltip-wrapper,
-  .prescription-field-item .tooltip-wrapper { display: inline-flex; }
-  .prescription-input-group .tooltip-bubble,
-  .prescription-field-item .tooltip-bubble { left: 50%; right: auto; transform: translateX(-50%); }
-  .prescription-input-group .tooltip-wrapper:first-child .tooltip-bubble,
-  .prescription-field-item .tooltip-wrapper:first-child .tooltip-bubble { left: 50%; transform: translateX(-50%); }
-  .prescription-input-group .tooltip-wrapper:first-child .tooltip-top::after,
-  .prescription-field-item .tooltip-wrapper:first-child .tooltip-top::after { left: 50%; transform: translateX(-50%); }
-  .prescription-input-group .tooltip-wrapper:first-child,
-  .prescription-field-item .tooltip-wrapper:first-child { position: relative; }
-  .prescription-input-group .tooltip-wrapper .tooltip-bubble,
-  .prescription-field-item .tooltip-wrapper .tooltip-bubble { position: absolute; top: calc(100% + 8px); }
   .nav-links { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; background: rgba(26, 26, 46, 0.98); flex-direction: column; justify-content: center; align-items: center; gap: clamp(20px, 4vh, 28px); z-index: 999; }
   .nav-links.open { display: flex; }
   .nav-links a { font-size: clamp(1.1rem, 4vw, 1.2rem); color: #fff !important; opacity: 1 !important; }

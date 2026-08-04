@@ -1,36 +1,41 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getProductById, formatPrice, getDiscountPercent, products } from '../data/products.jsx';
+import { sharePrescriptionOnWhatsApp } from '../utils/whatsappShare';
 
 const WHATSAPP_NUMBER = '917676044306';
+const BASE_URL = 'https://bright-eyewear.netlify.app';
 
 function buildWhatsAppShareUrl(product) {
   const discount = getDiscountPercent(product.price, product.oldPrice);
-  const priceText = product.oldPrice
-    ? `${formatPrice(product.price)} (was ${formatPrice(product.oldPrice)}${discount ? `, SAVE ${discount}%` : ''})`
-    : formatPrice(product.price);
 
-  // Build the clickable product page URL that works on all platforms
-  // Use the current page's path to determine the correct base
-  const origin = window.location.origin;
-  const pathname = window.location.pathname;
-  // Extract the base path (everything before /product/)
-  const basePath = pathname.includes('/product/')
-    ? pathname.substring(0, pathname.indexOf('/product/'))
-    : pathname.replace(/\/$/, '');
-  const productUrl = `${origin}${basePath}/product/${product.id}`;
+  // Always use the canonical production URL for the product link
+  // This ensures WhatsApp creates a rich link preview card for the product page
+  const productUrl = `${BASE_URL}/product/${product.id}`;
 
   const category = product.category.charAt(0).toUpperCase() + product.category.slice(1);
 
+  // Price display with discount info
+  const priceText = product.oldPrice
+    ? `₹${product.price} (was ₹${product.oldPrice}${discount ? `, SAVE ${discount}%` : ''})`
+    : `₹${product.price}`;
+
+  // Message format following the prescription style:
+  // - Bold section headers
+  // - "Label : Value" format
+  // - Only ONE URL: the product link (triggers WhatsApp rich link preview card)
+  // - NO image URL - the product link itself generates the preview card
   const message = [
-    `👓 *${product.name}* 👓`,
-    `${category} · ${priceText}`,
+    `👓 *PRODUCT DETAILS* 👓`,
+    `Model Name : ${product.name}`,
+    `Category    : ${category}`,
+    `Price       : ${priceText}`,
     ``,
     `✨ Bright Eyewear — Crafted for Your Vision`,
+    `Precision Lenses • Premium Frames • Clear Vision`,
     ``,
-    product.image,
-    ``,
-    `*🔗 View Product:* ${productUrl}`
+    `*🔗 PRODUCT LINK*`,
+    productUrl
   ].join('\n');
 
   // encodeURIComponent produces %0A for newlines, which WhatsApp
@@ -167,6 +172,9 @@ export default function ProductDetail() {
     pd: ''
   });
   const [confirmed, setConfirmed] = useState(false);
+  const [customerName, setCustomerName] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  const [shareStatus, setShareStatus] = useState(null);
 
   const product = getProductById(id);
 
@@ -253,17 +261,47 @@ export default function ProductDetail() {
     return lines.join('\n');
   };
 
-  const sendPrescriptionOnWhatsApp = () => {
+  const sendPrescriptionOnWhatsApp = async () => {
     if (!confirmed) {
       alert('Please tick the confirmation checkbox before sending your prescription.');
       return;
     }
-    const message = buildPrescriptionMessage();
-    // encodeURIComponent produces %0A for newlines, which WhatsApp
-    // correctly decodes as line breaks. This also properly encodes
-    // all special characters (emojis, *, •, °, etc.).
-    const encoded = encodeURIComponent(message);
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`, '_blank');
+
+    // Prevent double-clicks while processing
+    if (isSending) return;
+
+    setIsSending(true);
+    setShareStatus(null);
+
+    try {
+      // Generate PDF, download it, and open WhatsApp with a short message
+      const result = await sharePrescriptionOnWhatsApp({
+        product,
+        prescription,
+        confirmationText: 'I confirm that the prescription details provided above are accurate and match my latest eye prescription. I understand that these values will be used to manufacture my lenses, and I have reviewed all information before submitting this order.',
+        customerName
+      });
+
+      if (result.success) {
+        setShareStatus({
+          type: 'success',
+          text: result.message
+        });
+      } else {
+        setShareStatus({
+          type: 'error',
+          text: result.error
+        });
+      }
+    } catch (error) {
+      console.error('Error sharing prescription:', error);
+      setShareStatus({
+        type: 'error',
+        text: 'An unexpected error occurred. Please try again.'
+      });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -464,6 +502,18 @@ export default function ProductDetail() {
               </div>
             </div>
 
+            {/* Customer name - for PDF filename */}
+            <div className="prescription-input-group prescription-ipd">
+              <label>Your Name (for PDF) <Tooltip text="Used to name your prescription PDF file." label="Name" /></label>
+              <input
+                type="text"
+                placeholder="e.g. John Doe"
+                value={customerName}
+                onChange={e => setCustomerName(e.target.value)}
+                maxLength={50}
+              />
+            </div>
+
             {/* PD - full width */}
             <div className="prescription-input-group prescription-ipd">
               <label>PD (mm) <Tooltip text={FIELD_TOOLTIPS.PD} label="PD" /></label>
@@ -480,12 +530,24 @@ export default function ProductDetail() {
               <span>I confirm that the prescription information provided above is accurate and matches my latest eye prescription.</span>
             </label>
 
+            {/* Share status message */}
+            {shareStatus && (
+              <div className={`prescription-share-status ${shareStatus.type}`} role="status">
+                {shareStatus.type === 'success' ? '✅ ' : '⚠️ '}
+                {shareStatus.text}
+              </div>
+            )}
+
             {/* Send on WhatsApp */}
-            <button className="btn btn-primary prescription-send-btn" onClick={sendPrescriptionOnWhatsApp}>
+            <button
+              className="btn btn-primary prescription-send-btn"
+              onClick={sendPrescriptionOnWhatsApp}
+              disabled={isSending}
+            >
               <svg viewBox="0 0 32 32" width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M16.004 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.26.59 4.46 1.71 6.4L3.2 28.8l6.56-1.68a12.76 12.76 0 0 0 6.24 1.6c7.06 0 12.8-5.74 12.8-12.8s-5.74-12.72-12.796-12.72zm0 23.36a10.56 10.56 0 0 1-5.38-1.47l-.38-.23-3.89 1 1.04-3.79-.25-.39a10.54 10.54 0 0 1-1.62-5.68c0-5.84 4.75-10.6 10.6-10.6 2.83 0 5.49 1.1 7.49 3.1a10.53 10.53 0 0 1 3.1 7.5c0 5.85-4.75 10.56-10.31 10.56zm5.81-7.92c-.32-.16-1.89-.93-2.18-1.04-.29-.11-.5-.16-.72.16-.21.32-.82 1.04-1.01 1.25-.18.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.18-.32-.02-.49.14-.65.14-.14.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.72-1.73-.98-2.37-.26-.62-.52-.54-.72-.55h-.61c-.21 0-.56.08-.85.4-.29.32-1.11 1.09-1.11 2.65 0 1.56 1.14 3.07 1.3 3.28.16.21 2.24 3.42 5.42 4.8.76.33 1.35.52 1.81.67.76.24 1.45.21 2 .13.61-.09 1.89-.77 2.16-1.52.27-.75.27-1.39.19-1.52-.08-.13-.29-.21-.61-.37z"/>
               </svg>
-              Send Prescription on WhatsApp
+              {isSending ? 'Generating PDF...' : 'Send Prescription on WhatsApp'}
             </button>
           </div>
         </div>
