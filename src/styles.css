@@ -171,6 +171,10 @@ svg { max-width: 100%; height: auto; }
 .category-card.cat-modern { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
 .category-card.cat-vintage { background: linear-gradient(135deg, #fef3c7, #fde68a); }
 .category-card.cat-sport { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+.category-card.cat-sunglasses { background: linear-gradient(135deg, #1a1a2e, #2d2d4a); }
+.category-card.cat-sunglasses h3, .category-card.cat-sunglasses p { color: #fff; }
+.category-card.cat-sunglasses .cat-count { background: rgba(255, 255, 255, 0.2); }
+.category-card.cat-sunglasses .cat-icon { color: var(--accent-light); }
 
 /* ===== TESTIMONIALS ===== */
 .testimonials { padding: var(--section-pad) 0; background: var(--primary); color: #fff; }
@@ -256,6 +260,11 @@ svg { max-width: 100%; height: auto; }
 .search-bar span { color: var(--text-muted); font-size: clamp(0.9rem, 1.1vw, 1rem); }
 .result-count { font-size: clamp(0.78rem, 0.9vw, 0.85rem); color: var(--text-muted); margin-bottom: clamp(14px, 2vw, 20px); }
 .collection-section { padding: var(--section-pad) 0; }
+.gender-filters { align-items: center; background: var(--white); border: 1px solid var(--border); border-radius: 50px; padding: clamp(6px, 1vw, 8px) clamp(12px, 2vw, 18px); width: fit-content; }
+.gender-filter-label { font-size: clamp(0.75rem, 0.9vw, 0.82rem); font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-right: clamp(4px, 0.8vw, 8px); }
+.gender-filters .filter-btn { background: transparent; border-color: transparent; }
+.gender-filters .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.gender-filters .filter-btn:not(.active):hover { background: var(--bg); border-color: var(--border); color: var(--text); }
 
 /* ===== PRODUCTS GRID ===== */
 .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: clamp(16px, 2.5vw, 24px); }
@@ -330,6 +339,44 @@ svg { max-width: 100%; height: auto; }
 .product-below .highlights ul { list-style: none; }
 .product-below .highlights li { display: flex; align-items: center; gap: 10px; padding: clamp(10px, 1.5vw, 12px) 0; font-size: clamp(0.85rem, 1vw, 0.9rem); color: var(--text-light); border-bottom: 1px solid var(--border); }
 .product-below .highlights li:last-child { border-bottom: none; }
+
+/* ===== PRESCRIPTION GUIDE & CUSTOMER NOTES ===== */
+.prescription-section { padding: var(--section-pad) 0; background: var(--bg); }
+.prescription-section .section-header { margin-bottom: clamp(24px, 3vw, 32px); }
+.prescription-info-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(20px, 3vw, 30px); margin-bottom: clamp(16px, 2vw, 20px); border-left: 4px solid var(--accent); }
+.prescription-info-box h3, .prescription-fields-guide h3, .prescription-notes-box h3, .prescription-form-box h3 { font-size: clamp(1rem, 1.3vw, 1.2rem); font-weight: 700; margin-bottom: clamp(10px, 1.5vw, 14px); }
+.prescription-info-box p { color: var(--text-light); line-height: 1.7; font-size: clamp(0.85rem, 1vw, 0.9rem); }
+.prescription-fields-guide { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(20px, 3vw, 30px); margin-bottom: clamp(16px, 2vw, 20px); }
+.prescription-field-list { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 1.5vw, 16px); }
+.prescription-field-item { display: flex; flex-direction: column; gap: 4px; padding: clamp(10px, 1.5vw, 14px); background: var(--bg); border-radius: var(--radius-sm); }
+.prescription-field-item .field-name { font-weight: 600; font-size: clamp(0.85rem, 1vw, 0.9rem); color: var(--accent-dark); }
+.prescription-field-item .field-desc { font-size: clamp(0.78rem, 0.95vw, 0.85rem); color: var(--text-light); line-height: 1.5; }
+.prescription-notes-box { background: #fef2f2; border: 1px solid #fca5a5; border-radius: var(--radius); padding: clamp(20px, 3vw, 30px); margin-bottom: clamp(16px, 2vw, 20px); }
+.prescription-notes-box h3 { color: #991b1b; }
+.prescription-notes-box ul { list-style: none; }
+.prescription-notes-box li { display: flex; align-items: flex-start; gap: 8px; padding: clamp(6px, 1vw, 8px) 0; color: #7f1d1d; font-size: clamp(0.82rem, 1vw, 0.88rem); }
+.prescription-form-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(24px, 4vw, 40px); }
+.prescription-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2.5vw, 24px); margin-bottom: clamp(16px, 2vw, 20px); }
+.prescription-column { background: var(--bg); border-radius: var(--radius-sm); padding: clamp(16px, 2vw, 20px); }
+.prescription-column h4 { font-size: clamp(0.9rem, 1.1vw, 1rem); font-weight: 700; margin-bottom: clamp(12px, 2vw, 16px); color: var(--accent-dark); }
+.prescription-input-group { margin-bottom: clamp(10px, 1.5vw, 14px); }
+.prescription-input-group label { display: flex; align-items: center; gap: 4px; font-size: clamp(0.8rem, 1vw, 0.85rem); font-weight: 600; margin-bottom: 4px; }
+.prescription-input-group input { width: 100%; padding: clamp(8px, 1.2vw, 10px) clamp(12px, 1.5vw, 14px); border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font); font-size: clamp(0.85rem, 1vw, 0.9rem); outline: none; transition: border var(--transition); background: var(--white); }
+.prescription-input-group input:focus { border-color: var(--accent); }
+.prescription-input-group.prescription-ipd { max-width: 200px; }
+.tooltip-wrapper { position: relative; display: inline-flex; }
+.tooltip-icon { cursor: pointer; color: var(--accent); font-size: clamp(0.7rem, 0.9vw, 0.8rem); margin-left: 2px; user-select: none; }
+.tooltip-bubble { position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(100% + 8px); background: var(--primary); color: #fff; padding: clamp(8px, 1.2vw, 10px) clamp(12px, 1.5vw, 14px); border-radius: 8px; font-size: clamp(0.72rem, 0.85vw, 0.78rem); width: max-content; max-width: 260px; z-index: 100; line-height: 1.5; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.tooltip-bubble::after { content: ''; position: absolute; left: 50%; top: 100%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: var(--primary); }
+.prescription-upload-area { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(8px, 1.2vw, 12px); margin-bottom: clamp(16px, 2vw, 20px); padding: clamp(16px, 2vw, 20px); background: var(--bg); border-radius: var(--radius-sm); border: 2px dashed var(--border); }
+.prescription-upload-btn { display: inline-flex; align-items: center; gap: 8px; padding: clamp(8px, 1.2vw, 10px) clamp(16px, 2vw, 20px); background: var(--accent); color: #fff; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: clamp(0.8rem, 1vw, 0.85rem); transition: all var(--transition); }
+.prescription-upload-btn:hover { background: var(--accent-dark); transform: translateY(-2px); }
+.prescription-file-name { font-size: clamp(0.78rem, 0.9vw, 0.85rem); color: #16a34a; font-weight: 500; }
+.prescription-upload-note { font-size: clamp(0.75rem, 0.9vw, 0.8rem); color: var(--text-muted); font-style: italic; line-height: 1.5; }
+.prescription-confirm { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; margin-bottom: clamp(16px, 2vw, 20px); font-size: clamp(0.8rem, 1vw, 0.85rem); color: var(--text-light); line-height: 1.5; }
+.prescription-confirm input[type="checkbox"] { width: clamp(16px, 1.5vw, 18px); height: clamp(16px, 1.5vw, 18px); accent-color: var(--accent); margin-top: 2px; flex-shrink: 0; cursor: pointer; }
+.prescription-send-btn { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.prescription-send-btn svg { display: block; flex-shrink: 0; }
 
 /* ===== CONTACT ===== */
 .contact-section { padding: var(--section-pad) 0; }
@@ -439,6 +486,9 @@ svg { max-width: 100%; height: auto; }
 }
 
 @media (max-width: 767px) {
+  .prescription-form-grid { grid-template-columns: 1fr; }
+  .prescription-field-list { grid-template-columns: 1fr; }
+  .prescription-input-group.prescription-ipd { max-width: 100%; }
   .nav-links { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; background: rgba(26, 26, 46, 0.98); flex-direction: column; justify-content: center; align-items: center; gap: clamp(20px, 4vh, 28px); z-index: 999; }
   .nav-links.open { display: flex; }
   .nav-links a { font-size: clamp(1.1rem, 4vw, 1.2rem); color: #fff !important; opacity: 1 !important; }

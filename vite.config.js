@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig(({ command }) => ({
-  // Use '/Bright-Eyewear/' as the base for production builds (GitHub Pages subpath),
-  // and '/' for local development
-  base: command === 'build' ? '/Bright-Eyewear/' : '/',
+export default defineConfig({
+  // Use relative base path so it works on:
+  // - Netlify/Vercel (served from root /)
+  // - GitHub Pages (served from /Bright-Eyewear/)
+  // - Local development
+  base: './',
   plugins: [react()],
   server: {
     port: 5173,
@@ -19,4 +21,4 @@ export default defineConfig(({ command }) => ({
     outDir: 'dist',
     emptyOutDir: true
   }
-}));
+});

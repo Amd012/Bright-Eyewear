@@ -20,6 +20,7 @@ export default function Footer() {
               <li><Link to="/collection/modern">Modern</Link></li>
               <li><Link to="/collection/vintage">Vintage</Link></li>
               <li><Link to="/collection/sport">Sport</Link></li>
+              <li><Link to="/collection/sunglasses">Sunglasses</Link></li>
               <li><Link to="/collection">All Eyewear</Link></li>
             </ul>
           </div>

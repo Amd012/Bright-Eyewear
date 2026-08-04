@@ -4,8 +4,20 @@ import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import App from './App';
 import './styles.css';
 
-// Base path for GitHub Pages subdirectory deployment
-const basename = import.meta.env.PROD ? '/Bright-Eyewear/' : '/';
+// Detect the base path dynamically:
+// - Netlify/Vercel: served from root '/'
+// - GitHub Pages: served from '/Bright-Eyewear/'
+// - Local dev: served from '/'
+function detectBasename() {
+  const path = window.location.pathname;
+  // Check if we're on GitHub Pages subpath
+  if (path.startsWith('/Bright-Eyewear/')) {
+    return '/Bright-Eyewear/';
+  }
+  return '/';
+}
+
+const basename = detectBasename();
 
 // If GitHub Pages served the 404.html fallback (for SPA deep links like /product/1),
 // extract the original path from the '?path=' query parameter

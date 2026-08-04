@@ -8,6 +8,8 @@ export default function Collection() {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('popular');
+  // Gender filter only applies to the sunglasses category (male / female / all)
+  const [genderFilter, setGenderFilter] = useState('all');
 
   const meta = CATEGORY_META[category] || CATEGORY_META.all;
 
@@ -15,6 +17,10 @@ export default function Collection() {
     let list = [...products];
     if (category !== 'all') {
       list = list.filter(p => p.category === category);
+    }
+    // Apply gender filter when viewing sunglasses category
+    if (category === 'sunglasses' && genderFilter !== 'all') {
+      list = list.filter(p => p.gender === genderFilter);
     }
     const q = searchTerm.toLowerCase();
     if (q) {
@@ -24,7 +30,12 @@ export default function Collection() {
     else if (sortBy === 'high') list.sort((a, b) => b.price - a.price);
     else if (sortBy === 'rating') list.sort((a, b) => b.rating - a.rating);
     return list;
-  }, [category, searchTerm, sortBy]);
+  }, [category, genderFilter, searchTerm, sortBy]);
+
+  const handleCategoryChange = (cat) => {
+    setGenderFilter('all');
+    navigate(`/collection/${cat}`);
+  };
 
   return (
     <>
@@ -58,20 +69,45 @@ export default function Collection() {
           <div className="filters" style={{ marginBottom: '20px' }}>
             <button
               className={`filter-btn${category === 'all' ? ' active' : ''}`}
-              onClick={() => navigate('/collection')}
+              onClick={() => handleCategoryChange('all')}
             >
               All
             </button>
-            {['classic', 'modern', 'vintage', 'sport'].map(cat => (
+            {['classic', 'modern', 'vintage', 'sport', 'sunglasses'].map(cat => (
               <button
                 key={cat}
                 className={`filter-btn${category === cat ? ' active' : ''}`}
-                onClick={() => navigate(`/collection/${cat}`)}
+                onClick={() => handleCategoryChange(cat)}
               >
                 {cat.charAt(0).toUpperCase() + cat.slice(1)}
               </button>
             ))}
           </div>
+
+          {/* Gender filter for sunglasses category */}
+          {category === 'sunglasses' && (
+            <div className="filters gender-filters" style={{ marginBottom: '20px' }}>
+              <span className="gender-filter-label">Gender:</span>
+              <button
+                className={`filter-btn${genderFilter === 'all' ? ' active' : ''}`}
+                onClick={() => setGenderFilter('all')}
+              >
+                All
+              </button>
+              <button
+                className={`filter-btn${genderFilter === 'male' ? ' active' : ''}`}
+                onClick={() => setGenderFilter('male')}
+              >
+                ♂ Male
+              </button>
+              <button
+                className={`filter-btn${genderFilter === 'female' ? ' active' : ''}`}
+                onClick={() => setGenderFilter('female')}
+              >
+                ♀ Female
+              </button>
+            </div>
+          )}
 
           <div className="result-count">
             Showing {filteredProducts.length} product{filteredProducts.length === 1 ? '' : 's'}
