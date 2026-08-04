@@ -164,28 +164,54 @@ export default function ProductDetail() {
       : pathname.replace(/\/$/, '');
     const productUrl = `${origin}${basePath}/product/${product.id}`;
 
+    const divider = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+    const subDivider = '────────────────────────────────────────────────────────────────────────';
+    const reSph = prescription.reSph || '—';
+    const reCyl = prescription.reCyl || '—';
+    const reAxis = prescription.reAxis || '—';
+    const reAdd = prescription.reAdd || '—';
+    const leSph = prescription.leSph || '—';
+    const leCyl = prescription.leCyl || '—';
+    const leAxis = prescription.leAxis || '—';
+    const leAdd = prescription.leAdd || '—';
+    const ipd = prescription.ipd || '—';
+
     const lines = [
-      `👓 Prescription Order: ${product.name}`,
-      `Price: ${formatPrice(product.price)}`,
+      divider,
+      `  👓  NEW PRESCRIPTION ORDER`,
+      divider,
       ``,
-      `RIGHT EYE (RE):`,
-      `  SPH: ${prescription.reSph || '—'}`,
-      `  CYL: ${prescription.reCyl || '—'}`,
-      `  AXIS: ${prescription.reAxis || '—'}`,
-      `  ADD: ${prescription.reAdd || '—'}`,
+      `📦  PRODUCT DETAILS`,
+      subDivider,
+      `  🕶️  Model      : ${product.name}`,
+      `  🏷️  Category   : ${product.category.charAt(0).toUpperCase() + product.category.slice(1)}`,
+      `  💰  Price      : ${formatPrice(product.price)}${product.oldPrice ? `  (Save ${discount}%)` : ''}`,
+      `  ⭐  Rating     : ${product.rating} ★ (${product.reviews} reviews)`,
       ``,
-      `LEFT EYE (LE):`,
-      `  SPH: ${prescription.leSph || '—'}`,
-      `  CYL: ${prescription.leCyl || '—'}`,
-      `  AXIS: ${prescription.leAxis || '—'}`,
-      `  ADD: ${prescription.leAdd || '—'}`,
+      `👁️  PRESCRIPTION`,
+      subDivider,
       ``,
-      `IPD: ${prescription.ipd || '—'} mm`,
+      `            RE (Right)    LE (Left)`,
+      `  SPH        ${reSph.padEnd(10)}   ${leSph}`,
+      `  CYL        ${reCyl.padEnd(10)}   ${leCyl}`,
+      `  AXIS       ${reAxis.padEnd(10)}   ${leAxis}`,
+      `  ADD        ${reAdd.padEnd(10)}   ${leAdd}`,
       ``,
-      `✅ I confirm the prescription details above are accurate.`,
-      fileName ? `📄 Prescription uploaded: ${fileName}` : ``,
+      `  📏  IPD (Interpupillary Distance):  ${ipd} mm`,
       ``,
-      `🔗 Product: ${productUrl}`
+      `✅  CONFIRMATION`,
+      subDivider,
+      `  I confirm that the prescription information above is`,
+      `  accurate and matches my latest eye prescription.`,
+      fileName ? `  📄  Prescription file attached: ${fileName}` : ``,
+      ``,
+      `🔗  PRODUCT LINK`,
+      subDivider,
+      `  ${productUrl}`,
+      ``,
+      divider,
+      `  ✨  Bright Eyewear — Crafted for Your Vision`,
+      divider
     ].filter(line => line !== '');
 
     return lines.join('\n');
