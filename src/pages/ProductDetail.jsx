@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getProductById, formatPrice, getDiscountPercent, products } from '../data/products.jsx';
-import { sharePrescriptionOnWhatsApp } from '../utils/whatsappShare';
+import { sharePrescriptionOnWhatsAppWithPDF, sharePrescriptionOnWhatsAppWithoutPDF } from '../utils/whatsappShare';
 
 const WHATSAPP_NUMBER = '917676044306';
 const BASE_URL = 'https://bright-eyewear.netlify.app';
@@ -261,7 +261,7 @@ export default function ProductDetail() {
     return lines.join('\n');
   };
 
-  const sendPrescriptionOnWhatsApp = async () => {
+  const sendPrescriptionOnWhatsApp = async (withPDF) => {
     if (!confirmed) {
       alert('Please tick the confirmation checkbox before sending your prescription.');
       return;
@@ -274,13 +274,25 @@ export default function ProductDetail() {
     setShareStatus(null);
 
     try {
-      // Generate PDF, download it, and open WhatsApp with a short message
-      const result = await sharePrescriptionOnWhatsApp({
-        product,
-        prescription,
-        confirmationText: 'I confirm that the prescription details provided above are accurate and match my latest eye prescription. I understand that these values will be used to manufacture my lenses, and I have reviewed all information before submitting this order.',
-        customerName
-      });
+      const confirmationText = 'I confirm that the prescription details provided above are accurate and match my latest eye prescription. I understand that these values will be used to manufacture my lenses, and I have reviewed all information before submitting this order.';
+
+      let result;
+      if (withPDF) {
+        // Generate PDF, download it, and open WhatsApp with a short message
+        result = await sharePrescriptionOnWhatsAppWithPDF({
+          product,
+          prescription,
+          confirmationText,
+          customerName
+        });
+      } else {
+        // Open WhatsApp directly with the full prescription message
+        result = await sharePrescriptionOnWhatsAppWithoutPDF({
+          product,
+          prescription,
+          confirmationText
+        });
+      }
 
       if (result.success) {
         setShareStatus({
@@ -538,17 +550,29 @@ export default function ProductDetail() {
               </div>
             )}
 
-            {/* Send on WhatsApp */}
-            <button
-              className="btn btn-primary prescription-send-btn"
-              onClick={sendPrescriptionOnWhatsApp}
-              disabled={isSending}
-            >
-              <svg viewBox="0 0 32 32" width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.004 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.26.59 4.46 1.71 6.4L3.2 28.8l6.56-1.68a12.76 12.76 0 0 0 6.24 1.6c7.06 0 12.8-5.74 12.8-12.8s-5.74-12.72-12.796-12.72zm0 23.36a10.56 10.56 0 0 1-5.38-1.47l-.38-.23-3.89 1 1.04-3.79-.25-.39a10.54 10.54 0 0 1-1.62-5.68c0-5.84 4.75-10.6 10.6-10.6 2.83 0 5.49 1.1 7.49 3.1a10.53 10.53 0 0 1 3.1 7.5c0 5.85-4.75 10.56-10.31 10.56zm5.81-7.92c-.32-.16-1.89-.93-2.18-1.04-.29-.11-.5-.16-.72.16-.21.32-.82 1.04-1.01 1.25-.18.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.18-.32-.02-.49.14-.65.14-.14.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.72-1.73-.98-2.37-.26-.62-.52-.54-.72-.55h-.61c-.21 0-.56.08-.85.4-.29.32-1.11 1.09-1.11 2.65 0 1.56 1.14 3.07 1.3 3.28.16.21 2.24 3.42 5.42 4.8.76.33 1.35.52 1.81.67.76.24 1.45.21 2 .13.61-.09 1.89-.77 2.16-1.52.27-.75.27-1.39.19-1.52-.08-.13-.29-.21-.61-.37z"/>
-              </svg>
-              {isSending ? 'Generating PDF...' : 'Send Prescription on WhatsApp'}
-            </button>
+            {/* Send on WhatsApp - choose PDF or no PDF */}
+            <div className="prescription-send-options">
+              <button
+                className="btn btn-primary prescription-send-btn"
+                onClick={() => sendPrescriptionOnWhatsApp(true)}
+                disabled={isSending}
+              >
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm1-3.5c0 .83-.67 1.5-1.5 1.5h-1V7h1c.83 0 1.5.67 1.5 1.5zM9 11.5h1.5V13H9v-1.5zm4.5 0h1.5V13h-1.5v-1.5zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6z"/>
+                </svg>
+                {isSending ? 'Generating PDF...' : 'Send with PDF'}
+              </button>
+              <button
+                className="btn btn-outline prescription-send-btn prescription-send-no-pdf"
+                onClick={() => sendPrescriptionOnWhatsApp(false)}
+                disabled={isSending}
+              >
+                <svg viewBox="0 0 32 32" width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16.004 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.26.59 4.46 1.71 6.4L3.2 28.8l6.56-1.68a12.76 12.76 0 0 0 6.24 1.6c7.06 0 12.8-5.74 12.8-12.8s-5.74-12.72-12.796-12.72zm0 23.36a10.56 10.56 0 0 1-5.38-1.47l-.38-.23-3.89 1 1.04-3.79-.25-.39a10.54 10.54 0 0 1-1.62-5.68c0-5.84 4.75-10.6 10.6-10.6 2.83 0 5.49 1.1 7.49 3.1a10.53 10.53 0 0 1 3.1 7.5c0 5.85-4.75 10.56-10.31 10.56zm5.81-7.92c-.32-.16-1.89-.93-2.18-1.04-.29-.11-.5-.16-.72.16-.21.32-.82 1.04-1.01 1.25-.18.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.18-.32-.02-.49.14-.65.14-.14.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.72-1.73-.98-2.37-.26-.62-.52-.54-.72-.55h-.61c-.21 0-.56.08-.85.4-.29.32-1.11 1.09-1.11 2.65 0 1.56 1.14 3.07 1.3 3.28.16.21 2.24 3.42 5.42 4.8.76.33 1.35.52 1.81.67.76.24 1.45.21 2 .13.61-.09 1.89-.77 2.16-1.52.27-.75.27-1.39.19-1.52-.08-.13-.29-.21-.61-.37z"/>
+                </svg>
+                {isSending ? 'Opening WhatsApp...' : 'Send without PDF'}
+              </button>
+            </div>
           </div>
         </div>
       </section>

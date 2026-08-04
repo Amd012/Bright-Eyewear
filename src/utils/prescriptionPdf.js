@@ -3,6 +3,7 @@
  * 
  * Generates a professional, print-ready A4 prescription PDF using jsPDF.
  * Features:
+ * - Company logo beside company name (logo on the left)
  * - Monochrome professional layout
  * - Clickable product URL hyperlink
  * - Auto-generated QR code pointing to the product page
@@ -26,13 +27,57 @@ const COLORS = {
   gray: [100, 100, 100],
   lightGray: [180, 180, 180],
   veryLightGray: [240, 240, 240],
-  white: [255, 255, 255]
+  white: [255, 255, 255],
+  accent: [37, 99, 235],
+  accentLight: [96, 165, 250]
 };
 
 const FONTS = {
   heading: 'helvetica',
   body: 'helvetica'
 };
+
+// Logo data URL - loaded from public/eyewear.png
+let logoDataUrl = null;
+
+/**
+ * Load the company logo as a data URL for embedding in the PDF
+ * @returns {Promise<string|null>} Logo data URL or null if failed
+ */
+async function loadLogo() {
+  if (logoDataUrl) return logoDataUrl;
+  
+  try {
+    // Try multiple paths to find the logo
+    const paths = [
+      `${import.meta.env.BASE_URL}eyewear.png`,
+      '/eyewear.png',
+      'eyewear.png'
+    ];
+    
+    for (const path of paths) {
+      try {
+        const response = await fetch(path);
+        if (response.ok) {
+          const blob = await response.blob();
+          logoDataUrl = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          });
+          return logoDataUrl;
+        }
+      } catch (e) {
+        // Try next path
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error('Failed to load logo for PDF:', error);
+    return null;
+  }
+}
 
 /**
  * Format a value for display, showing "N/A" for empty/missing values
@@ -99,8 +144,8 @@ function drawSectionHeader(doc, title, y) {
   doc.text(title.toUpperCase(), MARGIN, y);
 
   // Underline accent
-  doc.setDrawColor(...COLORS.darkGray);
-  doc.setLineWidth(0.5);
+  doc.setDrawColor(...COLORS.accent);
+  doc.setLineWidth(0.6);
   doc.line(MARGIN, y + 1.5, MARGIN + 30, y + 1.5);
 
   return y + 7;
@@ -254,22 +299,48 @@ export async function generatePrescriptionPDF({
   // ===== HEADER =====
   let y = MARGIN + 5;
 
-  // Company name / Logo text
-  doc.setFont(FONTS.heading, 'bold');
-  doc.setFontSize(16);
-  doc.setTextColor(...COLORS.black);
-  doc.text('BRIGHT EYEWEAR', MARGIN, y);
+  // Load the company logo
+  const logo = await loadLogo();
 
-  // Tagline
-  doc.setFont(FONTS.body, 'normal');
-  doc.setFontSize(8);
-  doc.setTextColor(...COLORS.gray);
-  doc.text('Crafted for Your Vision', MARGIN, y + 4);
+  // Logo on the left side, company name beside it
+  if (logo) {
+    const logoSize = 18; // mm
+    const logoX = MARGIN;
+    const logoY = y - logoSize + 2;
+    
+    // Add logo image
+    doc.addImage(logo, 'PNG', logoX, logoY, logoSize, logoSize);
+    
+    // Company name to the right of the logo
+    const nameX = logoX + logoSize + 5;
+    doc.setFont(FONTS.heading, 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(...COLORS.black);
+    doc.text('BRIGHT EYEWEAR', nameX, y);
+    
+    // Tagline below company name
+    doc.setFont(FONTS.body, 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(...COLORS.gray);
+    doc.text('Crafted for Your Vision', nameX, y + 4);
+  } else {
+    // Fallback: text-only header if logo fails to load
+    doc.setFont(FONTS.heading, 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(...COLORS.black);
+    doc.text('BRIGHT EYEWEAR', MARGIN, y);
+
+    // Tagline
+    doc.setFont(FONTS.body, 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(...COLORS.gray);
+    doc.text('Crafted for Your Vision', MARGIN, y + 4);
+  }
 
   // Document title on the right
   doc.setFont(FONTS.heading, 'bold');
   doc.setFontSize(14);
-  doc.setTextColor(...COLORS.black);
+  doc.setTextColor(...COLORS.accent);
   doc.text('NEW PRESCRIPTION ORDER', PAGE_WIDTH - MARGIN, y, { align: 'right' });
 
   // Date below title
@@ -281,7 +352,7 @@ export async function generatePrescriptionPDF({
   y += 12;
 
   // Header divider
-  drawDivider(doc, y, MARGIN, CONTENT_WIDTH, COLORS.black, 0.8);
+  drawDivider(doc, y, MARGIN, CONTENT_WIDTH, COLORS.accent, 0.8);
   y += 8;
 
   // ===== PRODUCT DETAILS =====
@@ -377,12 +448,12 @@ export async function generatePrescriptionPDF({
   // Clickable hyperlink
   doc.setFont(FONTS.body, 'normal');
   doc.setFontSize(9.5);
-  doc.setTextColor(0, 0, 200); // Blue for link
+  doc.setTextColor(...COLORS.accent);
   doc.textWithLink(productUrl, MARGIN, y, { url: productUrl });
 
   // Underline the link
   const linkWidth = doc.getTextWidth(productUrl);
-  doc.setDrawColor(0, 0, 200);
+  doc.setDrawColor(...COLORS.accent);
   doc.setLineWidth(0.2);
   doc.line(MARGIN, y + 0.8, MARGIN + linkWidth, y + 0.8);
 
