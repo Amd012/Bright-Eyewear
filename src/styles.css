@@ -270,6 +270,7 @@ svg { max-width: 100%; height: auto; }
 .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: clamp(16px, 2.5vw, 24px); }
 .product-card { background: var(--white); border-radius: var(--radius); overflow: hidden; transition: all 0.4s ease; cursor: pointer; border: 1px solid var(--border); position: relative; }
 .product-card:hover { transform: translateY(-8px); box-shadow: var(--shadow); border-color: var(--accent-light); }
+.product-card-link { display: block; text-decoration: none; color: inherit; }
 .product-image { height: clamp(200px, 30vw, 260px); background: #f5f3ef; position: relative; overflow: hidden; }
 .product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
 .product-card:hover .product-image img { transform: scale(1.05); }
@@ -283,6 +284,30 @@ svg { max-width: 100%; height: auto; }
 .product-info .rating .stars { color: #f59e0b; }
 .product-add-btn { display: block; width: calc(100% - clamp(24px, 4vw, 40px)); margin: 0 clamp(12px, 2vw, 20px) clamp(12px, 2vw, 20px); padding: clamp(8px, 1.2vw, 10px); border-radius: 50px; background: var(--accent); color: #fff; border: none; cursor: pointer; font-family: var(--font); font-weight: 600; font-size: clamp(0.8rem, 1vw, 0.85rem); transition: all var(--transition); min-height: 44px; }
 .product-add-btn:hover { background: var(--accent-dark); transform: translateY(-2px); }
+.prescription-card-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: calc(100% - clamp(24px, 4vw, 40px));
+  margin: 0 clamp(12px, 2vw, 20px) clamp(12px, 2vw, 20px);
+  padding: clamp(8px, 1.2vw, 10px);
+  border-radius: 50px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: clamp(0.75rem, 0.9vw, 0.82rem);
+  transition: all var(--transition);
+  min-height: 40px;
+  text-decoration: none;
+}
+.prescription-card-btn:hover {
+  background: var(--accent-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+  color: #fff;
+}
+.prescription-card-btn svg { display: block; flex-shrink: 0; }
 .no-results { text-align: center; padding: clamp(40px, 8vw, 80px) 0; color: var(--text-muted); }
 .no-results .icon { font-size: clamp(2.5rem, 5vw, 3.5rem); margin-bottom: clamp(12px, 2vw, 16px); }
 .no-results h3 { color: var(--text); font-size: clamp(1.1rem, 1.6vw, 1.3rem); margin-bottom: 6px; }
@@ -354,7 +379,7 @@ svg { max-width: 100%; height: auto; }
 .prescription-notes-box { background: #fef2f2; border: 1px solid #fca5a5; border-radius: var(--radius); padding: clamp(20px, 3vw, 30px); margin-bottom: clamp(16px, 2vw, 20px); }
 .prescription-notes-box h3 { color: #991b1b; }
 .prescription-notes-box ul { list-style: none; }
-.prescription-notes-box li { display: flex; align-items: flex-start; gap: 8px; padding: clamp(6px, 1vw, 8px) 0; color: #7f1d1d; font-size: clamp(0.82rem, 1vw, 0.88rem); }
+.prescription-notes-box li { display: flex; align-items: flex-start; gap: 8px; padding: clamp(6px, 1vw, 8px) 0; color: #7f1d1d; font-size: clamp(0.82rem, 1vw, 0.88rem); line-height: 1.6; }
 .prescription-form-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(24px, 4vw, 40px); }
 .prescription-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2.5vw, 24px); margin-bottom: clamp(16px, 2vw, 20px); }
 .prescription-column { background: var(--bg); border-radius: var(--radius-sm); padding: clamp(16px, 2vw, 20px); }
@@ -366,8 +391,36 @@ svg { max-width: 100%; height: auto; }
 .prescription-input-group.prescription-ipd { max-width: 200px; }
 .tooltip-wrapper { position: relative; display: inline-flex; }
 .tooltip-icon { cursor: pointer; color: var(--accent); font-size: clamp(0.7rem, 0.9vw, 0.8rem); margin-left: 2px; user-select: none; }
-.tooltip-bubble { position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(100% + 8px); background: var(--primary); color: #fff; padding: clamp(8px, 1.2vw, 10px) clamp(12px, 1.5vw, 14px); border-radius: 8px; font-size: clamp(0.72rem, 0.85vw, 0.78rem); width: max-content; max-width: 260px; z-index: 100; line-height: 1.5; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-.tooltip-bubble::after { content: ''; position: absolute; left: 50%; top: 100%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: var(--primary); }
+.tooltip-bubble {
+  position: absolute;
+  background: var(--primary);
+  color: #fff;
+  padding: clamp(8px, 1.2vw, 10px) clamp(12px, 1.5vw, 14px);
+  border-radius: 8px;
+  font-size: clamp(0.72rem, 0.85vw, 0.78rem);
+  width: max-content;
+  max-width: 260px;
+  min-width: 200px;
+  z-index: 1000;
+  line-height: 1.5;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  animation: tooltipFadeIn 0.2s ease;
+}
+@keyframes tooltipFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.tooltip-top { left: 50%; transform: translateX(-50%); bottom: calc(100% + 8px); }
+.tooltip-top::after { content: ''; position: absolute; left: 50%; top: 100%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: var(--primary); }
+.tooltip-right { left: calc(100% + 8px); top: 50%; transform: translateY(-50%); }
+.tooltip-right::after { content: ''; position: absolute; right: 100%; top: 50%; transform: translateY(-50%); border: 6px solid transparent; border-right-color: var(--primary); }
+.tooltip-left { right: calc(100% + 8px); top: 50%; transform: translateY(-50%); }
+.tooltip-left::after { content: ''; position: absolute; left: 100%; top: 50%; transform: translateY(-50%); border: 6px solid transparent; border-left-color: var(--primary); }
+.tooltip-bottom { left: 50%; transform: translateX(-50%); top: calc(100% + 8px); }
+.tooltip-bottom::after { content: ''; position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%); border: 6px solid transparent; border-bottom-color: var(--primary); }
 .prescription-upload-area { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(8px, 1.2vw, 12px); margin-bottom: clamp(16px, 2vw, 20px); padding: clamp(16px, 2vw, 20px); background: var(--bg); border-radius: var(--radius-sm); border: 2px dashed var(--border); }
 .prescription-upload-btn { display: inline-flex; align-items: center; gap: 8px; padding: clamp(8px, 1.2vw, 10px) clamp(16px, 2vw, 20px); background: var(--accent); color: #fff; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: clamp(0.8rem, 1vw, 0.85rem); transition: all var(--transition); }
 .prescription-upload-btn:hover { background: var(--accent-dark); transform: translateY(-2px); }
@@ -489,6 +542,10 @@ svg { max-width: 100%; height: auto; }
   .prescription-form-grid { grid-template-columns: 1fr; }
   .prescription-field-list { grid-template-columns: 1fr; }
   .prescription-input-group.prescription-ipd { max-width: 100%; }
+  .prescription-notes-box li { display: block; padding: 8px 0 8px 28px; position: relative; line-height: 1.6; border-bottom: 1px solid rgba(252, 165, 165, 0.3); }
+  .prescription-notes-box li:last-child { border-bottom: none; }
+  .prescription-notes-box li::before { position: absolute; left: 0; top: 8px; }
+  .tooltip-bubble { max-width: min(260px, calc(100vw - 24px)); min-width: 0; width: max-content; }
   .nav-links { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; background: rgba(26, 26, 46, 0.98); flex-direction: column; justify-content: center; align-items: center; gap: clamp(20px, 4vh, 28px); z-index: 999; }
   .nav-links.open { display: flex; }
   .nav-links a { font-size: clamp(1.1rem, 4vw, 1.2rem); color: #fff !important; opacity: 1 !important; }
@@ -553,40 +610,4 @@ svg { max-width: 100%; height: auto; }
   .features-grid { grid-template-columns: repeat(3, 1fr); }
   .products-grid { grid-template-columns: repeat(3, 1fr); }
   .testimonial-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-/* ===== WHATSAPP SHARE BUTTON (Fixed bottom-right) ===== */
-.whatsapp-share-btn {
-  position: fixed;
-  bottom: clamp(16px, 3vw, 24px);
-  right: clamp(16px, 3vw, 24px);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #25D366;
-  color: #fff;
-  padding: clamp(10px, 1.5vw, 12px) clamp(14px, 2vw, 18px);
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: clamp(0.8rem, 1vw, 0.9rem);
-  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.35);
-  z-index: 999;
-  transition: all var(--transition);
-  text-decoration: none;
-  line-height: 1;
-}
-
-.whatsapp-share-btn:hover {
-  background: #1da851;
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.45);
-}
-
-.whatsapp-share-btn:active {
-  transform: translateY(-1px);
-}
-
-.whatsapp-share-btn svg {
-  display: block;
-  flex-shrink: 0;
 }

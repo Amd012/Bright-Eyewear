@@ -116,24 +116,34 @@ export default function Collection() {
           {filteredProducts.length > 0 ? (
             <div className="products-grid">
               {filteredProducts.map(product => (
-                <Link to={`/product/${product.id}`} key={product.id} className="product-card">
-                  <div className="product-image">
-                    {product.tag && <span className="product-tag">{product.tag}</span>}
-                    <img src={product.image} alt={product.name} loading="lazy" />
-                  </div>
-                  <div className="product-info">
-                    <h3>{product.name}</h3>
-                    <p className="category">{product.category}</p>
-                    <span className="price">
-                      {formatPrice(product.price)}
-                      {product.oldPrice && <span className="old-price">{formatPrice(product.oldPrice)}</span>}
-                    </span>
-                    <div className="rating">
-                      <span className="stars">{'★'.repeat(Math.round(product.rating))}</span>{' '}
-                      {product.rating} ({product.reviews} reviews)
+                <div key={product.id} className="product-card">
+                  <Link to={`/product/${product.id}`} className="product-card-link">
+                    <div className="product-image">
+                      {product.tag && <span className="product-tag">{product.tag}</span>}
+                      <img src={product.image} alt={product.name} loading="lazy" />
                     </div>
-                  </div>
-                </Link>
+                    <div className="product-info">
+                      <h3>{product.name}</h3>
+                      <p className="category">{product.category}</p>
+                      <span className="price">
+                        {formatPrice(product.price)}
+                        {product.oldPrice && <span className="old-price">{formatPrice(product.oldPrice)}</span>}
+                      </span>
+                      <div className="rating">
+                        <span className="stars">{'★'.repeat(Math.round(product.rating))}</span>{' '}
+                        {product.rating} ({product.reviews} reviews)
+                      </div>
+                    </div>
+                  </Link>
+                  {product.category !== 'sunglasses' && (
+                    <Link to={`/product/${product.id}#prescription`} className="btn btn-primary btn-sm prescription-card-btn">
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+                      </svg>
+                      Add Prescription Details
+                    </Link>
+                  )}
+                </div>
               ))}
             </div>
           ) : (
