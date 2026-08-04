@@ -391,13 +391,17 @@ svg { max-width: 100%; height: auto; }
 .prescription-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2.5vw, 24px); margin-bottom: clamp(16px, 2vw, 20px); }
 .prescription-column { background: var(--bg); border-radius: var(--radius-sm); padding: clamp(16px, 2vw, 20px); }
 .prescription-column h4 { font-size: clamp(0.9rem, 1.1vw, 1rem); font-weight: 700; margin-bottom: clamp(12px, 2vw, 16px); color: var(--accent-dark); }
+.prescription-fields-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(8px, 1.2vw, 12px); }
 .prescription-input-group { margin-bottom: clamp(10px, 1.5vw, 14px); }
+.prescription-fields-row .prescription-input-group { margin-bottom: 0; }
+.prescription-fields-row .prescription-input-group input { min-width: 0; width: 100%; }
 .prescription-input-group label { display: flex; align-items: center; gap: 4px; font-size: clamp(0.8rem, 1vw, 0.85rem); font-weight: 600; margin-bottom: 4px; }
 .prescription-input-group input { width: 100%; padding: clamp(8px, 1.2vw, 10px) clamp(12px, 1.5vw, 14px); border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font); font-size: clamp(0.85rem, 1vw, 0.9rem); outline: none; transition: border var(--transition); background: var(--white); }
 .prescription-input-group input:focus { border-color: var(--accent); }
-.prescription-input-group.prescription-ipd { max-width: 200px; }
-.tooltip-wrapper { position: relative; display: inline-flex; }
-.tooltip-icon { cursor: pointer; color: var(--accent); font-size: clamp(0.7rem, 0.9vw, 0.8rem); margin-left: 2px; user-select: none; }
+.prescription-input-group.prescription-ipd { max-width: none; }
+.prescription-input-group.prescription-ipd { margin-top: clamp(4px, 0.8vw, 8px); }
+.tooltip-wrapper { position: relative; display: inline-flex; overflow: visible; }
+.tooltip-icon { cursor: pointer; color: var(--accent); font-size: clamp(0.7rem, 0.9vw, 0.8rem); margin-left: 2px; user-select: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 .tooltip-bubble {
   position: absolute;
   background: var(--primary);
@@ -406,21 +410,27 @@ svg { max-width: 100%; height: auto; }
   border-radius: 8px;
   font-size: clamp(0.72rem, 0.85vw, 0.78rem);
   width: max-content;
-  max-width: 260px;
-  min-width: 200px;
-  z-index: 1000;
+  max-width: clamp(220px, 30vw, 260px);
+  min-width: 0;
+  z-index: 9999;
   line-height: 1.5;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   white-space: normal;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  animation: tooltipFadeIn 0.2s ease;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-50%) translateY(4px) !important;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  will-change: opacity, transform;
+  animation: none;
 }
-@keyframes tooltipFadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+.tooltip-wrapper .tooltip-bubble { opacity: 1; transform: translateX(-50%) translateY(0) !important; }
+.tooltip-top {
+  left: 50%;
+  transform: translateX(-50%) !important;
+  bottom: calc(100% + 8px);
 }
-.tooltip-top { left: 50%; transform: translateX(-50%); bottom: calc(100% + 8px); }
 .tooltip-top::after { content: ''; position: absolute; left: 50%; top: 100%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: var(--primary); }
 .tooltip-right { left: calc(100% + 8px); top: 50%; transform: translateY(-50%); }
 .tooltip-right::after { content: ''; position: absolute; right: 100%; top: 50%; transform: translateY(-50%); border: 6px solid transparent; border-right-color: var(--primary); }
@@ -548,6 +558,7 @@ svg { max-width: 100%; height: auto; }
 @media (max-width: 767px) {
   .prescription-form-grid { grid-template-columns: 1fr; }
   .prescription-field-list { grid-template-columns: 1fr; }
+  .prescription-fields-row { grid-template-columns: repeat(2, 1fr); gap: clamp(8px, 2vw, 12px); }
   .prescription-input-group.prescription-ipd { max-width: 100%; }
   .prescription-notes-box li { display: block; padding: 8px 0 8px 28px; position: relative; line-height: 1.6; border-bottom: 1px solid rgba(252, 165, 165, 0.3); }
   .prescription-notes-box li:last-child { border-bottom: none; }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getProductById, formatPrice, getDiscountPercent, products } from '../data/products.jsx';
 
@@ -45,70 +45,67 @@ const FIELD_TOOLTIPS = {
   CYL: 'CYL (Cylinder): Corrects astigmatism (uneven curvature of the eye).',
   AXIS: 'AXIS: Specifies the direction of astigmatism correction (1°–180°).',
   ADD: 'ADD: Additional magnification required for reading or progressive lenses.',
-  IPD: 'IPD (Interpupillary Distance): Distance between the centers of your pupils, used for accurate lens alignment.'
+  PD: 'PD (Pupillary Distance): Distance between the centers of your pupils, used for accurate lens alignment.'
 };
 
 function Tooltip({ text, label }) {
   const [show, setShow] = useState(false);
-  const [position, setPosition] = useState('top');
-  const wrapperRef = React.useRef(null);
+  const wrapperRef = useRef(null);
+  const hideTimerRef = useRef(null);
 
-  // Calculate the best position for the tooltip based on available viewport space
-  const calculatePosition = React.useCallback(() => {
-    if (!wrapperRef.current) return;
-    const rect = wrapperRef.current.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
-    const tooltipWidth = 260;
-    const spaceRight = viewportWidth - rect.right;
-    const spaceLeft = rect.left;
-    const spaceTop = rect.top;
-    const spaceBottom = window.innerHeight - rect.bottom;
-
-    // Smart positioning based on available space
-    if (spaceRight >= tooltipWidth + 10) {
-      setPosition('right');
-    } else if (spaceLeft >= tooltipWidth + 10) {
-      setPosition('left');
-    } else if (spaceTop >= 120) {
-      setPosition('top');
-    } else if (spaceBottom >= 120) {
-      setPosition('bottom');
-    } else {
-      setPosition('top');
+  // Clear any pending hide timer
+  const clearHideTimer = useCallback(() => {
+    if (hideTimerRef.current) {
+      clearTimeout(hideTimerRef.current);
+      hideTimerRef.current = null;
     }
   }, []);
 
-  // Position the tooltip before the browser paints to avoid jitter
-  React.useLayoutEffect(() => {
-    if (show) {
-      calculatePosition();
-    }
-  }, [show, calculatePosition]);
-
-  const handleShow = () => {
+  const handleShow = useCallback((e) => {
+    if (e) e.stopPropagation();
+    clearHideTimer();
     setShow(true);
-  };
+  }, [clearHideTimer]);
 
-  const handleHide = () => {
-    setShow(false);
-  };
+  const handleHide = useCallback(() => {
+    // Small delay to allow moving mouse from icon to tooltip - prevents flickering
+    hideTimerRef.current = setTimeout(() => {
+      setShow(false);
+    }, 100);
+  }, []);
 
-  const handleToggle = (e) => {
+  const handleToggle = useCallback((e) => {
     e.stopPropagation();
+    e.preventDefault();
+    clearHideTimer();
     setShow(prev => !prev);
-  };
+  }, [clearHideTimer]);
+
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleToggle(e);
+    } else if (e.key === 'Escape') {
+      setShow(false);
+    }
+  }, [handleToggle]);
 
   // Close tooltip when clicking outside
-  React.useEffect(() => {
+  useEffect(() => {
     if (!show) return;
     const handleClickOutside = (e) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
         setShow(false);
       }
     };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [show]);
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => clearHideTimer();
+  }, [clearHideTimer]);
 
   return (
     <span className="tooltip-wrapper" ref={wrapperRef}>
@@ -117,14 +114,23 @@ function Tooltip({ text, label }) {
         onMouseEnter={handleShow}
         onMouseLeave={handleHide}
         onClick={handleToggle}
+        onKeyDown={handleKeyDown}
+        onFocus={handleShow}
+        onBlur={() => setShow(false)}
         role="button"
         tabIndex={0}
         aria-label={`Info about ${label}`}
+        aria-expanded={show}
       >
         ⓘ
       </span>
       {show && (
-        <span className={`tooltip-bubble tooltip-${position}`} role="tooltip">
+        <span
+          className="tooltip-bubble tooltip-top"
+          role="tooltip"
+          onMouseEnter={handleShow}
+          onMouseLeave={handleHide}
+        >
           {text}
         </span>
       )}
@@ -137,10 +143,9 @@ export default function ProductDetail() {
   const [prescription, setPrescription] = useState({
     reSph: '', reCyl: '', reAxis: '', reAdd: '',
     leSph: '', leCyl: '', leAxis: '', leAdd: '',
-    ipd: ''
+    pd: ''
   });
   const [confirmed, setConfirmed] = useState(false);
-  const [fileName, setFileName] = useState('');
 
   const product = getProductById(id);
 
@@ -164,13 +169,6 @@ export default function ProductDetail() {
     setPrescription(prev => ({ ...prev, [key]: value }));
   };
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFileName(file.name);
-    }
-  };
-
   const buildPrescriptionMessage = () => {
     // Build the clickable product page URL that works on all platforms
     const origin = window.location.origin;
@@ -181,7 +179,6 @@ export default function ProductDetail() {
       : pathname.replace(/\/$/, '');
     const productUrl = `${origin}${basePath}/product/${product.id}`;
 
-    const divider = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
     const reSph = prescription.reSph || 'N/A';
     const reCyl = prescription.reCyl || 'N/A';
     const reAxis = prescription.reAxis || 'N/A';
@@ -190,50 +187,46 @@ export default function ProductDetail() {
     const leCyl = prescription.leCyl || 'N/A';
     const leAxis = prescription.leAxis || 'N/A';
     const leAdd = prescription.leAdd || 'N/A';
-    const ipd = prescription.ipd || 'N/A';
+    const pd = prescription.pd || 'N/A';
+
+    const category = product.category.charAt(0).toUpperCase() + product.category.slice(1);
 
     const lines = [
-      `NEW PRESCRIPTION ORDER`,
+      `*NEW PRESCRIPTION ORDER*`,
       ``,
-      divider,
-      `📦 PRODUCT DETAILS`,
-      divider,
+      `*📦 PRODUCT DETAILS*`,
       `Model Name : ${product.name}`,
-      `Category   : ${product.category.charAt(0).toUpperCase() + product.category.slice(1)}`,
-      `Price      : ₹${product.price}`,
+      `Category    : ${category}`,
+      `Price       : ₹${product.price}`,
       ``,
-      divider,
-      `👓 PRESCRIPTION DETAILS`,
-      divider,
+      `*👓 PRESCRIPTION DETAILS*`,
       ``,
       `🔹 Right Eye (RE)`,
-      `* SPH  : ${reSph}`,
-      `* CYL  : ${reCyl}`,
-      `* AXIS : ${reAxis}°`,
-      `* ADD  : ${reAdd}`,
+      `• SPH  : ${reSph}`,
+      `• CYL  : ${reCyl}`,
+      `• AXIS : ${reAxis}°`,
+      `• ADD  : ${reAdd}`,
       ``,
       `🔹 Left Eye (LE)`,
-      `* SPH  : ${leSph}`,
-      `* CYL  : ${leCyl}`,
-      `* AXIS : ${leAxis}°`,
-      `* ADD  : ${leAdd}`,
+      `• SPH  : ${leSph}`,
+      `• CYL  : ${leCyl}`,
+      `• AXIS : ${leAxis}°`,
+      `• ADD  : ${leAdd}`,
       ``,
-      divider,
-      `📏 PUPILLARY DISTANCE`,
-      divider,
-      `IPD (Interpupillary Distance): ${ipd} mm`,
+      `*📏 PUPILLARY DISTANCE*`,
+      `IPD (Interpupillary Distance): ${pd} mm`,
       ``,
       `✅ CUSTOMER CONFIRMATION`,
-      `I confirm that the prescription information above is accurate and matches my latest eye prescription.`,
-      fileName ? `📄 Prescription file attached: ${fileName}` : ``,
+      `I confirm that the prescription details provided above are accurate and match my latest eye prescription. I understand that these values will be used to manufacture my lenses, and I have reviewed all information before submitting this order.`,
       ``,
-      `🔗 PRODUCT LINK`,
+      `*🔗 PRODUCT LINK*`,
+      `Product: Bright Eyewear – ${product.name}`,
+      ``,
       productUrl,
       ``,
-      divider,
       `✨ Bright Eyewear — Crafted for Your Vision`,
-      divider
-    ].filter(line => line !== '');
+      `Precision Lenses • Premium Frames • Clear Vision`
+    ];
 
     return lines.join('\n');
   };
@@ -368,7 +361,7 @@ export default function ProductDetail() {
                 <span className="field-desc">Additional magnification required for reading or progressive lenses.</span>
               </div>
               <div className="prescription-field-item">
-                <span className="field-name">IPD <Tooltip text={FIELD_TOOLTIPS.IPD} label="IPD" /></span>
+                <span className="field-name">PD <Tooltip text={FIELD_TOOLTIPS.PD} label="PD" /></span>
                 <span className="field-desc">Distance between the centers of your pupils, used for accurate lens alignment.</span>
               </div>
               <div className="prescription-field-item">
@@ -398,65 +391,57 @@ export default function ProductDetail() {
             <h3>Enter Your Prescription</h3>
 
             <div className="prescription-form-grid">
-              {/* RE column */}
+              {/* RE card */}
               <div className="prescription-column">
                 <h4>Right Eye (RE)</h4>
-                <div className="prescription-input-group">
-                  <label>SPH <Tooltip text={FIELD_TOOLTIPS.SPH} label="SPH" /></label>
-                  <input type="text" placeholder="e.g. -2.50" value={prescription.reSph} onChange={e => updateField('reSph', e.target.value)} />
-                </div>
-                <div className="prescription-input-group">
-                  <label>CYL <Tooltip text={FIELD_TOOLTIPS.CYL} label="CYL" /></label>
-                  <input type="text" placeholder="e.g. -0.75" value={prescription.reCyl} onChange={e => updateField('reCyl', e.target.value)} />
-                </div>
-                <div className="prescription-input-group">
-                  <label>AXIS <Tooltip text={FIELD_TOOLTIPS.AXIS} label="AXIS" /></label>
-                  <input type="text" placeholder="e.g. 180" value={prescription.reAxis} onChange={e => updateField('reAxis', e.target.value)} />
-                </div>
-                <div className="prescription-input-group">
-                  <label>ADD <Tooltip text={FIELD_TOOLTIPS.ADD} label="ADD" /></label>
-                  <input type="text" placeholder="e.g. +1.75" value={prescription.reAdd} onChange={e => updateField('reAdd', e.target.value)} />
+                <div className="prescription-fields-row">
+                  <div className="prescription-input-group">
+                    <label>SPH <Tooltip text={FIELD_TOOLTIPS.SPH} label="SPH" /></label>
+                    <input type="text" placeholder="e.g. -2.50" value={prescription.reSph} onChange={e => updateField('reSph', e.target.value)} />
+                  </div>
+                  <div className="prescription-input-group">
+                    <label>CYL <Tooltip text={FIELD_TOOLTIPS.CYL} label="CYL" /></label>
+                    <input type="text" placeholder="e.g. -0.75" value={prescription.reCyl} onChange={e => updateField('reCyl', e.target.value)} />
+                  </div>
+                  <div className="prescription-input-group">
+                    <label>AXIS <Tooltip text={FIELD_TOOLTIPS.AXIS} label="AXIS" /></label>
+                    <input type="text" placeholder="e.g. 180" value={prescription.reAxis} onChange={e => updateField('reAxis', e.target.value)} />
+                  </div>
+                  <div className="prescription-input-group">
+                    <label>ADD <Tooltip text={FIELD_TOOLTIPS.ADD} label="ADD" /></label>
+                    <input type="text" placeholder="e.g. +1.75" value={prescription.reAdd} onChange={e => updateField('reAdd', e.target.value)} />
+                  </div>
                 </div>
               </div>
 
-              {/* LE column */}
+              {/* LE card */}
               <div className="prescription-column">
                 <h4>Left Eye (LE)</h4>
-                <div className="prescription-input-group">
-                  <label>SPH <Tooltip text={FIELD_TOOLTIPS.SPH} label="SPH" /></label>
-                  <input type="text" placeholder="e.g. -2.25" value={prescription.leSph} onChange={e => updateField('leSph', e.target.value)} />
-                </div>
-                <div className="prescription-input-group">
-                  <label>CYL <Tooltip text={FIELD_TOOLTIPS.CYL} label="CYL" /></label>
-                  <input type="text" placeholder="e.g. -0.50" value={prescription.leCyl} onChange={e => updateField('leCyl', e.target.value)} />
-                </div>
-                <div className="prescription-input-group">
-                  <label>AXIS <Tooltip text={FIELD_TOOLTIPS.AXIS} label="AXIS" /></label>
-                  <input type="text" placeholder="e.g. 175" value={prescription.leAxis} onChange={e => updateField('leAxis', e.target.value)} />
-                </div>
-                <div className="prescription-input-group">
-                  <label>ADD <Tooltip text={FIELD_TOOLTIPS.ADD} label="ADD" /></label>
-                  <input type="text" placeholder="e.g. +1.75" value={prescription.leAdd} onChange={e => updateField('leAdd', e.target.value)} />
+                <div className="prescription-fields-row">
+                  <div className="prescription-input-group">
+                    <label>SPH <Tooltip text={FIELD_TOOLTIPS.SPH} label="SPH" /></label>
+                    <input type="text" placeholder="e.g. -2.50" value={prescription.leSph} onChange={e => updateField('leSph', e.target.value)} />
+                  </div>
+                  <div className="prescription-input-group">
+                    <label>CYL <Tooltip text={FIELD_TOOLTIPS.CYL} label="CYL" /></label>
+                    <input type="text" placeholder="e.g. -0.75" value={prescription.leCyl} onChange={e => updateField('leCyl', e.target.value)} />
+                  </div>
+                  <div className="prescription-input-group">
+                    <label>AXIS <Tooltip text={FIELD_TOOLTIPS.AXIS} label="AXIS" /></label>
+                    <input type="text" placeholder="e.g. 180" value={prescription.leAxis} onChange={e => updateField('leAxis', e.target.value)} />
+                  </div>
+                  <div className="prescription-input-group">
+                    <label>ADD <Tooltip text={FIELD_TOOLTIPS.ADD} label="ADD" /></label>
+                    <input type="text" placeholder="e.g. +1.75" value={prescription.leAdd} onChange={e => updateField('leAdd', e.target.value)} />
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* IPD */}
+            {/* PD - full width */}
             <div className="prescription-input-group prescription-ipd">
-              <label>IPD (mm) <Tooltip text={FIELD_TOOLTIPS.IPD} label="IPD" /></label>
-              <input type="text" placeholder="e.g. 62" value={prescription.ipd} onChange={e => updateField('ipd', e.target.value)} />
-            </div>
-
-            {/* Prescription upload */}
-            <div className="prescription-upload-area">
-              <label className="prescription-upload-btn">
-                📄 Upload Prescription
-                <input type="file" accept="image/*,.pdf" onChange={handleFileUpload} hidden />
-              </label>
-              {fileName && <span className="prescription-file-name">📎 {fileName}</span>}
-              <p className="prescription-upload-note">
-                "If you're unsure about any values, upload your prescription and our team will verify it before processing your order."
-              </p>
+              <label>PD (mm) <Tooltip text={FIELD_TOOLTIPS.PD} label="PD" /></label>
+              <input type="text" placeholder="e.g. 62" value={prescription.pd} onChange={e => updateField('pd', e.target.value)} />
             </div>
 
             {/* Confirmation checkbox */}
