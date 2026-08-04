@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+    <script>
+      // Redirect to the SPA index.html while preserving the current path
+      // so React Router can handle the route client-side
+      (function () {
+        var path = window.location.pathname;
+        var base = '/Bright-Eyewear/';
+        // If we're not already at the base, redirect to index.html with the path
+        if (path.indexOf(base) === 0) {
+          var rest = path.substring(base.length);
+          window.location.replace(base + 'index.html?path=' + encodeURIComponent(rest));
+        } else {
+          window.location.replace(base + 'index.html');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to Bright Eyewear...</p>
+  </body>
+</html>

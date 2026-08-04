@@ -10,6 +10,10 @@ function buildWhatsAppShareUrl(product) {
     ? `${formatPrice(product.price)} (was ${formatPrice(product.oldPrice)}${discount ? `, SAVE ${discount}%` : ''})`
     : formatPrice(product.price);
 
+  // Build the clickable product page URL that works in both dev and production (GitHub Pages)
+  const baseUrl = window.location.origin + import.meta.env.BASE_URL;
+  const productUrl = `${baseUrl}product/${product.id}`;
+
   const message = [
     `👓 ${product.name}`,
     `Category: ${product.category.charAt(0).toUpperCase() + product.category.slice(1)}`,
@@ -22,7 +26,8 @@ function buildWhatsAppShareUrl(product) {
     ``,
     `Image: ${product.image}`,
     ``,
-    `Check it out on our website!`
+    `🔗 View this product:`,
+    productUrl
   ].join('\n');
 
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
