@@ -10,9 +10,15 @@ function buildWhatsAppShareUrl(product) {
     ? `${formatPrice(product.price)} (was ${formatPrice(product.oldPrice)}${discount ? `, SAVE ${discount}%` : ''})`
     : formatPrice(product.price);
 
-  // Build the clickable product page URL that works in both dev and production
-  const baseUrl = window.location.origin + import.meta.env.BASE_URL;
-  const productUrl = `${baseUrl}product/${product.id}`;
+  // Build the clickable product page URL that works on all platforms
+  // Use the current page's path to determine the correct base
+  const origin = window.location.origin;
+  const pathname = window.location.pathname;
+  // Extract the base path (everything before /product/)
+  const basePath = pathname.includes('/product/')
+    ? pathname.substring(0, pathname.indexOf('/product/'))
+    : pathname.replace(/\/$/, '');
+  const productUrl = `${origin}${basePath}/product/${product.id}`;
 
   const message = [
     `👓 ${product.name}`,
@@ -149,8 +155,14 @@ export default function ProductDetail() {
   };
 
   const buildPrescriptionMessage = () => {
-    const baseUrl = window.location.origin + import.meta.env.BASE_URL;
-    const productUrl = `${baseUrl}product/${product.id}`;
+    // Build the clickable product page URL that works on all platforms
+    const origin = window.location.origin;
+    const pathname = window.location.pathname;
+    // Extract the base path (everything before /product/)
+    const basePath = pathname.includes('/product/')
+      ? pathname.substring(0, pathname.indexOf('/product/'))
+      : pathname.replace(/\/$/, '');
+    const productUrl = `${origin}${basePath}/product/${product.id}`;
 
     const lines = [
       `👓 Prescription Order: ${product.name}`,
