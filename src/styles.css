@@ -412,23 +412,20 @@ svg { max-width: 100%; height: auto; }
   width: max-content;
   max-width: clamp(220px, 30vw, 260px);
   min-width: 0;
-  z-index: 9999;
+  z-index: 999999;
   line-height: 1.5;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
   white-space: normal;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  pointer-events: none;
-  opacity: 0;
-  transform: translateX(-50%) translateY(4px) !important;
-  transition: opacity 0.15s ease, transform 0.15s ease;
-  will-change: opacity, transform;
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
   animation: none;
+  display: block;
 }
-.tooltip-wrapper .tooltip-bubble { opacity: 1; transform: translateX(-50%) translateY(0) !important; }
 .tooltip-top {
   left: 50%;
-  transform: translateX(-50%) !important;
   bottom: calc(100% + 8px);
 }
 .tooltip-top::after { content: ''; position: absolute; left: 50%; top: 100%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: var(--primary); }
