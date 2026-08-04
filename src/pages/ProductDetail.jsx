@@ -234,60 +234,41 @@ export default function ProductDetail() {
 
     const category = product.category.charAt(0).toUpperCase() + product.category.slice(1);
 
-    const divider = '─'.repeat(30);
-    const subDivider = '─'.repeat(18);
-
     const lines = [
-      `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
-      `        ✨ *NEW PRESCRIPTION ORDER* ✨`,
-      `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `*NEW PRESCRIPTION ORDER*`,
       ``,
       `*📦 PRODUCT DETAILS*`,
-      `${divider}`,
-      `🕶️  Model   : ${product.name}`,
-      `🏷️  Category: ${category}`,
-      `💰  Price   : ₹${product.price}`,
-      `${divider}`,
+      `Model Name : ${product.name}`,
+      `Category    : ${category}`,
+      `Price       : ₹${product.price}`,
       ``,
       `*👓 PRESCRIPTION DETAILS*`,
-      `${divider}`,
-      `${subDivider}`,
-      `🔹 *RIGHT EYE (RE)*`,
-      `${subDivider}`,
-      `  SPH  : ${reSph}`,
-      `  CYL  : ${reCyl}`,
-      `  AXIS : ${reAxis}°`,
-      `  ADD  : ${reAdd}`,
-      `${subDivider}`,
-      `🔹 *LEFT EYE (LE)*`,
-      `${subDivider}`,
-      `  SPH  : ${leSph}`,
-      `  CYL  : ${leCyl}`,
-      `  AXIS : ${leAxis}°`,
-      `  ADD  : ${leAdd}`,
-      `${divider}`,
+      ``,
+      `🔹 Right Eye (RE)`,
+      `• SPH  : ${reSph}`,
+      `• CYL  : ${reCyl}`,
+      `• AXIS : ${reAxis}°`,
+      `• ADD  : ${reAdd}`,
+      ``,
+      `🔹 Left Eye (LE)`,
+      `• SPH  : ${leSph}`,
+      `• CYL  : ${leCyl}`,
+      `• AXIS : ${leAxis}°`,
+      `• ADD  : ${leAdd}`,
       ``,
       `*📏 PUPILLARY DISTANCE*`,
-      `${divider}`,
-      `📐 IPD : ${pd} mm`,
-      `${divider}`,
+      `IPD (Interpupillary Distance): ${pd} mm`,
       ``,
-      `*✅ CUSTOMER CONFIRMATION*`,
-      `${divider}`,
+      `✅ CUSTOMER CONFIRMATION`,
       `I confirm that the prescription details provided above are accurate and match my latest eye prescription. I understand that these values will be used to manufacture my lenses, and I have reviewed all information before submitting this order.`,
-      `${divider}`,
       ``,
       `*🔗 PRODUCT LINK*`,
-      `${divider}`,
-      `🛒 Bright Eyewear – ${product.name}`,
+      `Product: Bright Eyewear – ${product.name}`,
       ``,
       productUrl,
-      `${divider}`,
       ``,
-      `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
-      `✨ *Bright Eyewear* — Crafted for Your Vision`,
-      `Precision Lenses • Premium Frames • Clear Vision`,
-      `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`
+      `✨ Bright Eyewear — Crafted for Your Vision`,
+      `Precision Lenses • Premium Frames • Clear Vision`
     ];
 
     // Join with simple \n (line feed). WhatsApp's URL parser strips \r\n but keeps %0A.
@@ -300,9 +281,9 @@ export default function ProductDetail() {
       return;
     }
     const message = buildPrescriptionMessage();
-    // WhatsApp strips %0A from wa.me URLs. Double-encode newlines as %250A
-    // so WhatsApp decodes them back to %0A → newline in the message.
-    const encoded = encodeURIComponent(message).replace(/%0A/g, '%250A');
+    // Standard encodeURIComponent produces %0A for newlines,
+    // which WhatsApp correctly renders as line breaks in the message.
+    const encoded = encodeURIComponent(message);
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`, '_blank');
   };
 
