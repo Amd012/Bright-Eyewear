@@ -448,6 +448,33 @@ export async function generatePrescriptionPDF({
 
   // Header divider
   drawDivider(doc, y, MARGIN, CONTENT_WIDTH, COLORS.accent, 0.8);
+
+  // ===== QR CODE (top right corner, below the blue line) =====
+  const qrDataUrl = await generateQRCode(productUrl);
+
+  if (qrDataUrl) {
+    // QR code size - slightly smaller for top placement
+    const qrSize = 30;
+    
+    // Position in the top-right corner, just below the blue line
+    const qrX = PAGE_WIDTH - MARGIN - qrSize - 3;
+    const qrY = y + 3;
+
+    // Add QR code image
+    doc.addImage(qrDataUrl, 'PNG', qrX, qrY, qrSize, qrSize);
+
+    // QR label below the QR code
+    doc.setFont(FONTS.body, 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(...COLORS.gray);
+    doc.text('Scan to view product', qrX + (qrSize / 2), qrY + qrSize + 4, { align: 'center' });
+
+    // Draw a border around the QR code
+    doc.setDrawColor(...COLORS.lightGray);
+    doc.setLineWidth(0.3);
+    doc.rect(qrX - 2, qrY - 2, qrSize + 4, qrSize + 4);
+  }
+
   y += 9;
 
   // ===== PRODUCT DETAILS =====
@@ -565,37 +592,7 @@ export async function generatePrescriptionPDF({
   doc.setLineWidth(0.2);
   doc.line(MARGIN, y + 0.8, MARGIN + linkWidth, y + 0.8);
 
-  y += 10;
-
-  // ===== QR CODE =====
-  // Generate QR code pointing to the product URL
-  const qrDataUrl = await generateQRCode(productUrl);
-
-  if (qrDataUrl) {
-    // QR code size
-    const qrSize = 35;
-    
-    // Position QR code in the center-right area, properly spaced from the product link
-    const qrX = PAGE_WIDTH - MARGIN - qrSize - 5;
-    
-    // Add proper spacing below the product link
-    const qrY = y + 2;
-
-    // Add QR code image
-    doc.addImage(qrDataUrl, 'PNG', qrX, qrY, qrSize, qrSize);
-
-    // QR label
-    doc.setFont(FONTS.body, 'normal');
-    doc.setFontSize(7.5);
-    doc.setTextColor(...COLORS.gray);
-    doc.text('Scan to view', qrX + (qrSize / 2), qrY + qrSize + 5, { align: 'center' });
-    doc.text('the product', qrX + (qrSize / 2), qrY + qrSize + 9, { align: 'center' });
-
-    // Draw a border around the QR code
-    doc.setDrawColor(...COLORS.lightGray);
-    doc.setLineWidth(0.3);
-    doc.rect(qrX - 2, qrY - 2, qrSize + 4, qrSize + 4);
-  }
+  y += 6;
 
   // ===== FOOTER =====
   // Footer at the bottom of the page
