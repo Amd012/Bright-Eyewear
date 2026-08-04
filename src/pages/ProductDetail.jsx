@@ -20,20 +20,42 @@ function buildWhatsAppShareUrl(product) {
     : pathname.replace(/\/$/, '');
   const productUrl = `${origin}${basePath}/product/${product.id}`;
 
+  const category = product.category.charAt(0).toUpperCase() + product.category.slice(1);
+  const divider = '─'.repeat(30);
+
   const message = [
-    `👓 ${product.name}`,
-    `Category: ${product.category.charAt(0).toUpperCase() + product.category.slice(1)}`,
-    `Price: ${priceText}`,
-    `Rating: ${product.rating} ★ (${product.reviews} reviews)`,
-    `In Stock: ${product.inStock ? '✅ Yes' : '❌ No'}`,
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+    `        👓 *${product.name}* 👓`,
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
     ``,
-    `Description:`,
+    `*📦 PRODUCT DETAILS*`,
+    `${divider}`,
+    `🕶️  Model    : ${product.name}`,
+    `🏷️  Category : ${category}`,
+    `💰  Price    : ${priceText}`,
+    `⭐  Rating   : ${product.rating} ★ (${product.reviews} reviews)`,
+    `📦  In Stock : ${product.inStock ? '✅ Yes' : '❌ No'}`,
+    `${divider}`,
+    ``,
+    `*📝 DESCRIPTION*`,
+    `${divider}`,
     product.description,
+    `${divider}`,
     ``,
-    `Image: ${product.image}`,
+    `*🖼️ IMAGE*`,
+    `${divider}`,
+    product.image,
+    `${divider}`,
     ``,
-    `🔗 View this product:`,
-    productUrl
+    `*🔗 VIEW THIS PRODUCT*`,
+    `${divider}`,
+    productUrl,
+    `${divider}`,
+    ``,
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+    `✨ *Bright Eyewear* — Crafted for Your Vision`,
+    `Precision Lenses • Premium Frames • Clear Vision`,
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`
   ].join('\n');
 
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -212,41 +234,60 @@ export default function ProductDetail() {
 
     const category = product.category.charAt(0).toUpperCase() + product.category.slice(1);
 
+    const divider = '─'.repeat(30);
+    const subDivider = '─'.repeat(18);
+
     const lines = [
-      `*NEW PRESCRIPTION ORDER*`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `        ✨ *NEW PRESCRIPTION ORDER* ✨`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
       ``,
       `*📦 PRODUCT DETAILS*`,
-      `Model Name : ${product.name}`,
-      `Category    : ${category}`,
-      `Price       : ₹${product.price}`,
+      `${divider}`,
+      `🕶️  Model   : ${product.name}`,
+      `🏷️  Category: ${category}`,
+      `💰  Price   : ₹${product.price}`,
+      `${divider}`,
       ``,
       `*👓 PRESCRIPTION DETAILS*`,
-      ``,
-      `🔹 Right Eye (RE)`,
-      `• SPH  : ${reSph}`,
-      `• CYL  : ${reCyl}`,
-      `• AXIS : ${reAxis}°`,
-      `• ADD  : ${reAdd}`,
-      ``,
-      `🔹 Left Eye (LE)`,
-      `• SPH  : ${leSph}`,
-      `• CYL  : ${leCyl}`,
-      `• AXIS : ${leAxis}°`,
-      `• ADD  : ${leAdd}`,
+      `${divider}`,
+      `${subDivider}`,
+      `🔹 *RIGHT EYE (RE)*`,
+      `${subDivider}`,
+      `  SPH  : ${reSph}`,
+      `  CYL  : ${reCyl}`,
+      `  AXIS : ${reAxis}°`,
+      `  ADD  : ${reAdd}`,
+      `${subDivider}`,
+      `🔹 *LEFT EYE (LE)*`,
+      `${subDivider}`,
+      `  SPH  : ${leSph}`,
+      `  CYL  : ${leCyl}`,
+      `  AXIS : ${leAxis}°`,
+      `  ADD  : ${leAdd}`,
+      `${divider}`,
       ``,
       `*📏 PUPILLARY DISTANCE*`,
-      `IPD (Interpupillary Distance): ${pd} mm`,
+      `${divider}`,
+      `📐 IPD : ${pd} mm`,
+      `${divider}`,
       ``,
-      `✅ CUSTOMER CONFIRMATION`,
+      `*✅ CUSTOMER CONFIRMATION*`,
+      `${divider}`,
       `I confirm that the prescription details provided above are accurate and match my latest eye prescription. I understand that these values will be used to manufacture my lenses, and I have reviewed all information before submitting this order.`,
+      `${divider}`,
       ``,
       `*🔗 PRODUCT LINK*`,
-      `Product: Bright Eyewear – ${product.name}`,
+      `${divider}`,
+      `🛒 Bright Eyewear – ${product.name}`,
       ``,
       productUrl,
+      `${divider}`,
       ``,
-      `✨ Bright Eyewear — Crafted for Your Vision`,
-      `Precision Lenses • Premium Frames • Clear Vision`
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `✨ *Bright Eyewear* — Crafted for Your Vision`,
+      `Precision Lenses • Premium Frames • Clear Vision`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`
     ];
 
     // Join with simple \n (line feed). WhatsApp's URL parser strips \r\n but keeps %0A.
