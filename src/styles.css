@@ -706,19 +706,13 @@ svg { max-width: 100%; height: auto; }
 .lens-price-row { display: flex; justify-content: space-between; padding: clamp(6px, 1vw, 8px) 0; font-size: clamp(0.85rem, 1vw, 0.9rem); }
 .lens-price-row.total { border-top: 2px solid var(--border); margin-top: clamp(6px, 1vw, 8px); padding-top: clamp(10px, 1.5vw, 12px); font-weight: 700; font-size: clamp(0.95rem, 1.2vw, 1.05rem); color: var(--accent-dark); }
 
-/* ===== PRODUCT BELOW GRID ===== */
-.product-below-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 4vw, 50px); }
+/* ===== PRODUCT BELOW (highlights full width) ===== */
 .product-below .container { display: block; }
-.product-below .specs, .product-below .highlights { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(20px, 3vw, 30px); }
-.product-below .specs h3, .product-below .highlights h3 { font-size: clamp(1rem, 1.3vw, 1.2rem); font-weight: 700; margin-bottom: clamp(12px, 2vw, 16px); }
-.product-below .specs ul { list-style: none; }
-.product-below .specs li { display: flex; justify-content: space-between; padding: clamp(10px, 1.5vw, 12px) 0; border-bottom: 1px solid var(--border); font-size: clamp(0.85rem, 1vw, 0.9rem); }
-.product-below .specs li:last-child { border-bottom: none; }
-.product-below .specs li span:first-child { color: var(--text-muted); }
-.product-below .specs li span:last-child { font-weight: 500; }
-.product-below .highlights ul { list-style: none; }
-.product-below .highlights li { display: flex; align-items: center; gap: 10px; padding: clamp(10px, 1.5vw, 12px) 0; font-size: clamp(0.85rem, 1vw, 0.9rem); color: var(--text-light); border-bottom: 1px solid var(--border); }
-.product-below .highlights li:last-child { border-bottom: none; }
+.highlights-full { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(20px, 3vw, 30px); }
+.highlights-full h3 { font-size: clamp(1rem, 1.3vw, 1.2rem); font-weight: 700; margin-bottom: clamp(12px, 2vw, 16px); }
+.highlights-full ul { list-style: none; }
+.highlights-full li { display: flex; align-items: center; gap: 10px; padding: clamp(10px, 1.5vw, 12px) 0; font-size: clamp(0.85rem, 1vw, 0.9rem); color: var(--text-light); border-bottom: 1px solid var(--border); }
+.highlights-full li:last-child { border-bottom: none; }
 
 /* ===== RESPONSIVE FOR NEW COMPONENTS ===== */
 @media (max-width: 767px) {

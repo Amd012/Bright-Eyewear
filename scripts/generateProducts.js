@@ -184,7 +184,6 @@ function scan(dir, category) {
     out.push({
       id: 0, name, category, price: price || 999, oldPrice: null, tag: null,
       description: desc, images, image: images[0],
-      specs: buildSpecs(name, category, polarized),
       highlights: buildHighlights(name, category, polarized),
       lensOptions: LENS_OPTIONS,
       rating: null, reviews: null, inStock: true,

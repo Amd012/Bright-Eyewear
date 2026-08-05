@@ -324,6 +324,22 @@ export async function generatePrescriptionPDF({
   drawDivider(doc, y, MARGIN, CONTENT_WIDTH, COLORS.accent, 0.8);
   y += 8;
 
+  // ===== QR CODE (top right, above product image) =====
+  const qrDataUrl = await generateQRCode(productUrl);
+  if (qrDataUrl) {
+    const qrSize = 25;
+    const qrX = PAGE_WIDTH - MARGIN - qrSize;
+    const qrY = y - 4;
+    doc.addImage(qrDataUrl, 'PNG', qrX, qrY, qrSize, qrSize);
+    doc.setFont(FONTS.body, 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(...COLORS.gray);
+    doc.text('Scan to view product', qrX + (qrSize / 2), qrY + qrSize + 4, { align: 'center' });
+    doc.setDrawColor(...COLORS.lightGray);
+    doc.setLineWidth(0.3);
+    doc.rect(qrX - 2, qrY - 2, qrSize + 4, qrSize + 4);
+  }
+
   // ===== CUSTOMER DETAILS =====
   y = drawSectionHeader(doc, 'Customer Details', y);
   y = drawFieldRow(doc, 'Customer Name:', formatValue(customerName), y);
@@ -352,7 +368,7 @@ export async function generatePrescriptionPDF({
   y = drawFieldRow(doc, 'Category:', formatValue(category), y);
   y = drawFieldRow(doc, 'Price:', `RS. ${formatValue(product.price)}`, y);
 
-  // Product description (wrapped) - keep within left side to avoid image overlap
+  // Product description (wrapped) - keep strictly within left side, never overlap image
   if (product.description) {
     doc.setFont(FONTS.body, 'bold');
     doc.setFontSize(10);
@@ -361,8 +377,8 @@ export async function generatePrescriptionPDF({
     doc.setFont(FONTS.body, 'normal');
     doc.setFontSize(9.5);
     doc.setTextColor(...COLORS.black);
-    // Limit width to avoid overlapping with product image on the right
-    const descLines = doc.splitTextToSize(product.description, CONTENT_WIDTH - 60);
+    // Use much narrower width to guarantee no overlap with image on right
+    const descLines = doc.splitTextToSize(product.description, CONTENT_WIDTH - 70);
     doc.text(descLines, MARGIN + 45, y);
     y += (descLines.length * 5) + 2;
   }
@@ -469,29 +485,7 @@ export async function generatePrescriptionPDF({
   doc.line(MARGIN, y + 0.8, MARGIN + linkWidth, y + 0.8);
   y += 8;
 
-  // ===== QR CODE =====
-  const qrDataUrl = await generateQRCode(productUrl);
-  if (qrDataUrl) {
-    const qrSize = 28;
-    const qrX = PAGE_WIDTH - MARGIN - qrSize;
-    const qrY = y - 8;
-    doc.addImage(qrDataUrl, 'PNG', qrX, qrY, qrSize, qrSize);
-    doc.setFont(FONTS.body, 'normal');
-    doc.setFontSize(7);
-    doc.setTextColor(...COLORS.gray);
-    doc.text('Scan to view product', qrX + (qrSize / 2), qrY + qrSize + 4, { align: 'center' });
-    doc.setDrawColor(...COLORS.lightGray);
-    doc.setLineWidth(0.3);
-    doc.rect(qrX - 2, qrY - 2, qrSize + 4, qrSize + 4);
-  }
-
   y += 12;
-
-  // ===== STORE INFORMATION =====
-  y = drawSectionHeader(doc, 'Store Information', y);
-  y = drawFieldRow(doc, 'Store:', STORE_INFO.name, y);
-  y = drawFieldRow(doc, 'Contact:', STORE_INFO.phone, y);
-  y = drawFieldRow(doc, 'Website:', STORE_INFO.website, y);
 
   // ===== FOOTER =====
   const footerY = PAGE_HEIGHT - MARGIN - 5;

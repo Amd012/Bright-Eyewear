@@ -438,27 +438,13 @@ export default function ProductDetail() {
             />
           </div>
 
-          <div className="product-below-grid">
-            <div className="specs">
-              <h3>Specifications</h3>
-              <ul>
-                {(product.specs || []).map((spec, idx) => (
-                  <li key={idx}>
-                    <span>{spec.label}</span>
-                    <span>{spec.value}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="highlights">
-              <h3>Key Highlights</h3>
-              <ul>
-                {(product.highlights || []).map((highlight, idx) => (
-                  <li key={idx}>{highlight}</li>
-                ))}
-              </ul>
-            </div>
+          <div className="highlights-full">
+            <h3>Key Highlights</h3>
+            <ul>
+              {(product.highlights || []).map((highlight, idx) => (
+                <li key={idx}>{highlight}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
