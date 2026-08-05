@@ -172,10 +172,7 @@ svg { max-width: 100%; height: auto; }
 .category-card.cat-all { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); border-color: transparent; }
 .category-card.cat-all h3, .category-card.cat-all p { color: #fff; }
 .category-card.cat-all .cat-count { background: rgba(255, 255, 255, 0.2); }
-.category-card.cat-classic { background: linear-gradient(135deg, #f5f3ef, #e8e4dc); }
-.category-card.cat-modern { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
-.category-card.cat-vintage { background: linear-gradient(135deg, #fef3c7, #fde68a); }
-.category-card.cat-sport { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+.category-card.cat-eyeglasses { background: linear-gradient(135deg, #e0e7ff, #c7d2fe); }
 .category-card.cat-sunglasses { background: linear-gradient(135deg, #1a1a2e, #2d2d4a); }
 .category-card.cat-sunglasses h3, .category-card.cat-sunglasses p { color: #fff; }
 .category-card.cat-sunglasses .cat-count { background: rgba(255, 255, 255, 0.2); }

@@ -73,7 +73,7 @@ export default function Collection() {
             >
               All
             </button>
-            {['classic', 'modern', 'vintage', 'sport', 'sunglasses'].map(cat => (
+            {['eyeglasses', 'sunglasses'].map(cat => (
               <button
                 key={cat}
                 className={`filter-btn${category === cat ? ' active' : ''}`}

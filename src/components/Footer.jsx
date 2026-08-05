@@ -16,10 +16,7 @@ export default function Footer() {
           <div className="footer-col">
             <h4>Shop</h4>
             <ul>
-              <li><Link to="/collection/classic">Classic</Link></li>
-              <li><Link to="/collection/modern">Modern</Link></li>
-              <li><Link to="/collection/vintage">Vintage</Link></li>
-              <li><Link to="/collection/sport">Sport</Link></li>
+              <li><Link to="/collection/eyeglasses">Eyeglasses</Link></li>
               <li><Link to="/collection/sunglasses">Sunglasses</Link></li>
               <li><Link to="/collection">All Eyewear</Link></li>
             </ul>

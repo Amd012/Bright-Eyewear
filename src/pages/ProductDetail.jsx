@@ -393,7 +393,7 @@ export default function ProductDetail() {
           <div className="specs">
             <h3>Specifications</h3>
             <ul>
-              <li><span>Frame Material</span><span>{product.category === 'sport' ? 'Polycarbonate' : 'Acetate / Titanium'}</span></li>
+              <li><span>Frame Material</span><span>Acetate / Titanium</span></li>
               <li><span>Gender</span><span>{product.gender ? product.gender.charAt(0).toUpperCase() + product.gender.slice(1) : 'Unisex'}</span></li>
               <li><span>Stock</span><span style={{ color: product.inStock ? '#16a34a' : '#dc2626' }}>{product.inStock ? 'In Stock' : 'Out of Stock'}</span></li>
             </ul>
