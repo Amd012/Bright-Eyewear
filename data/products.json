@@ -1,26 +1,1621 @@
 [
-  { "id": 1, "name": "The Aviator", "category": "eyeglasses", "price": 14999, "oldPrice": 19999, "tag": "Bestseller", "description": "Classic aviator style with gold-tone metal frame and green tinted lenses. Features adjustable nose pads and spring hinges for all-day comfort.", "colors": ["#c9a96e", "#1a1a2e", "#dc2626", "#2563eb"], "rating": 4.9, "reviews": 342, "inStock": true, "gender": "unisex", "image": "https://images.unsplash.com/photo-1577803645773-f96470509666?w=600&auto=format&fit=crop&q=80" },
-  { "id": 2, "name": "The Square", "category": "eyeglasses", "price": 17999, "oldPrice": null, "tag": "New", "description": "Modern square frame with tortoise shell acetate and gold accents. Lightweight and durable with spring-loaded hinges.", "colors": ["#8B6914", "#1a1a2e", "#2d2d4a"], "rating": 4.8, "reviews": 189, "inStock": true, "gender": "unisex", "image": "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?w=600&auto=format&fit=crop&q=80" },
-  { "id": 3, "name": "The Round", "category": "eyeglasses", "price": 15999, "oldPrice": null, "tag": null, "description": "Vintage-inspired round frame in matte black. Thin wire frame with adjustable nose pads for a customized fit.", "colors": ["#1a1a2e", "#c9a96e", "#4a4a4a"], "rating": 4.7, "reviews": 256, "inStock": true, "gender": "unisex", "image": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&auto=format&fit=crop&q=80" },
-  { "id": 4, "name": "The Cat Eye", "category": "eyeglasses", "price": 19999, "oldPrice": 24999, "tag": "Sale", "description": "Elegant cat eye silhouette in rose gold. Flattering shape with decorative temple details and gradient lenses.", "colors": ["#b76e79", "#1a1a2e", "#c9a96e"], "rating": 4.9, "reviews": 178, "inStock": true, "gender": "female", "image": "https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=600&auto=format&fit=crop&q=80" },
-  { "id": 5, "name": "The Rectangle", "category": "eyeglasses", "price": 13999, "oldPrice": null, "tag": null, "description": "Professional rectangular frame in gunmetal finish. Thin profile with titanium construction for all-day wear.", "colors": ["#4a4a4a", "#1a1a2e", "#c9a96e"], "rating": 4.6, "reviews": 412, "inStock": true, "gender": "male", "image": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&auto=format&fit=crop&q=80" },
-  { "id": 6, "name": "The Navigator", "category": "eyeglasses", "price": 21999, "oldPrice": null, "tag": "Premium", "description": "Sporty navigator style in matte navy blue. Rubberized temple tips and adjustable nose pads for active lifestyles.", "colors": ["#1a2a4a", "#1a1a2e", "#2d5a2d"], "rating": 4.8, "reviews": 95, "inStock": true, "gender": "male", "image": "https://images.unsplash.com/photo-1577803645773-f96470509666?w=600&auto=format&fit=crop&q=80" },
-  { "id": 7, "name": "The Wayfarer", "category": "eyeglasses", "price": 16999, "oldPrice": null, "tag": "Iconic", "description": "Timeless Wayfarer silhouette in black acetate. Bold, sturdy, and instantly recognizable with a premium finish.", "colors": ["#1a1a2e", "#8B6914"], "rating": 4.8, "reviews": 290, "inStock": true, "gender": "unisex", "image": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&auto=format&fit=crop&q=80" },
-  { "id": 8, "name": "The Clubmaster", "category": "eyeglasses", "price": 18999, "oldPrice": null, "tag": "Retro", "description": "Classic Clubmaster design in tortoise shell. Distinctive browline top with rounded metal lower frame.", "colors": ["#8B6914", "#1a1a2e"], "rating": 4.7, "reviews": 154, "inStock": true, "gender": "male", "image": "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?w=600&auto=format&fit=crop&q=80" },
-  { "id": 9, "name": "The Shield", "category": "eyeglasses", "price": 23999, "oldPrice": null, "tag": "Performance", "description": "Full-coverage shield design for maximum protection. Wraparound polycarbonate frame with polarized lenses.", "colors": ["#1a2a4a", "#1a1a2e"], "rating": 4.6, "reviews": 87, "inStock": true, "gender": "male", "image": "https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=600&auto=format&fit=crop&q=80" },
-  { "id": 10, "name": "The Oversized", "category": "eyeglasses", "price": 20999, "oldPrice": null, "tag": "Trending", "description": "Statement oversized frame in clear acetate. Fashion-forward silhouette with comfortable adjustable fit.", "colors": ["#e0e0e0", "#1a1a2e"], "rating": 4.8, "reviews": 132, "inStock": true, "gender": "female", "image": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&auto=format&fit=crop&q=80" },
-  { "id": 11, "name": "The Round Metal", "category": "eyeglasses", "price": 14999, "oldPrice": null, "tag": null, "description": "Minimalist round frame in polished silver metal. Wire-thin profile with crystal-clear lenses.", "colors": ["#c0c0c0", "#1a1a2e"], "rating": 4.5, "reviews": 201, "inStock": true, "gender": "unisex", "image": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&auto=format&fit=crop&q=80" },
-  { "id": 12, "name": "The Sport Wrap", "category": "eyeglasses", "price": 25999, "oldPrice": null, "tag": "Pro", "description": "Professional sport wrap with polarized lenses. Semi-rimless design with rubber grip temples.", "colors": ["#1a1a2e", "#2563eb"], "rating": 4.9, "reviews": 145, "inStock": true, "gender": "unisex", "image": "https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=600&auto=format&fit=crop&q=80" },
-  { "id": 13, "name": "The Rimless", "category": "eyeglasses", "price": 12999, "oldPrice": null, "tag": null, "description": "Ultra-light rimless frame. Nearly invisible design that lets you wear your lenses without visible frame distraction.", "colors": ["#c0c0c0", "#1a1a2e"], "rating": 4.6, "reviews": 168, "inStock": true, "gender": "unisex", "image": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&auto=format&fit=crop&q=80" },
-  { "id": 14, "name": "The Geometric", "category": "eyeglasses", "price": 22999, "oldPrice": null, "tag": "New", "description": "Unique hexagon-shaped frame in blue acetate. Bold geometric lines with a sophisticated modern edge.", "colors": ["#2563eb", "#1a1a2e"], "rating": 4.9, "reviews": 76, "inStock": true, "gender": "unisex", "image": "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?w=600&auto=format&fit=crop&q=80" },
-  { "id": 15, "name": "The Panto", "category": "eyeglasses", "price": 17999, "oldPrice": null, "tag": null, "description": "Retro panto shape in rich havana acetate. Curved top and teardrop lower shape for a distinctive look.", "colors": ["#5a3d1a", "#1a1a2e"], "rating": 4.7, "reviews": 118, "inStock": true, "gender": "female", "image": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&auto=format&fit=crop&q=80" },
-  { "id": 16, "name": "The Cyclist", "category": "eyeglasses", "price": 19999, "oldPrice": null, "tag": "Aero", "description": "Aerodynamic cycling shield with interchangeable lenses. Wraparound design for wind and debris protection.", "colors": ["#1a2a4a", "#2563eb"], "rating": 4.8, "reviews": 98, "inStock": true, "gender": "male", "image": "https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=600&auto=format&fit=crop&q=80" },
-  { "id": 17, "name": "The Browline", "category": "eyeglasses", "price": 15999, "oldPrice": null, "tag": null, "description": "Two-tone browline frame with dark upper and clear lower. Retro-modern hybrid design.", "colors": ["#1a1a2e", "#c9a96e"], "rating": 4.7, "reviews": 143, "inStock": true, "gender": "unisex", "image": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&auto=format&fit=crop&q=80" },
-  { "id": 18, "name": "The Classic Black", "category": "sunglasses", "price": 18999, "oldPrice": 22999, "tag": "Bestseller", "description": "Timeless black sunglasses with UV400 protection. Polarized lenses with a sleek matte finish for a bold everyday look.", "colors": ["#1a1a2e", "#4a4a4a"], "rating": 4.9, "reviews": 210, "inStock": true, "gender": "male", "image": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&auto=format&fit=crop&q=80" },
-  { "id": 19, "name": "The Chic Cat Eye", "category": "sunglasses", "price": 21499, "oldPrice": null, "tag": "Trending", "description": "Fashionable cat-eye sunglasses with gradient brown lenses and gold accents. Elegant design for the modern woman.", "colors": ["#b76e79", "#8B6914"], "rating": 4.8, "reviews": 156, "inStock": true, "gender": "female", "image": "https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=600&auto=format&fit=crop&q=80" },
-  { "id": 20, "name": "The Urban Pilot", "category": "sunglasses", "price": 19999, "oldPrice": null, "tag": "New", "description": "Contemporary aviator sunglasses with mirrored lenses. Lightweight titanium frame with adjustable nose pads for a perfect fit.", "colors": ["#c9a96e", "#1a1a2e"], "rating": 4.7, "reviews": 128, "inStock": true, "gender": "unisex", "image": "https://images.unsplash.com/photo-1577803645773-f96470509666?w=600&auto=format&fit=crop&q=80" },
-  { "id": 21, "name": "The Retro Round", "category": "sunglasses", "price": 16999, "oldPrice": null, "tag": "Vintage", "description": "Retro round sunglasses with smoke-tinted lenses and gold wire frame. Classic 70s-inspired style with modern UV protection.", "colors": ["#1a1a2e", "#c9a96e"], "rating": 4.6, "reviews": 94, "inStock": true, "gender": "female", "image": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&auto=format&fit=crop&q=80" },
-  { "id": 22, "name": "The Aviator Pro", "category": "sunglasses", "price": 22999, "oldPrice": 26999, "tag": "Sale", "description": "Premium aviator sunglasses with polarized green lenses. Gold-tone frame with rubberized temple tips for lasting comfort.", "colors": ["#c9a96e", "#1a2a4a"], "rating": 4.9, "reviews": 178, "inStock": true, "gender": "male", "image": "https://images.unsplash.com/photo-1577803645773-f96470509666?w=600&auto=format&fit=crop&q=80" },
-  { "id": 23, "name": "The Rose Gold", "category": "sunglasses", "price": 20999, "oldPrice": null, "tag": "Premium", "description": "Elegant oversized sunglasses in rose gold finish. Gradient rose-tinted lenses with a feminine, glamorous silhouette.", "colors": ["#b76e79", "#e0b0b0"], "rating": 4.8, "reviews": 112, "inStock": true, "gender": "female", "image": "https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=600&auto=format&fit=crop&q=80" },
-  { "id": 24, "name": "The Gentleman", "category": "sunglasses", "price": 23999, "oldPrice": null, "tag": "Iconic", "description": "Sophisticated square sunglasses with dark polarized lenses. Acetate frame with a refined modern-masculine design.", "colors": ["#1a1a2e", "#4a4a4a"], "rating": 4.8, "reviews": 134, "inStock": true, "gender": "male", "image": "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?w=600&auto=format&fit=crop&q=80" }
+  {
+    "id": 1,
+    "name": "Blue Cut glasses",
+    "category": "eyeglasses",
+    "price": 849,
+    "oldPrice": null,
+    "tag": null,
+    "description": "A stylish full-rim frame designed for everyday comfort and long-lasting durability. Perfect for office, study, and casual wear with a lightweight modern design.",
+    "images": [
+      "/eyeglasses/Bluecut glasses (rs 849)/BCL 01.jpg",
+      "/eyeglasses/Bluecut glasses (rs 849)/BCL 02.jpg",
+      "/eyeglasses/Bluecut glasses (rs 849)/BCL 03.jpg",
+      "/eyeglasses/Bluecut glasses (rs 849)/BCL 04.jpg"
+    ],
+    "image": "/eyeglasses/Bluecut glasses (rs 849)/BCL 01.jpg",
+    "specs": [
+      {
+        "label": "Frame Shape",
+        "value": "Rectangular"
+      },
+      {
+        "label": "Frame Type",
+        "value": "Full Rim"
+      },
+      {
+        "label": "Frame Style",
+        "value": "Modern"
+      },
+      {
+        "label": "Suitable Face Shapes",
+        "value": "Oval, Round"
+      },
+      {
+        "label": "Frame Size",
+        "value": "Medium"
+      },
+      {
+        "label": "Weight",
+        "value": "Lightweight"
+      },
+      {
+        "label": "Prescription Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Blue Cut Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Color",
+        "value": "Blue"
+      },
+      {
+        "label": "Occasion",
+        "value": "Daily Wear"
+      }
+    ],
+    "highlights": [
+      "✨ Premium rectangular eyeglasses design",
+      "🛡️ 2-year manufacturer warranty",
+      "🚚 Free shipping over ₹10,000",
+      "↩️ 30-day hassle-free returns",
+      "👓 Compatible with prescription lenses",
+      "💙 Blue light filter option available"
+    ],
+    "lensOptions": {
+      "singleVision": [
+        {
+          "id": "hmc",
+          "name": "Hard Multi Coated (HMC)",
+          "price": 599,
+          "tooltip": "Scratch-resistant Hard Multi Coating for better durability and clearer vision."
+        },
+        {
+          "id": "blue-block",
+          "name": "Blue Block Lens",
+          "price": 799,
+          "tooltip": "Protects eyes from harmful blue light emitted from digital screens."
+        },
+        {
+          "id": "photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Lens",
+          "price": 1599,
+          "tooltip": "Automatically darkens outdoors while providing blue light protection indoors."
+        }
+      ],
+      "bifocal": [
+        {
+          "id": "bifocal-hard-coat",
+          "name": "Hard Coat",
+          "price": 699,
+          "tooltip": "Provides separate zones for distance and near vision."
+        },
+        {
+          "id": "bifocal-blue-block",
+          "name": "Blue Block",
+          "price": 1299,
+          "tooltip": "Bifocal lens with integrated blue light protection."
+        },
+        {
+          "id": "bifocal-photo-grey-hard-coat",
+          "name": "Photo Grey Hard Coat",
+          "price": 999,
+          "tooltip": "Photochromic bifocal lens with durable hard coating."
+        },
+        {
+          "id": "bifocal-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block",
+          "price": 1799,
+          "tooltip": "Photochromic bifocal lens with blue light protection."
+        }
+      ],
+      "progressive": [
+        {
+          "id": "progressive-hmc",
+          "name": "Hard Multi Coat Progressive",
+          "price": 1800,
+          "tooltip": "Seamless progressive vision with premium hard multi coating."
+        },
+        {
+          "id": "progressive-blue-block",
+          "name": "Blue Block Progressive",
+          "price": 2500,
+          "tooltip": "Progressive lens with blue light protection."
+        },
+        {
+          "id": "progressive-photo-grey-hmc",
+          "name": "Photo Grey Hard Multi Coat Progressive",
+          "price": 2800,
+          "tooltip": "Premium photochromic progressive lens with hard multi coating."
+        },
+        {
+          "id": "progressive-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Progressive",
+          "price": 3500,
+          "tooltip": "Premium progressive lens with photochromic technology and blue light protection."
+        }
+      ]
+    },
+    "rating": null,
+    "reviews": null,
+    "inStock": true,
+    "gender": null,
+    "frameMaterial": null,
+    "stockStatus": null
+  },
+  {
+    "id": 2,
+    "name": "CL-3123",
+    "category": "eyeglasses",
+    "price": 800,
+    "oldPrice": null,
+    "tag": null,
+    "description": "Premium CL-3123 eyeglasses featuring a contemporary silhouette that blends sophistication with everyday practicality. Ideal for daily wear and professional settings.",
+    "images": [
+      "/eyeglasses/CL-3123 (rs 800)/CL 01.jpg",
+      "/eyeglasses/CL-3123 (rs 800)/CL 02.jpg",
+      "/eyeglasses/CL-3123 (rs 800)/CL 03.jpg",
+      "/eyeglasses/CL-3123 (rs 800)/CL 04.jpg"
+    ],
+    "image": "/eyeglasses/CL-3123 (rs 800)/CL 01.jpg",
+    "specs": [
+      {
+        "label": "Frame Shape",
+        "value": "Rectangular"
+      },
+      {
+        "label": "Frame Type",
+        "value": "Full Rim"
+      },
+      {
+        "label": "Frame Style",
+        "value": "Modern"
+      },
+      {
+        "label": "Suitable Face Shapes",
+        "value": "Oval, Round"
+      },
+      {
+        "label": "Frame Size",
+        "value": "Medium"
+      },
+      {
+        "label": "Weight",
+        "value": "Lightweight"
+      },
+      {
+        "label": "Prescription Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Blue Cut Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Color",
+        "value": "Black"
+      },
+      {
+        "label": "Occasion",
+        "value": "Daily Wear"
+      }
+    ],
+    "highlights": [
+      "✨ Premium rectangular eyeglasses design",
+      "🛡️ 2-year manufacturer warranty",
+      "🚚 Free shipping over ₹10,000",
+      "↩️ 30-day hassle-free returns",
+      "👓 Compatible with prescription lenses",
+      "💙 Blue light filter option available"
+    ],
+    "lensOptions": {
+      "singleVision": [
+        {
+          "id": "hmc",
+          "name": "Hard Multi Coated (HMC)",
+          "price": 599,
+          "tooltip": "Scratch-resistant Hard Multi Coating for better durability and clearer vision."
+        },
+        {
+          "id": "blue-block",
+          "name": "Blue Block Lens",
+          "price": 799,
+          "tooltip": "Protects eyes from harmful blue light emitted from digital screens."
+        },
+        {
+          "id": "photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Lens",
+          "price": 1599,
+          "tooltip": "Automatically darkens outdoors while providing blue light protection indoors."
+        }
+      ],
+      "bifocal": [
+        {
+          "id": "bifocal-hard-coat",
+          "name": "Hard Coat",
+          "price": 699,
+          "tooltip": "Provides separate zones for distance and near vision."
+        },
+        {
+          "id": "bifocal-blue-block",
+          "name": "Blue Block",
+          "price": 1299,
+          "tooltip": "Bifocal lens with integrated blue light protection."
+        },
+        {
+          "id": "bifocal-photo-grey-hard-coat",
+          "name": "Photo Grey Hard Coat",
+          "price": 999,
+          "tooltip": "Photochromic bifocal lens with durable hard coating."
+        },
+        {
+          "id": "bifocal-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block",
+          "price": 1799,
+          "tooltip": "Photochromic bifocal lens with blue light protection."
+        }
+      ],
+      "progressive": [
+        {
+          "id": "progressive-hmc",
+          "name": "Hard Multi Coat Progressive",
+          "price": 1800,
+          "tooltip": "Seamless progressive vision with premium hard multi coating."
+        },
+        {
+          "id": "progressive-blue-block",
+          "name": "Blue Block Progressive",
+          "price": 2500,
+          "tooltip": "Progressive lens with blue light protection."
+        },
+        {
+          "id": "progressive-photo-grey-hmc",
+          "name": "Photo Grey Hard Multi Coat Progressive",
+          "price": 2800,
+          "tooltip": "Premium photochromic progressive lens with hard multi coating."
+        },
+        {
+          "id": "progressive-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Progressive",
+          "price": 3500,
+          "tooltip": "Premium progressive lens with photochromic technology and blue light protection."
+        }
+      ]
+    },
+    "rating": null,
+    "reviews": null,
+    "inStock": true,
+    "gender": null,
+    "frameMaterial": null,
+    "stockStatus": null
+  },
+  {
+    "id": 3,
+    "name": "CL-3124",
+    "category": "eyeglasses",
+    "price": 800,
+    "oldPrice": null,
+    "tag": null,
+    "description": "Crafted with precision, this CL-3124 frame offers a refined look with exceptional comfort. A versatile choice for work, study, and leisure.",
+    "images": [
+      "/eyeglasses/CL-3124 (rs 800)/CL- 24 01.jpg",
+      "/eyeglasses/CL-3124 (rs 800)/CL- 24 02.jpg",
+      "/eyeglasses/CL-3124 (rs 800)/CL- 24 03.jpg"
+    ],
+    "image": "/eyeglasses/CL-3124 (rs 800)/CL- 24 01.jpg",
+    "specs": [
+      {
+        "label": "Frame Shape",
+        "value": "Rectangular"
+      },
+      {
+        "label": "Frame Type",
+        "value": "Full Rim"
+      },
+      {
+        "label": "Frame Style",
+        "value": "Modern"
+      },
+      {
+        "label": "Suitable Face Shapes",
+        "value": "Oval, Round"
+      },
+      {
+        "label": "Frame Size",
+        "value": "Medium"
+      },
+      {
+        "label": "Weight",
+        "value": "Lightweight"
+      },
+      {
+        "label": "Prescription Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Blue Cut Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Color",
+        "value": "Black"
+      },
+      {
+        "label": "Occasion",
+        "value": "Daily Wear"
+      }
+    ],
+    "highlights": [
+      "✨ Premium rectangular eyeglasses design",
+      "🛡️ 2-year manufacturer warranty",
+      "🚚 Free shipping over ₹10,000",
+      "↩️ 30-day hassle-free returns",
+      "👓 Compatible with prescription lenses",
+      "💙 Blue light filter option available"
+    ],
+    "lensOptions": {
+      "singleVision": [
+        {
+          "id": "hmc",
+          "name": "Hard Multi Coated (HMC)",
+          "price": 599,
+          "tooltip": "Scratch-resistant Hard Multi Coating for better durability and clearer vision."
+        },
+        {
+          "id": "blue-block",
+          "name": "Blue Block Lens",
+          "price": 799,
+          "tooltip": "Protects eyes from harmful blue light emitted from digital screens."
+        },
+        {
+          "id": "photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Lens",
+          "price": 1599,
+          "tooltip": "Automatically darkens outdoors while providing blue light protection indoors."
+        }
+      ],
+      "bifocal": [
+        {
+          "id": "bifocal-hard-coat",
+          "name": "Hard Coat",
+          "price": 699,
+          "tooltip": "Provides separate zones for distance and near vision."
+        },
+        {
+          "id": "bifocal-blue-block",
+          "name": "Blue Block",
+          "price": 1299,
+          "tooltip": "Bifocal lens with integrated blue light protection."
+        },
+        {
+          "id": "bifocal-photo-grey-hard-coat",
+          "name": "Photo Grey Hard Coat",
+          "price": 999,
+          "tooltip": "Photochromic bifocal lens with durable hard coating."
+        },
+        {
+          "id": "bifocal-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block",
+          "price": 1799,
+          "tooltip": "Photochromic bifocal lens with blue light protection."
+        }
+      ],
+      "progressive": [
+        {
+          "id": "progressive-hmc",
+          "name": "Hard Multi Coat Progressive",
+          "price": 1800,
+          "tooltip": "Seamless progressive vision with premium hard multi coating."
+        },
+        {
+          "id": "progressive-blue-block",
+          "name": "Blue Block Progressive",
+          "price": 2500,
+          "tooltip": "Progressive lens with blue light protection."
+        },
+        {
+          "id": "progressive-photo-grey-hmc",
+          "name": "Photo Grey Hard Multi Coat Progressive",
+          "price": 2800,
+          "tooltip": "Premium photochromic progressive lens with hard multi coating."
+        },
+        {
+          "id": "progressive-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Progressive",
+          "price": 3500,
+          "tooltip": "Premium progressive lens with photochromic technology and blue light protection."
+        }
+      ]
+    },
+    "rating": null,
+    "reviews": null,
+    "inStock": true,
+    "gender": null,
+    "frameMaterial": null,
+    "stockStatus": null
+  },
+  {
+    "id": 4,
+    "name": "GL-951",
+    "category": "eyeglasses",
+    "price": 1299,
+    "oldPrice": null,
+    "tag": null,
+    "description": "Modern GL-951 eyeglasses with a sleek profile and premium finish. Designed for all-day wear with a comfortable, secure fit.",
+    "images": [
+      "/eyeglasses/GL-951 (rs 1299)/GL 95 01.jpg",
+      "/eyeglasses/GL-951 (rs 1299)/GL 95 02.jpg"
+    ],
+    "image": "/eyeglasses/GL-951 (rs 1299)/GL 95 01.jpg",
+    "specs": [
+      {
+        "label": "Frame Shape",
+        "value": "Rectangular"
+      },
+      {
+        "label": "Frame Type",
+        "value": "Full Rim"
+      },
+      {
+        "label": "Frame Style",
+        "value": "Modern"
+      },
+      {
+        "label": "Suitable Face Shapes",
+        "value": "Oval, Round"
+      },
+      {
+        "label": "Frame Size",
+        "value": "Medium"
+      },
+      {
+        "label": "Weight",
+        "value": "Lightweight"
+      },
+      {
+        "label": "Prescription Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Blue Cut Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Color",
+        "value": "Black"
+      },
+      {
+        "label": "Occasion",
+        "value": "Daily Wear"
+      }
+    ],
+    "highlights": [
+      "✨ Premium rectangular eyeglasses design",
+      "🛡️ 2-year manufacturer warranty",
+      "🚚 Free shipping over ₹10,000",
+      "↩️ 30-day hassle-free returns",
+      "👓 Compatible with prescription lenses",
+      "💙 Blue light filter option available"
+    ],
+    "lensOptions": {
+      "singleVision": [
+        {
+          "id": "hmc",
+          "name": "Hard Multi Coated (HMC)",
+          "price": 599,
+          "tooltip": "Scratch-resistant Hard Multi Coating for better durability and clearer vision."
+        },
+        {
+          "id": "blue-block",
+          "name": "Blue Block Lens",
+          "price": 799,
+          "tooltip": "Protects eyes from harmful blue light emitted from digital screens."
+        },
+        {
+          "id": "photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Lens",
+          "price": 1599,
+          "tooltip": "Automatically darkens outdoors while providing blue light protection indoors."
+        }
+      ],
+      "bifocal": [
+        {
+          "id": "bifocal-hard-coat",
+          "name": "Hard Coat",
+          "price": 699,
+          "tooltip": "Provides separate zones for distance and near vision."
+        },
+        {
+          "id": "bifocal-blue-block",
+          "name": "Blue Block",
+          "price": 1299,
+          "tooltip": "Bifocal lens with integrated blue light protection."
+        },
+        {
+          "id": "bifocal-photo-grey-hard-coat",
+          "name": "Photo Grey Hard Coat",
+          "price": 999,
+          "tooltip": "Photochromic bifocal lens with durable hard coating."
+        },
+        {
+          "id": "bifocal-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block",
+          "price": 1799,
+          "tooltip": "Photochromic bifocal lens with blue light protection."
+        }
+      ],
+      "progressive": [
+        {
+          "id": "progressive-hmc",
+          "name": "Hard Multi Coat Progressive",
+          "price": 1800,
+          "tooltip": "Seamless progressive vision with premium hard multi coating."
+        },
+        {
+          "id": "progressive-blue-block",
+          "name": "Blue Block Progressive",
+          "price": 2500,
+          "tooltip": "Progressive lens with blue light protection."
+        },
+        {
+          "id": "progressive-photo-grey-hmc",
+          "name": "Photo Grey Hard Multi Coat Progressive",
+          "price": 2800,
+          "tooltip": "Premium photochromic progressive lens with hard multi coating."
+        },
+        {
+          "id": "progressive-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Progressive",
+          "price": 3500,
+          "tooltip": "Premium progressive lens with photochromic technology and blue light protection."
+        }
+      ]
+    },
+    "rating": null,
+    "reviews": null,
+    "inStock": true,
+    "gender": null,
+    "frameMaterial": null,
+    "stockStatus": null
+  },
+  {
+    "id": 5,
+    "name": "GL-9514",
+    "category": "eyeglasses",
+    "price": 1199,
+    "oldPrice": null,
+    "tag": null,
+    "description": "Elegant GL-9514 frame combining classic aesthetics with modern engineering. Perfect for those who value both style and function.",
+    "images": [
+      "/eyeglasses/GL-9514 (rs 1199)/GL 14 01.jpg",
+      "/eyeglasses/GL-9514 (rs 1199)/GL 14 02.jpg"
+    ],
+    "image": "/eyeglasses/GL-9514 (rs 1199)/GL 14 01.jpg",
+    "specs": [
+      {
+        "label": "Frame Shape",
+        "value": "Rectangular"
+      },
+      {
+        "label": "Frame Type",
+        "value": "Full Rim"
+      },
+      {
+        "label": "Frame Style",
+        "value": "Modern"
+      },
+      {
+        "label": "Suitable Face Shapes",
+        "value": "Oval, Round"
+      },
+      {
+        "label": "Frame Size",
+        "value": "Medium"
+      },
+      {
+        "label": "Weight",
+        "value": "Lightweight"
+      },
+      {
+        "label": "Prescription Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Blue Cut Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Color",
+        "value": "Black"
+      },
+      {
+        "label": "Occasion",
+        "value": "Daily Wear"
+      }
+    ],
+    "highlights": [
+      "✨ Premium rectangular eyeglasses design",
+      "🛡️ 2-year manufacturer warranty",
+      "🚚 Free shipping over ₹10,000",
+      "↩️ 30-day hassle-free returns",
+      "👓 Compatible with prescription lenses",
+      "💙 Blue light filter option available"
+    ],
+    "lensOptions": {
+      "singleVision": [
+        {
+          "id": "hmc",
+          "name": "Hard Multi Coated (HMC)",
+          "price": 599,
+          "tooltip": "Scratch-resistant Hard Multi Coating for better durability and clearer vision."
+        },
+        {
+          "id": "blue-block",
+          "name": "Blue Block Lens",
+          "price": 799,
+          "tooltip": "Protects eyes from harmful blue light emitted from digital screens."
+        },
+        {
+          "id": "photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Lens",
+          "price": 1599,
+          "tooltip": "Automatically darkens outdoors while providing blue light protection indoors."
+        }
+      ],
+      "bifocal": [
+        {
+          "id": "bifocal-hard-coat",
+          "name": "Hard Coat",
+          "price": 699,
+          "tooltip": "Provides separate zones for distance and near vision."
+        },
+        {
+          "id": "bifocal-blue-block",
+          "name": "Blue Block",
+          "price": 1299,
+          "tooltip": "Bifocal lens with integrated blue light protection."
+        },
+        {
+          "id": "bifocal-photo-grey-hard-coat",
+          "name": "Photo Grey Hard Coat",
+          "price": 999,
+          "tooltip": "Photochromic bifocal lens with durable hard coating."
+        },
+        {
+          "id": "bifocal-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block",
+          "price": 1799,
+          "tooltip": "Photochromic bifocal lens with blue light protection."
+        }
+      ],
+      "progressive": [
+        {
+          "id": "progressive-hmc",
+          "name": "Hard Multi Coat Progressive",
+          "price": 1800,
+          "tooltip": "Seamless progressive vision with premium hard multi coating."
+        },
+        {
+          "id": "progressive-blue-block",
+          "name": "Blue Block Progressive",
+          "price": 2500,
+          "tooltip": "Progressive lens with blue light protection."
+        },
+        {
+          "id": "progressive-photo-grey-hmc",
+          "name": "Photo Grey Hard Multi Coat Progressive",
+          "price": 2800,
+          "tooltip": "Premium photochromic progressive lens with hard multi coating."
+        },
+        {
+          "id": "progressive-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Progressive",
+          "price": 3500,
+          "tooltip": "Premium progressive lens with photochromic technology and blue light protection."
+        }
+      ]
+    },
+    "rating": null,
+    "reviews": null,
+    "inStock": true,
+    "gender": null,
+    "frameMaterial": null,
+    "stockStatus": null
+  },
+  {
+    "id": 6,
+    "name": "GT-1905",
+    "category": "eyeglasses",
+    "price": 1500,
+    "oldPrice": null,
+    "tag": null,
+    "description": "Lightweight and durable, this GT-1905 eyeglass frame delivers clear vision with a sophisticated appearance. Great for everyday use.",
+    "images": [
+      "/eyeglasses/GT-1905 (rs 1500)/GT 05 1.jpg",
+      "/eyeglasses/GT-1905 (rs 1500)/GT 05 2.jpg",
+      "/eyeglasses/GT-1905 (rs 1500)/GT 05 3.jpg"
+    ],
+    "image": "/eyeglasses/GT-1905 (rs 1500)/GT 05 1.jpg",
+    "specs": [
+      {
+        "label": "Frame Shape",
+        "value": "Rectangular"
+      },
+      {
+        "label": "Frame Type",
+        "value": "Full Rim"
+      },
+      {
+        "label": "Frame Style",
+        "value": "Modern"
+      },
+      {
+        "label": "Suitable Face Shapes",
+        "value": "Oval, Round"
+      },
+      {
+        "label": "Frame Size",
+        "value": "Medium"
+      },
+      {
+        "label": "Weight",
+        "value": "Lightweight"
+      },
+      {
+        "label": "Prescription Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Blue Cut Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Color",
+        "value": "Black"
+      },
+      {
+        "label": "Occasion",
+        "value": "Daily Wear"
+      }
+    ],
+    "highlights": [
+      "✨ Premium rectangular eyeglasses design",
+      "🛡️ 2-year manufacturer warranty",
+      "🚚 Free shipping over ₹10,000",
+      "↩️ 30-day hassle-free returns",
+      "👓 Compatible with prescription lenses",
+      "💙 Blue light filter option available"
+    ],
+    "lensOptions": {
+      "singleVision": [
+        {
+          "id": "hmc",
+          "name": "Hard Multi Coated (HMC)",
+          "price": 599,
+          "tooltip": "Scratch-resistant Hard Multi Coating for better durability and clearer vision."
+        },
+        {
+          "id": "blue-block",
+          "name": "Blue Block Lens",
+          "price": 799,
+          "tooltip": "Protects eyes from harmful blue light emitted from digital screens."
+        },
+        {
+          "id": "photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Lens",
+          "price": 1599,
+          "tooltip": "Automatically darkens outdoors while providing blue light protection indoors."
+        }
+      ],
+      "bifocal": [
+        {
+          "id": "bifocal-hard-coat",
+          "name": "Hard Coat",
+          "price": 699,
+          "tooltip": "Provides separate zones for distance and near vision."
+        },
+        {
+          "id": "bifocal-blue-block",
+          "name": "Blue Block",
+          "price": 1299,
+          "tooltip": "Bifocal lens with integrated blue light protection."
+        },
+        {
+          "id": "bifocal-photo-grey-hard-coat",
+          "name": "Photo Grey Hard Coat",
+          "price": 999,
+          "tooltip": "Photochromic bifocal lens with durable hard coating."
+        },
+        {
+          "id": "bifocal-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block",
+          "price": 1799,
+          "tooltip": "Photochromic bifocal lens with blue light protection."
+        }
+      ],
+      "progressive": [
+        {
+          "id": "progressive-hmc",
+          "name": "Hard Multi Coat Progressive",
+          "price": 1800,
+          "tooltip": "Seamless progressive vision with premium hard multi coating."
+        },
+        {
+          "id": "progressive-blue-block",
+          "name": "Blue Block Progressive",
+          "price": 2500,
+          "tooltip": "Progressive lens with blue light protection."
+        },
+        {
+          "id": "progressive-photo-grey-hmc",
+          "name": "Photo Grey Hard Multi Coat Progressive",
+          "price": 2800,
+          "tooltip": "Premium photochromic progressive lens with hard multi coating."
+        },
+        {
+          "id": "progressive-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Progressive",
+          "price": 3500,
+          "tooltip": "Premium progressive lens with photochromic technology and blue light protection."
+        }
+      ]
+    },
+    "rating": null,
+    "reviews": null,
+    "inStock": true,
+    "gender": null,
+    "frameMaterial": null,
+    "stockStatus": null
+  },
+  {
+    "id": 7,
+    "name": "GT-3022",
+    "category": "eyeglasses",
+    "price": 1799,
+    "oldPrice": null,
+    "tag": null,
+    "description": "A stylish full-rim frame designed for everyday comfort and long-lasting durability. Perfect for office, study, and casual wear with a lightweight modern design.",
+    "images": [
+      "/eyeglasses/GT-3022 (rs 1799)/GT 22 -01.jpg",
+      "/eyeglasses/GT-3022 (rs 1799)/GT 22 02.jpg",
+      "/eyeglasses/GT-3022 (rs 1799)/GT 22 03.jpg"
+    ],
+    "image": "/eyeglasses/GT-3022 (rs 1799)/GT 22 -01.jpg",
+    "specs": [
+      {
+        "label": "Frame Shape",
+        "value": "Rectangular"
+      },
+      {
+        "label": "Frame Type",
+        "value": "Full Rim"
+      },
+      {
+        "label": "Frame Style",
+        "value": "Modern"
+      },
+      {
+        "label": "Suitable Face Shapes",
+        "value": "Oval, Round"
+      },
+      {
+        "label": "Frame Size",
+        "value": "Medium"
+      },
+      {
+        "label": "Weight",
+        "value": "Lightweight"
+      },
+      {
+        "label": "Prescription Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Blue Cut Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Color",
+        "value": "Black"
+      },
+      {
+        "label": "Occasion",
+        "value": "Daily Wear"
+      }
+    ],
+    "highlights": [
+      "✨ Premium rectangular eyeglasses design",
+      "🛡️ 2-year manufacturer warranty",
+      "🚚 Free shipping over ₹10,000",
+      "↩️ 30-day hassle-free returns",
+      "👓 Compatible with prescription lenses",
+      "💙 Blue light filter option available"
+    ],
+    "lensOptions": {
+      "singleVision": [
+        {
+          "id": "hmc",
+          "name": "Hard Multi Coated (HMC)",
+          "price": 599,
+          "tooltip": "Scratch-resistant Hard Multi Coating for better durability and clearer vision."
+        },
+        {
+          "id": "blue-block",
+          "name": "Blue Block Lens",
+          "price": 799,
+          "tooltip": "Protects eyes from harmful blue light emitted from digital screens."
+        },
+        {
+          "id": "photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Lens",
+          "price": 1599,
+          "tooltip": "Automatically darkens outdoors while providing blue light protection indoors."
+        }
+      ],
+      "bifocal": [
+        {
+          "id": "bifocal-hard-coat",
+          "name": "Hard Coat",
+          "price": 699,
+          "tooltip": "Provides separate zones for distance and near vision."
+        },
+        {
+          "id": "bifocal-blue-block",
+          "name": "Blue Block",
+          "price": 1299,
+          "tooltip": "Bifocal lens with integrated blue light protection."
+        },
+        {
+          "id": "bifocal-photo-grey-hard-coat",
+          "name": "Photo Grey Hard Coat",
+          "price": 999,
+          "tooltip": "Photochromic bifocal lens with durable hard coating."
+        },
+        {
+          "id": "bifocal-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block",
+          "price": 1799,
+          "tooltip": "Photochromic bifocal lens with blue light protection."
+        }
+      ],
+      "progressive": [
+        {
+          "id": "progressive-hmc",
+          "name": "Hard Multi Coat Progressive",
+          "price": 1800,
+          "tooltip": "Seamless progressive vision with premium hard multi coating."
+        },
+        {
+          "id": "progressive-blue-block",
+          "name": "Blue Block Progressive",
+          "price": 2500,
+          "tooltip": "Progressive lens with blue light protection."
+        },
+        {
+          "id": "progressive-photo-grey-hmc",
+          "name": "Photo Grey Hard Multi Coat Progressive",
+          "price": 2800,
+          "tooltip": "Premium photochromic progressive lens with hard multi coating."
+        },
+        {
+          "id": "progressive-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Progressive",
+          "price": 3500,
+          "tooltip": "Premium progressive lens with photochromic technology and blue light protection."
+        }
+      ]
+    },
+    "rating": null,
+    "reviews": null,
+    "inStock": true,
+    "gender": null,
+    "frameMaterial": null,
+    "stockStatus": null
+  },
+  {
+    "id": 8,
+    "name": "GT-1906 Polarized",
+    "category": "sunglasses",
+    "price": 1299,
+    "oldPrice": null,
+    "tag": null,
+    "description": "Premium GT-1906 Polarized sunglasses offering excellent UV protection with a sleek contemporary frame that complements both casual and formal outfits.",
+    "images": [
+      "/sunglasses/GT-1906 polarized (rs1299)/GT 06 1.jpg",
+      "/sunglasses/GT-1906 polarized (rs1299)/GT 06 2.jpg",
+      "/sunglasses/GT-1906 polarized (rs1299)/GT 06 3.jpg",
+      "/sunglasses/GT-1906 polarized (rs1299)/GT 06 4.jpg"
+    ],
+    "image": "/sunglasses/GT-1906 polarized (rs1299)/GT 06 1.jpg",
+    "specs": [
+      {
+        "label": "Frame Shape",
+        "value": "Rectangular"
+      },
+      {
+        "label": "Frame Type",
+        "value": "Full Rim"
+      },
+      {
+        "label": "Frame Style",
+        "value": "Modern"
+      },
+      {
+        "label": "Suitable Face Shapes",
+        "value": "Oval, Round"
+      },
+      {
+        "label": "Frame Size",
+        "value": "Medium"
+      },
+      {
+        "label": "Weight",
+        "value": "Lightweight"
+      },
+      {
+        "label": "Prescription Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Blue Cut Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "UV Protection",
+        "value": "UV400"
+      },
+      {
+        "label": "Polarized",
+        "value": "Yes"
+      },
+      {
+        "label": "Color",
+        "value": "Black"
+      },
+      {
+        "label": "Occasion",
+        "value": "Daily Wear"
+      }
+    ],
+    "highlights": [
+      "✨ Premium rectangular sunglasses design",
+      "🛡️ 2-year manufacturer warranty",
+      "🚚 Free shipping over ₹10,000",
+      "↩️ 30-day hassle-free returns",
+      "☀️ UV400 protection for complete sun safety",
+      "🕶️ Polarized lenses reduce glare for clearer vision"
+    ],
+    "lensOptions": {
+      "singleVision": [
+        {
+          "id": "hmc",
+          "name": "Hard Multi Coated (HMC)",
+          "price": 599,
+          "tooltip": "Scratch-resistant Hard Multi Coating for better durability and clearer vision."
+        },
+        {
+          "id": "blue-block",
+          "name": "Blue Block Lens",
+          "price": 799,
+          "tooltip": "Protects eyes from harmful blue light emitted from digital screens."
+        },
+        {
+          "id": "photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Lens",
+          "price": 1599,
+          "tooltip": "Automatically darkens outdoors while providing blue light protection indoors."
+        }
+      ],
+      "bifocal": [
+        {
+          "id": "bifocal-hard-coat",
+          "name": "Hard Coat",
+          "price": 699,
+          "tooltip": "Provides separate zones for distance and near vision."
+        },
+        {
+          "id": "bifocal-blue-block",
+          "name": "Blue Block",
+          "price": 1299,
+          "tooltip": "Bifocal lens with integrated blue light protection."
+        },
+        {
+          "id": "bifocal-photo-grey-hard-coat",
+          "name": "Photo Grey Hard Coat",
+          "price": 999,
+          "tooltip": "Photochromic bifocal lens with durable hard coating."
+        },
+        {
+          "id": "bifocal-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block",
+          "price": 1799,
+          "tooltip": "Photochromic bifocal lens with blue light protection."
+        }
+      ],
+      "progressive": [
+        {
+          "id": "progressive-hmc",
+          "name": "Hard Multi Coat Progressive",
+          "price": 1800,
+          "tooltip": "Seamless progressive vision with premium hard multi coating."
+        },
+        {
+          "id": "progressive-blue-block",
+          "name": "Blue Block Progressive",
+          "price": 2500,
+          "tooltip": "Progressive lens with blue light protection."
+        },
+        {
+          "id": "progressive-photo-grey-hmc",
+          "name": "Photo Grey Hard Multi Coat Progressive",
+          "price": 2800,
+          "tooltip": "Premium photochromic progressive lens with hard multi coating."
+        },
+        {
+          "id": "progressive-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Progressive",
+          "price": 3500,
+          "tooltip": "Premium progressive lens with photochromic technology and blue light protection."
+        }
+      ]
+    },
+    "rating": null,
+    "reviews": null,
+    "inStock": true,
+    "gender": null,
+    "frameMaterial": null,
+    "stockStatus": null
+  },
+  {
+    "id": 9,
+    "name": "HT-2002",
+    "category": "sunglasses",
+    "price": 899,
+    "oldPrice": null,
+    "tag": null,
+    "description": "Stylish HT-2002 sunglasses with high-quality lenses and a durable frame. Perfect for outdoor activities, driving, and everyday fashion.",
+    "images": [
+      "/sunglasses/HT-2002 (rs 899)/HT 01.jpg",
+      "/sunglasses/HT-2002 (rs 899)/HT 02.jpg",
+      "/sunglasses/HT-2002 (rs 899)/HT 03.jpg",
+      "/sunglasses/HT-2002 (rs 899)/HT 04.jpg"
+    ],
+    "image": "/sunglasses/HT-2002 (rs 899)/HT 01.jpg",
+    "specs": [
+      {
+        "label": "Frame Shape",
+        "value": "Rectangular"
+      },
+      {
+        "label": "Frame Type",
+        "value": "Full Rim"
+      },
+      {
+        "label": "Frame Style",
+        "value": "Modern"
+      },
+      {
+        "label": "Suitable Face Shapes",
+        "value": "Oval, Round"
+      },
+      {
+        "label": "Frame Size",
+        "value": "Medium"
+      },
+      {
+        "label": "Weight",
+        "value": "Lightweight"
+      },
+      {
+        "label": "Prescription Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Blue Cut Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "UV Protection",
+        "value": "UV400"
+      },
+      {
+        "label": "Color",
+        "value": "Black"
+      },
+      {
+        "label": "Occasion",
+        "value": "Daily Wear"
+      }
+    ],
+    "highlights": [
+      "✨ Premium rectangular sunglasses design",
+      "🛡️ 2-year manufacturer warranty",
+      "🚚 Free shipping over ₹10,000",
+      "↩️ 30-day hassle-free returns",
+      "☀️ UV400 protection for complete sun safety"
+    ],
+    "lensOptions": {
+      "singleVision": [
+        {
+          "id": "hmc",
+          "name": "Hard Multi Coated (HMC)",
+          "price": 599,
+          "tooltip": "Scratch-resistant Hard Multi Coating for better durability and clearer vision."
+        },
+        {
+          "id": "blue-block",
+          "name": "Blue Block Lens",
+          "price": 799,
+          "tooltip": "Protects eyes from harmful blue light emitted from digital screens."
+        },
+        {
+          "id": "photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Lens",
+          "price": 1599,
+          "tooltip": "Automatically darkens outdoors while providing blue light protection indoors."
+        }
+      ],
+      "bifocal": [
+        {
+          "id": "bifocal-hard-coat",
+          "name": "Hard Coat",
+          "price": 699,
+          "tooltip": "Provides separate zones for distance and near vision."
+        },
+        {
+          "id": "bifocal-blue-block",
+          "name": "Blue Block",
+          "price": 1299,
+          "tooltip": "Bifocal lens with integrated blue light protection."
+        },
+        {
+          "id": "bifocal-photo-grey-hard-coat",
+          "name": "Photo Grey Hard Coat",
+          "price": 999,
+          "tooltip": "Photochromic bifocal lens with durable hard coating."
+        },
+        {
+          "id": "bifocal-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block",
+          "price": 1799,
+          "tooltip": "Photochromic bifocal lens with blue light protection."
+        }
+      ],
+      "progressive": [
+        {
+          "id": "progressive-hmc",
+          "name": "Hard Multi Coat Progressive",
+          "price": 1800,
+          "tooltip": "Seamless progressive vision with premium hard multi coating."
+        },
+        {
+          "id": "progressive-blue-block",
+          "name": "Blue Block Progressive",
+          "price": 2500,
+          "tooltip": "Progressive lens with blue light protection."
+        },
+        {
+          "id": "progressive-photo-grey-hmc",
+          "name": "Photo Grey Hard Multi Coat Progressive",
+          "price": 2800,
+          "tooltip": "Premium photochromic progressive lens with hard multi coating."
+        },
+        {
+          "id": "progressive-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Progressive",
+          "price": 3500,
+          "tooltip": "Premium progressive lens with photochromic technology and blue light protection."
+        }
+      ]
+    },
+    "rating": null,
+    "reviews": null,
+    "inStock": true,
+    "gender": null,
+    "frameMaterial": null,
+    "stockStatus": null
+  },
+  {
+    "id": 10,
+    "name": "PL-1001",
+    "category": "sunglasses",
+    "price": 599,
+    "oldPrice": null,
+    "tag": null,
+    "description": "Fashion-forward PL-1001 sunglasses designed to elevate any look. Featuring UV-protective lenses and a comfortable, secure fit.",
+    "images": [
+      "/sunglasses/PL-1001 (rs 599)/PL 01 01.jpg",
+      "/sunglasses/PL-1001 (rs 599)/PL 01 02.jpg",
+      "/sunglasses/PL-1001 (rs 599)/PL 01 03.jpg"
+    ],
+    "image": "/sunglasses/PL-1001 (rs 599)/PL 01 01.jpg",
+    "specs": [
+      {
+        "label": "Frame Shape",
+        "value": "Rectangular"
+      },
+      {
+        "label": "Frame Type",
+        "value": "Full Rim"
+      },
+      {
+        "label": "Frame Style",
+        "value": "Modern"
+      },
+      {
+        "label": "Suitable Face Shapes",
+        "value": "Oval, Round"
+      },
+      {
+        "label": "Frame Size",
+        "value": "Medium"
+      },
+      {
+        "label": "Weight",
+        "value": "Lightweight"
+      },
+      {
+        "label": "Prescription Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Blue Cut Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "UV Protection",
+        "value": "UV400"
+      },
+      {
+        "label": "Color",
+        "value": "Black"
+      },
+      {
+        "label": "Occasion",
+        "value": "Daily Wear"
+      }
+    ],
+    "highlights": [
+      "✨ Premium rectangular sunglasses design",
+      "🛡️ 2-year manufacturer warranty",
+      "🚚 Free shipping over ₹10,000",
+      "↩️ 30-day hassle-free returns",
+      "☀️ UV400 protection for complete sun safety"
+    ],
+    "lensOptions": {
+      "singleVision": [
+        {
+          "id": "hmc",
+          "name": "Hard Multi Coated (HMC)",
+          "price": 599,
+          "tooltip": "Scratch-resistant Hard Multi Coating for better durability and clearer vision."
+        },
+        {
+          "id": "blue-block",
+          "name": "Blue Block Lens",
+          "price": 799,
+          "tooltip": "Protects eyes from harmful blue light emitted from digital screens."
+        },
+        {
+          "id": "photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Lens",
+          "price": 1599,
+          "tooltip": "Automatically darkens outdoors while providing blue light protection indoors."
+        }
+      ],
+      "bifocal": [
+        {
+          "id": "bifocal-hard-coat",
+          "name": "Hard Coat",
+          "price": 699,
+          "tooltip": "Provides separate zones for distance and near vision."
+        },
+        {
+          "id": "bifocal-blue-block",
+          "name": "Blue Block",
+          "price": 1299,
+          "tooltip": "Bifocal lens with integrated blue light protection."
+        },
+        {
+          "id": "bifocal-photo-grey-hard-coat",
+          "name": "Photo Grey Hard Coat",
+          "price": 999,
+          "tooltip": "Photochromic bifocal lens with durable hard coating."
+        },
+        {
+          "id": "bifocal-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block",
+          "price": 1799,
+          "tooltip": "Photochromic bifocal lens with blue light protection."
+        }
+      ],
+      "progressive": [
+        {
+          "id": "progressive-hmc",
+          "name": "Hard Multi Coat Progressive",
+          "price": 1800,
+          "tooltip": "Seamless progressive vision with premium hard multi coating."
+        },
+        {
+          "id": "progressive-blue-block",
+          "name": "Blue Block Progressive",
+          "price": 2500,
+          "tooltip": "Progressive lens with blue light protection."
+        },
+        {
+          "id": "progressive-photo-grey-hmc",
+          "name": "Photo Grey Hard Multi Coat Progressive",
+          "price": 2800,
+          "tooltip": "Premium photochromic progressive lens with hard multi coating."
+        },
+        {
+          "id": "progressive-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Progressive",
+          "price": 3500,
+          "tooltip": "Premium progressive lens with photochromic technology and blue light protection."
+        }
+      ]
+    },
+    "rating": null,
+    "reviews": null,
+    "inStock": true,
+    "gender": null,
+    "frameMaterial": null,
+    "stockStatus": null
+  },
+  {
+    "id": 11,
+    "name": "TH-3009 Polarized",
+    "category": "sunglasses",
+    "price": 999,
+    "oldPrice": null,
+    "tag": null,
+    "description": "Trendsetting TH-3009 Polarized sunglasses with a bold frame and premium lens technology. Ideal for sunny days and stylish outings.",
+    "images": [
+      "/sunglasses/TH-3009 porlarized (rs 999)/TH-09 01.jpg",
+      "/sunglasses/TH-3009 porlarized (rs 999)/TH-09 02.jpg",
+      "/sunglasses/TH-3009 porlarized (rs 999)/TH-09 03.jpg"
+    ],
+    "image": "/sunglasses/TH-3009 porlarized (rs 999)/TH-09 01.jpg",
+    "specs": [
+      {
+        "label": "Frame Shape",
+        "value": "Rectangular"
+      },
+      {
+        "label": "Frame Type",
+        "value": "Full Rim"
+      },
+      {
+        "label": "Frame Style",
+        "value": "Modern"
+      },
+      {
+        "label": "Suitable Face Shapes",
+        "value": "Oval, Round"
+      },
+      {
+        "label": "Frame Size",
+        "value": "Medium"
+      },
+      {
+        "label": "Weight",
+        "value": "Lightweight"
+      },
+      {
+        "label": "Prescription Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "Blue Cut Compatible",
+        "value": "Yes"
+      },
+      {
+        "label": "UV Protection",
+        "value": "UV400"
+      },
+      {
+        "label": "Polarized",
+        "value": "Yes"
+      },
+      {
+        "label": "Color",
+        "value": "Black"
+      },
+      {
+        "label": "Occasion",
+        "value": "Daily Wear"
+      }
+    ],
+    "highlights": [
+      "✨ Premium rectangular sunglasses design",
+      "🛡️ 2-year manufacturer warranty",
+      "🚚 Free shipping over ₹10,000",
+      "↩️ 30-day hassle-free returns",
+      "☀️ UV400 protection for complete sun safety",
+      "🕶️ Polarized lenses reduce glare for clearer vision"
+    ],
+    "lensOptions": {
+      "singleVision": [
+        {
+          "id": "hmc",
+          "name": "Hard Multi Coated (HMC)",
+          "price": 599,
+          "tooltip": "Scratch-resistant Hard Multi Coating for better durability and clearer vision."
+        },
+        {
+          "id": "blue-block",
+          "name": "Blue Block Lens",
+          "price": 799,
+          "tooltip": "Protects eyes from harmful blue light emitted from digital screens."
+        },
+        {
+          "id": "photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Lens",
+          "price": 1599,
+          "tooltip": "Automatically darkens outdoors while providing blue light protection indoors."
+        }
+      ],
+      "bifocal": [
+        {
+          "id": "bifocal-hard-coat",
+          "name": "Hard Coat",
+          "price": 699,
+          "tooltip": "Provides separate zones for distance and near vision."
+        },
+        {
+          "id": "bifocal-blue-block",
+          "name": "Blue Block",
+          "price": 1299,
+          "tooltip": "Bifocal lens with integrated blue light protection."
+        },
+        {
+          "id": "bifocal-photo-grey-hard-coat",
+          "name": "Photo Grey Hard Coat",
+          "price": 999,
+          "tooltip": "Photochromic bifocal lens with durable hard coating."
+        },
+        {
+          "id": "bifocal-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block",
+          "price": 1799,
+          "tooltip": "Photochromic bifocal lens with blue light protection."
+        }
+      ],
+      "progressive": [
+        {
+          "id": "progressive-hmc",
+          "name": "Hard Multi Coat Progressive",
+          "price": 1800,
+          "tooltip": "Seamless progressive vision with premium hard multi coating."
+        },
+        {
+          "id": "progressive-blue-block",
+          "name": "Blue Block Progressive",
+          "price": 2500,
+          "tooltip": "Progressive lens with blue light protection."
+        },
+        {
+          "id": "progressive-photo-grey-hmc",
+          "name": "Photo Grey Hard Multi Coat Progressive",
+          "price": 2800,
+          "tooltip": "Premium photochromic progressive lens with hard multi coating."
+        },
+        {
+          "id": "progressive-photo-grey-blue-block",
+          "name": "Photo Grey Blue Block Progressive",
+          "price": 3500,
+          "tooltip": "Premium progressive lens with photochromic technology and blue light protection."
+        }
+      ]
+    },
+    "rating": null,
+    "reviews": null,
+    "inStock": true,
+    "gender": null,
+    "frameMaterial": null,
+    "stockStatus": null
+  }
 ]

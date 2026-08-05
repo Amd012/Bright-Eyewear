@@ -109,7 +109,7 @@ app.post('/api/newsletter', (req, res) => {
 
 // Place order
 app.post('/api/orders', (req, res) => {
-    const { items, total, customer } = req.body;
+    const { items, total, customer, prescription, selectedLens, lensInfo, framePrice, lensPrice, grandTotal } = req.body;
     if (!items || !items.length || !customer) {
         return res.status(400).json({ success: false, message: 'Invalid order data' });
     }
@@ -119,6 +119,12 @@ app.post('/api/orders', (req, res) => {
         items,
         total,
         customer,
+        prescription: prescription || null,
+        selectedLens: selectedLens || null,
+        lensInfo: lensInfo || null,
+        framePrice: framePrice || null,
+        lensPrice: lensPrice || null,
+        grandTotal: grandTotal || total,
         status: 'confirmed',
         date: new Date().toISOString()
     };

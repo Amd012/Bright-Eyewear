@@ -1,47 +1,59 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { getProductById, formatPrice, getDiscountPercent, products } from '../data/products.jsx';
+import { getProductById, formatPrice, getDiscountPercent, products, getLensInfo, getLensCategory, getLensCategoryLabel, getFinalPrice } from '../data/products.jsx';
 import { sharePrescriptionOnWhatsAppWithPDF, sharePrescriptionOnWhatsAppWithoutPDF } from '../utils/whatsappShare';
+import ImageGallery from '../components/ImageGallery';
+import LensSelection from '../components/LensSelection';
+import { useSeo } from '../hooks/useSeo';
 
 const WHATSAPP_NUMBER = '917676044306';
 const BASE_URL = 'https://bright-eyewear.netlify.app';
 
-function buildWhatsAppShareUrl(product) {
+function buildWhatsAppShareUrl(product, selectedLens) {
   const discount = getDiscountPercent(product.price, product.oldPrice);
-
-  // Always use the canonical production URL for the product link
-  // This ensures WhatsApp creates a rich link preview card for the product page
   const productUrl = `${BASE_URL}/product/${product.id}`;
-
   const category = product.category.charAt(0).toUpperCase() + product.category.slice(1);
 
-  // Price display with discount info
+  const lensInfo = selectedLens ? getLensInfo(selectedLens) : null;
+  const lensCategory = selectedLens ? getLensCategory(selectedLens) : null;
+  const finalPrice = getFinalPrice(product.price, selectedLens);
+
   const priceText = product.oldPrice
     ? `RS. ${product.price} (was RS. ${product.oldPrice}${discount ? `, SAVE ${discount}%` : ''})`
     : `RS. ${product.price}`;
 
-  // Message format following the prescription style:
-  // - Bold section headers
-  // - "Label : Value" format
-  // - Only ONE URL: the product link (triggers WhatsApp rich link preview card)
-  // - NO image URL - the product link itself generates the preview card
-  const message = [
+  const lines = [
     `👓 *PRODUCT DETAILS* 👓`,
     `Model Name : ${product.name}`,
     `Category    : ${category}`,
     `Price       : ${priceText}`,
+    `Description : ${product.description}`,
+    `Frame Color : ${product.specs?.find(s => s.label === 'Color')?.value || 'N/A'}`,
+    `Frame Size  : ${product.specs?.find(s => s.label === 'Frame Size')?.value || 'N/A'}`,
+  ];
+
+  if (lensInfo && lensCategory) {
+    lines.push(
+      ``,
+      `*🔬 LENS SELECTION*`,
+      `Lens Category : ${getLensCategoryLabel(lensCategory)}`,
+      `Lens Type     : ${lensInfo.name}`,
+      `Lens Price    : RS. ${lensInfo.price}`,
+      `Frame Price   : RS. ${product.price}`,
+      `Grand Total   : RS. ${finalPrice}`
+    );
+  }
+
+  lines.push(
     ``,
     `✨ Bright Eyewear — Crafted for Your Vision`,
     `Precision Lenses • Premium Frames • Clear Vision`,
     ``,
     `*🔗 PRODUCT LINK*`,
     productUrl
-  ].join('\n');
+  );
 
-  // encodeURIComponent produces %0A for newlines, which WhatsApp
-  // correctly decodes as line breaks. This also properly encodes
-  // all special characters (emojis, *, •, °, etc.).
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
 }
 
 // Field tooltips for prescription guide
@@ -59,12 +71,10 @@ function Tooltip({ text, label }) {
   const hideTimerRef = useRef(null);
   const isTouchRef = useRef(false);
 
-  // Detect touch devices once on mount
   useEffect(() => {
     isTouchRef.current = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   }, []);
 
-  // Clear any pending hide timer
   const clearHideTimer = useCallback(() => {
     if (hideTimerRef.current) {
       clearTimeout(hideTimerRef.current);
@@ -79,13 +89,11 @@ function Tooltip({ text, label }) {
   }, [clearHideTimer]);
 
   const handleHide = useCallback(() => {
-    // Small delay to allow moving mouse from icon to tooltip - prevents flickering
     hideTimerRef.current = setTimeout(() => {
       setShow(false);
     }, 100);
   }, []);
 
-  // For touch devices: ignore hover events to prevent double-fire with click
   const handlePointerEnter = useCallback((e) => {
     if (isTouchRef.current) return;
     handleShow(e);
@@ -112,7 +120,6 @@ function Tooltip({ text, label }) {
     }
   }, [handleToggle]);
 
-  // Close tooltip when clicking outside
   useEffect(() => {
     if (!show) return;
     const handleClickOutside = (e) => {
@@ -124,7 +131,6 @@ function Tooltip({ text, label }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [show]);
 
-  // Cleanup timer on unmount
   useEffect(() => {
     return () => clearHideTimer();
   }, [clearHideTimer]);
@@ -176,8 +182,18 @@ export default function ProductDetail() {
   const [customerName, setCustomerName] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [shareStatus, setShareStatus] = useState(null);
+  const [selectedLens, setSelectedLens] = useState(null);
 
   const product = getProductById(id);
+
+  // Dynamic SEO metadata for WhatsApp link previews
+  useSeo({
+    title: product?.name,
+    description: product?.description,
+    image: product?.image,
+    url: `${BASE_URL}/product/${id}`,
+    type: 'product'
+  });
 
   if (!product) {
     return (
@@ -194,16 +210,17 @@ export default function ProductDetail() {
 
   const discount = getDiscountPercent(product.price, product.oldPrice);
   const relatedProducts = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
+  const finalPrice = getFinalPrice(product.price, selectedLens);
+  const lensInfo = selectedLens ? getLensInfo(selectedLens) : null;
+  const lensCategory = selectedLens ? getLensCategory(selectedLens) : null;
 
   const updateField = (key, value) => {
     setPrescription(prev => ({ ...prev, [key]: value }));
   };
 
   const buildPrescriptionMessage = () => {
-    // Build the clickable product page URL that works on all platforms
     const origin = window.location.origin;
     const pathname = window.location.pathname;
-    // Extract the base path (everything before /product/)
     const basePath = pathname.includes('/product/')
       ? pathname.substring(0, pathname.indexOf('/product/'))
       : pathname.replace(/\/$/, '');
@@ -220,34 +237,63 @@ export default function ProductDetail() {
     const pd = prescription.pd || 'N/A';
 
     const category = product.category.charAt(0).toUpperCase() + product.category.slice(1);
+    const frameColor = product.specs?.find(s => s.label === 'Color')?.value || 'N/A';
+    const frameSize = product.specs?.find(s => s.label === 'Frame Size')?.value || 'N/A';
 
     const lines = [
       `*NEW PRESCRIPTION ORDER*`,
       ``,
       `*📦 PRODUCT DETAILS*`,
-      `Model Name : ${product.name}`,
-      `Category    : ${category}`,
-      `Price       : RS. ${product.price}`,
-      ``,
-      `*👓 PRESCRIPTION DETAILS*`,
-      ``,
-      `🔹 Right Eye (RE)`,
-      `• SPH  : ${reSph}`,
-      `• CYL  : ${reCyl}`,
-      `• AXIS : ${reAxis}°`,
-      `• ADD  : ${reAdd}`,
-      ``,
-      `🔹 Left Eye (LE)`,
-      `• SPH  : ${leSph}`,
-      `• CYL  : ${leCyl}`,
-      `• AXIS : ${leAxis}°`,
-      `• ADD  : ${leAdd}`,
-      ``,
-      `*📏 PUPILLARY DISTANCE*`,
-      `IPD (Interpupillary Distance): ${pd} mm`,
-      ``,
-      `✅ CUSTOMER CONFIRMATION`,
-      `I confirm that the prescription details provided above are accurate and match my latest eye prescription. I understand that these values will be used to manufacture my lenses, and I have reviewed all information before submitting this order.`,
+      `Customer Name : ${customerName || 'N/A'}`,
+      `Model Name    : ${product.name}`,
+      `Category      : ${category}`,
+      `Description   : ${product.description}`,
+      `Frame Color   : ${frameColor}`,
+      `Frame Size    : ${frameSize}`,
+      `Frame Price   : RS. ${product.price}`,
+    ];
+
+    if (lensInfo && lensCategory) {
+      lines.push(
+        `Lens Category : ${getLensCategoryLabel(lensCategory)}`,
+        `Lens Type     : ${lensInfo.name}`,
+        `Lens Price    : RS. ${lensInfo.price}`,
+        `Grand Total   : RS. ${finalPrice}`
+      );
+    } else {
+      lines.push(`Grand Total   : RS. ${product.price}`);
+    }
+
+    // Only include prescription details if any are provided
+    const hasPrescription = reSph !== 'N/A' || reCyl !== 'N/A' || reAxis !== 'N/A' || reAdd !== 'N/A' ||
+      leSph !== 'N/A' || leCyl !== 'N/A' || leAxis !== 'N/A' || leAdd !== 'N/A' || pd !== 'N/A';
+
+    if (hasPrescription) {
+      lines.push(
+        ``,
+        `*👓 PRESCRIPTION DETAILS*`,
+        ``,
+        `🔹 Right Eye (RE)`,
+        `• SPH  : ${reSph}`,
+        `• CYL  : ${reCyl}`,
+        `• AXIS : ${reAxis}°`,
+        `• ADD  : ${reAdd}`,
+        ``,
+        `🔹 Left Eye (LE)`,
+        `• SPH  : ${leSph}`,
+        `• CYL  : ${leCyl}`,
+        `• AXIS : ${leAxis}°`,
+        `• ADD  : ${leAdd}`,
+        ``,
+        `*📏 PUPILLARY DISTANCE*`,
+        `IPD (Interpupillary Distance): ${pd} mm`,
+        ``,
+        `✅ CUSTOMER CONFIRMATION`,
+        `I confirm that the prescription details provided above are accurate and match my latest eye prescription. I understand that these values will be used to manufacture my lenses, and I have reviewed all information before submitting this order.`
+      );
+    }
+
+    lines.push(
       ``,
       `*🔗 PRODUCT LINK*`,
       `Product: Bright Eyewear – ${product.name}`,
@@ -256,14 +302,12 @@ export default function ProductDetail() {
       ``,
       `✨ Bright Eyewear — Crafted for Your Vision`,
       `Precision Lenses • Premium Frames • Clear Vision`
-    ];
+    );
 
-    // Join with simple \n (line feed). WhatsApp's URL parser strips \r\n but keeps %0A.
     return lines.join('\n');
   };
 
   const sendPrescriptionOnWhatsApp = async (withPDF) => {
-    // Validate customer name is required
     if (!customerName || !customerName.trim()) {
       alert('Please enter your name before sending your prescription.');
       return;
@@ -274,7 +318,6 @@ export default function ProductDetail() {
       return;
     }
 
-    // Prevent double-clicks while processing
     if (isSending) return;
 
     setIsSending(true);
@@ -285,19 +328,22 @@ export default function ProductDetail() {
 
       let result;
       if (withPDF) {
-        // Generate PDF, download it, and open WhatsApp with a short message
         result = await sharePrescriptionOnWhatsAppWithPDF({
           product,
           prescription,
           confirmationText,
-          customerName
+          customerName,
+          selectedLens,
+          finalPrice
         });
       } else {
-        // Open WhatsApp directly with the full prescription message
         result = await sharePrescriptionOnWhatsAppWithoutPDF({
           product,
           prescription,
-          confirmationText
+          confirmationText,
+          customerName,
+          selectedLens,
+          finalPrice
         });
       }
 
@@ -307,7 +353,6 @@ export default function ProductDetail() {
           text: result.message
         });
         
-        // Redirect back to the product page after a short delay
         setTimeout(() => {
           navigate(`/product/${product.id}`, { replace: true });
         }, 800);
@@ -339,30 +384,26 @@ export default function ProductDetail() {
       <section className="product-detail">
         <div className="container">
           {/* Left: Gallery */}
-          <div className="product-gallery">
+          <div className="product-gallery-wrapper">
             {product.tag && <span className="product-tag">{product.tag}</span>}
-            <img src={product.image} alt={product.name} />
+            <ImageGallery images={product.images || [product.image]} alt={product.name} />
           </div>
 
           {/* Right: Basic Information */}
           <div className="product-info-detail">
             <h1>{product.name}</h1>
             <p className="category-label">{product.category}</p>
-            <div className="rating-row">
-              <span className="stars">{'★'.repeat(Math.round(product.rating))}{'☆'.repeat(5 - Math.round(product.rating))}</span>
-              <span className="rating-text">{product.rating} out of 5 · {product.reviews} reviews</span>
-            </div>
             <div className="price-row">
-              <span className="price-current">{formatPrice(product.price)}</span>
+              <span className="price-current">{formatPrice(finalPrice)}</span>
               {product.oldPrice && <span className="price-old">{formatPrice(product.oldPrice)}</span>}
               {discount && <span className="price-discount">SAVE {discount}%</span>}
             </div>
             <p className="product-desc">{product.description}</p>
 
-            {/* Action buttons: WhatsApp Share + Add Prescription (not for sunglasses) */}
+            {/* Action buttons */}
             <div className="product-action-buttons">
               <a
-                href={buildWhatsAppShareUrl(product)}
+                href={buildWhatsAppShareUrl(product, selectedLens)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-primary btn-sm product-share-btn"
@@ -374,45 +415,55 @@ export default function ProductDetail() {
                 </svg>
                 WhatsApp Share
               </a>
-              {product.category !== 'sunglasses' && (
-                <a href="#prescription-form" className="btn btn-primary btn-sm product-prescription-btn">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
-                  </svg>
-                  Add Prescription Details
-                </a>
-              )}
+              <a href="#prescription-form" className="btn btn-primary btn-sm product-prescription-btn">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+                </svg>
+                Add Prescription Details
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Below: Specifications & Highlights (full width) */}
+      {/* Below: Lens Selection, Specifications & Highlights (full width) */}
       <section className="product-below">
         <div className="container">
-          <div className="specs">
-            <h3>Specifications</h3>
-            <ul>
-              <li><span>Frame Material</span><span>Acetate / Titanium</span></li>
-              <li><span>Gender</span><span>{product.gender ? product.gender.charAt(0).toUpperCase() + product.gender.slice(1) : 'Unisex'}</span></li>
-              <li><span>Stock</span><span style={{ color: product.inStock ? '#16a34a' : '#dc2626' }}>{product.inStock ? 'In Stock' : 'Out of Stock'}</span></li>
-            </ul>
+          {/* Lens Selection - positioned below product info, above specs */}
+          <div className="lens-selection-section">
+            <LensSelection
+              product={product}
+              selectedLens={selectedLens}
+              onLensSelect={setSelectedLens}
+            />
           </div>
 
-          <div className="highlights">
-            <h3>Key Highlights</h3>
-            <ul>
-              <li>✨ Premium {product.category} design</li>
-              <li>🛡️ 2-year manufacturer warranty</li>
-              <li>🚚 Free shipping over ₹10,000</li>
-              <li>↩️ 30-day hassle-free returns</li>
-            </ul>
+          <div className="product-below-grid">
+            <div className="specs">
+              <h3>Specifications</h3>
+              <ul>
+                {(product.specs || []).map((spec, idx) => (
+                  <li key={idx}>
+                    <span>{spec.label}</span>
+                    <span>{spec.value}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="highlights">
+              <h3>Key Highlights</h3>
+              <ul>
+                {(product.highlights || []).map((highlight, idx) => (
+                  <li key={idx}>{highlight}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ===== PRESCRIPTION GUIDE & CUSTOMER NOTES (not for sunglasses) ===== */}
-      {product.category !== 'sunglasses' && (
+      {/* ===== PRESCRIPTION GUIDE & CUSTOMER NOTES ===== */}
       <section className="prescription-section" id="prescription">
         <div className="container">
           <div className="section-header">
@@ -420,7 +471,6 @@ export default function ProductDetail() {
             <div className="accent-line"></div>
           </div>
 
-          {/* Why we ask */}
           <div className="prescription-info-box">
             <h3>Why do we ask for these details?</h3>
             <p>
@@ -428,7 +478,6 @@ export default function ProductDetail() {
             </p>
           </div>
 
-          {/* Field explanations with tooltips */}
           <div className="prescription-fields-guide">
             <h3>Field Explanations</h3>
             <div className="prescription-field-list">
@@ -463,7 +512,6 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* Important notes */}
           <div className="prescription-notes-box">
             <h3>Important Notes</h3>
             <ul>
@@ -474,12 +522,10 @@ export default function ProductDetail() {
             </ul>
           </div>
 
-          {/* Prescription form */}
           <div className="prescription-form-box" id="prescription-form">
             <h3>Enter Your Prescription</h3>
 
             <div className="prescription-form-grid">
-              {/* RE card */}
               <div className="prescription-column">
                 <h4>Right Eye (RE)</h4>
                 <div className="prescription-fields-row">
@@ -502,7 +548,6 @@ export default function ProductDetail() {
                 </div>
               </div>
 
-              {/* LE card */}
               <div className="prescription-column">
                 <h4>Left Eye (LE)</h4>
                 <div className="prescription-fields-row">
@@ -526,7 +571,6 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            {/* Customer name - for PDF filename */}
             <div className="prescription-input-group prescription-ipd">
               <label>Your Name (required) <Tooltip text="Used to name your prescription PDF file. This is required before sending." label="Name" /></label>
               <input
@@ -539,13 +583,11 @@ export default function ProductDetail() {
               />
             </div>
 
-            {/* PD - full width */}
             <div className="prescription-input-group prescription-ipd">
               <label>PD (mm) <Tooltip text={FIELD_TOOLTIPS.PD} label="PD" /></label>
               <input type="text" placeholder="e.g. 62" value={prescription.pd} onChange={e => updateField('pd', e.target.value)} />
             </div>
 
-            {/* Confirmation checkbox */}
             <label className="prescription-confirm">
               <input
                 type="checkbox"
@@ -555,7 +597,6 @@ export default function ProductDetail() {
               <span>I confirm that the prescription information provided above is accurate and matches my latest eye prescription.</span>
             </label>
 
-            {/* Share status message */}
             {shareStatus && (
               <div className={`prescription-share-status ${shareStatus.type}`} role="status">
                 {shareStatus.type === 'success' ? '✅ ' : '⚠️ '}
@@ -563,7 +604,6 @@ export default function ProductDetail() {
               </div>
             )}
 
-            {/* Send on WhatsApp - choose PDF or no PDF */}
             <div className="prescription-send-options">
               <button
                 className="btn btn-primary prescription-send-btn"
@@ -589,7 +629,6 @@ export default function ProductDetail() {
           </div>
         </div>
       </section>
-      )}
 
       {relatedProducts.length > 0 && (
         <section className="categories" style={{ background: 'var(--bg)' }}>
