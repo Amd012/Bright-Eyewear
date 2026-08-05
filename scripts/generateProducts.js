@@ -177,7 +177,9 @@ function scan(dir, category) {
     const { name, price } = parseFolder(folder);
     const imgs = fs.readdirSync(fp).filter(f => /\.(jpg|jpeg|png|webp|gif)$/i.test(f)).sort();
     if (!imgs.length) return;
-    const images = imgs.map(f => `/${path.join(category, folder, f).replace(/\\/g, '/')}`);
+    // Use exact folder names with correct case (Eyeglasses/Sunglasses) for hosting compatibility
+    const publicDir = category === 'eyeglasses' ? 'Eyeglasses' : 'Sunglasses';
+    const images = imgs.map(f => `/${path.join(publicDir, folder, f).replace(/\\/g, '/')}`);
     const polarized = /polarized|polarised|porlarized/i.test(folder);
     const templates = DESC[category] || DESC.eyeglasses;
     const desc = templates[i % templates.length](name);
