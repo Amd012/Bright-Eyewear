@@ -211,38 +211,38 @@ function drawFieldRow(doc, label, value, y, valueX = MARGIN + 45) {
   return y + 7;
 }
 
-function drawEyeSection(doc, eyeLabel, values, y) {
+function drawEyeSection(doc, eyeLabel, values, y, x = MARGIN, width = CONTENT_WIDTH) {
   doc.setFont(FONTS.heading, 'bold');
-  doc.setFontSize(10.5);
+  doc.setFontSize(10);
   doc.setTextColor(...COLORS.black);
-  doc.text(eyeLabel, MARGIN, y);
-  y += 6;
-  const boxHeight = 32;
+  doc.text(eyeLabel, x, y);
+  y += 5;
+  const boxHeight = 28;
   doc.setFillColor(...COLORS.veryLightGray);
-  doc.roundedRect(MARGIN, y - 4, CONTENT_WIDTH, boxHeight, 1.5, 1.5, 'F');
+  doc.roundedRect(x, y - 4, width, boxHeight, 1.5, 1.5, 'F');
   const fields = [
     { label: 'SPH', value: formatValue(values.sph) },
     { label: 'CYL', value: formatValue(values.cyl) },
     { label: 'AXIS', value: formatValue(values.axis) },
     { label: 'ADD', value: formatValue(values.add) }
   ];
-  const colWidth = CONTENT_WIDTH / 2;
-  const col1X = MARGIN + 8;
-  const col2X = MARGIN + colWidth + 8;
+  const colWidth = width / 2;
+  const col1X = x + 6;
+  const col2X = x + colWidth + 6;
   fields.forEach((field, index) => {
     const colX = index < 2 ? col1X : col2X;
     const rowIndex = index % 2;
-    const rowY = y + 2 + (rowIndex * 7);
+    const rowY = y + 1 + (rowIndex * 6);
     doc.setFont(FONTS.body, 'bold');
-    doc.setFontSize(9.5);
+    doc.setFontSize(8.5);
     doc.setTextColor(...COLORS.gray);
     doc.text(field.label, colX, rowY);
     doc.setFont(FONTS.body, 'normal');
-    doc.setFontSize(10);
+    doc.setFontSize(9);
     doc.setTextColor(...COLORS.black);
-    doc.text(field.value, colX + 18, rowY);
+    doc.text(field.value, colX + 15, rowY);
   });
-  return y + boxHeight + 3;
+  return y + boxHeight + 2;
 }
 
 async function generateQRCode(url) {
@@ -352,7 +352,7 @@ export async function generatePrescriptionPDF({
   y = drawFieldRow(doc, 'Category:', formatValue(category), y);
   y = drawFieldRow(doc, 'Price:', `RS. ${formatValue(product.price)}`, y);
 
-  // Product description (wrapped)
+  // Product description (wrapped) - keep within left side to avoid image overlap
   if (product.description) {
     doc.setFont(FONTS.body, 'bold');
     doc.setFontSize(10);
@@ -361,7 +361,8 @@ export async function generatePrescriptionPDF({
     doc.setFont(FONTS.body, 'normal');
     doc.setFontSize(9.5);
     doc.setTextColor(...COLORS.black);
-    const descLines = doc.splitTextToSize(product.description, CONTENT_WIDTH - 50);
+    // Limit width to avoid overlapping with product image on the right
+    const descLines = doc.splitTextToSize(product.description, CONTENT_WIDTH - 60);
     doc.text(descLines, MARGIN + 45, y);
     y += (descLines.length * 5) + 2;
   }
@@ -411,23 +412,23 @@ export async function generatePrescriptionPDF({
   if (hasPrescription) {
     y = drawSectionHeader(doc, 'Prescription Details', y);
 
-    y = drawEyeSection(doc, 'Right Eye (RE)', {
+    // RE and LE side by side
+    const halfWidth = (CONTENT_WIDTH - 8) / 2;
+    const reY = drawEyeSection(doc, 'Right Eye (RE)', {
       sph: prescription.reSph,
       cyl: prescription.reCyl,
       axis: prescription.reAxis,
       add: prescription.reAdd
-    }, y);
+    }, y, MARGIN, halfWidth);
 
-    y += 4;
-
-    y = drawEyeSection(doc, 'Left Eye (LE)', {
+    drawEyeSection(doc, 'Left Eye (LE)', {
       sph: prescription.leSph,
       cyl: prescription.leCyl,
       axis: prescription.leAxis,
       add: prescription.leAdd
-    }, y);
+    }, y, MARGIN + halfWidth + 8, halfWidth);
 
-    y += 5;
+    y = reY + 3;
 
     // ===== PUPILLARY DISTANCE =====
     y = drawSectionHeader(doc, 'Pupillary Distance', y);
