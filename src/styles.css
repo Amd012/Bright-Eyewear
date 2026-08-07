@@ -637,6 +637,10 @@ svg { max-width: 100%; height: auto; }
   .hero-buttons { flex-direction: column; align-items: center; }
   .hero-buttons .btn { width: 100%; max-width: 280px; }
   .cta .btn { width: 100%; max-width: 280px; }
+  .product-action-buttons { flex-direction: column; align-items: stretch; }
+  .product-action-buttons .btn { width: 100%; min-width: 0; font-size: clamp(0.72rem, 2.4vw, 0.78rem); padding: clamp(8px, 2.5vw, 10px) clamp(12px, 3vw, 16px); white-space: normal; line-height: 1.4; gap: 6px; }
+  .product-share-btn, .product-prescription-btn { flex-direction: row; }
+  .product-share-btn svg, .product-prescription-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

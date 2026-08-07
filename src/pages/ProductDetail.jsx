@@ -5,13 +5,13 @@ import { sharePrescriptionOnWhatsAppWithPDF, sharePrescriptionOnWhatsAppWithoutP
 import ImageGallery from '../components/ImageGallery';
 import LensSelection from '../components/LensSelection';
 import { useSeo } from '../hooks/useSeo';
+import { buildProductUrl } from '../utils/siteConfig';
 
 const WHATSAPP_NUMBER = '917676044306';
-const BASE_URL = 'https://bright-eyewear.netlify.app';
 
 function buildWhatsAppShareUrl(product, selectedLens) {
   const discount = getDiscountPercent(product.price, product.oldPrice);
-  const productUrl = `${BASE_URL}/product/${product.id}`;
+  const productUrl = buildProductUrl(product.id);
   const category = product.category.charAt(0).toUpperCase() + product.category.slice(1);
 
   const lensInfo = selectedLens ? getLensInfo(selectedLens) : null;
@@ -191,7 +191,7 @@ export default function ProductDetail() {
     title: product?.name,
     description: product?.description,
     image: product?.image,
-    url: `${BASE_URL}/product/${id}`,
+    url: buildProductUrl(id),
     type: 'product'
   });
 

@@ -3,4 +3,4 @@ Allow: /
 Disallow: /api/
 Disallow: /checkout
 
-Sitemap: https://brighteyewear.com/sitemap.xml
+Sitemap: https://bright-eyewear.vercel.app/sitemap.xml

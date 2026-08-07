@@ -10,21 +10,10 @@
 
 import { generateAndDownloadPrescriptionPDF } from './prescriptionPdf';
 import { getLensInfo, getLensCategory, getLensCategoryLabel, getFinalPrice } from '../data/products.jsx';
+import { buildProductUrl } from './siteConfig';
 
 // WhatsApp business number for Bright Eyewear
 const WHATSAPP_NUMBER = '917676044306';
-
-// Canonical production base URL for all product links
-const BASE_URL = 'https://bright-eyewear.netlify.app';
-
-/**
- * Build the canonical product URL
- * @param {string} productId - The product ID
- * @returns {string} Full product URL
- */
-export function buildProductUrl(productId) {
-  return `${BASE_URL}/product/${productId}`;
-}
 
 /**
  * Build the WhatsApp message for sharing a prescription

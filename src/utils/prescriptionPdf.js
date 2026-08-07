@@ -19,6 +19,7 @@ import { jsPDF } from 'jspdf';
 import QRCode from 'qrcode';
 import { saveAs } from 'file-saver';
 import { getLensInfo, getLensCategory, getLensCategoryLabel, getFinalPrice } from '../data/products.jsx';
+import { getWebsiteDomain } from './siteConfig';
 
 // ===== Constants =====
 const PAGE_WIDTH = 210;
@@ -29,7 +30,7 @@ const CONTENT_WIDTH = PAGE_WIDTH - (MARGIN * 2);
 const STORE_INFO = {
   name: 'Bright Eyewear',
   phone: '+917676044306',
-  website: 'bright-eyewear.netlify.app'
+  get website() { return getWebsiteDomain(); }
 };
 
 const COLORS = {

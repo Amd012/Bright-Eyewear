@@ -23,7 +23,7 @@ export default function Contact() {
                 <h3>Visit Us</h3>
                 <p className="contact-address-text">#30, 1st Main Road, Chikka Bommasandra, Yelahanka, Bangalore 560064</p>
                 <a
-                  href="https://www.google.com/maps/search/?api=1&query=Chikka+Bommasandra+Yelahanka+Bangalore+560064"
+                  href="https://share.google/Rlu7712ufouJuOnGa"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-primary btn-sm get-directions-btn"

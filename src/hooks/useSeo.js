@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { getBaseUrl } from '../utils/siteConfig';
 
 /**
  * Dynamic SEO Metadata Hook
@@ -11,7 +12,7 @@ import { useEffect } from 'react';
  */
 export function useSeo({ title, description, image, url, type = 'website' }) {
   useEffect(() => {
-    const BASE_URL = 'https://bright-eyewear.netlify.app';
+    const BASE_URL = getBaseUrl();
     const canonicalUrl = url || window.location.href;
     // Ensure image URL is absolute for WhatsApp/OG preview
     const fullImage = image ? (image.startsWith('http') ? image : `${BASE_URL}${image}`) : `${BASE_URL}/eyewear.png`;
